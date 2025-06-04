@@ -1,17 +1,13 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react"
-import { Link } from "@tanstack/react-router"
-import { FaUserAstronaut } from "react-icons/fa"
-import { FiLogOut, FiUser } from "react-icons/fi"
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Link } from "@tanstack/react-router";
+import { FaUserAstronaut } from "react-icons/fa";
+import { FiLogOut, FiUser } from "react-icons/fi";
 
-import useAuth from "@/hooks/useAuth"
-import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu"
+import useAuth from "@/hooks/useAuth";
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 
 const UserMenu = () => {
-  const { user, logout } = useAuth()
-
-  const handleLogout = async () => {
-    logout()
-  }
+  const { user, logout } = useAuth();
 
   return (
     <>
@@ -26,7 +22,7 @@ const UserMenu = () => {
           </MenuTrigger>
 
           <MenuContent>
-            <Link to="settings">
+            <Link to="/settings">
               <MenuItem
                 closeOnSelect
                 value="user-settings"
@@ -43,7 +39,7 @@ const UserMenu = () => {
               value="logout"
               gap={2}
               py={2}
-              onClick={handleLogout}
+              onClick={() => void logout()}
               style={{ cursor: "pointer" }}
             >
               <FiLogOut />
@@ -53,7 +49,7 @@ const UserMenu = () => {
         </MenuRoot>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;

@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "@tanstack/react-form";
 
 import {
   Button,
@@ -8,14 +8,14 @@ import {
   Input,
   Text,
   VStack,
-} from "@chakra-ui/react"
-import { useState } from "react"
-import { FaPlus } from "react-icons/fa"
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 
-import { type ItemCreate, ItemsService } from "@/client"
-import type { ApiError } from "@/client/core/ApiError"
-import useCustomToast from "@/hooks/useCustomToast"
-import { handleError } from "@/utils"
+import { type ItemCreate, ItemsService } from "@/client";
+import type { ApiError } from "@/client/core/ApiError";
+import useCustomToast from "@/hooks/useCustomToast";
+import { handleError } from "@/utils";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -24,46 +24,41 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTrigger,
-} from "../ui/dialog"
-import { Field } from "../ui/field"
+} from "../ui/dialog";
+import { Field } from "../ui/field";
 
 const AddItem = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
-  const { showSuccessToast } = useCustomToast()
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<ItemCreate>({
-    mode: "onBlur",
-    criteriaMode: "all",
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccessToast } = useCustomToast();
+  const form = useForm({
     defaultValues: {
       title: "",
       description: "",
+    } as ItemCreate,
+    onSubmit: (data) => {
+      mutation.mutate(data.value);
     },
-  })
+  });
+  const handleSubmit = () => {
+    void form.handleSubmit();
+  };
 
   const mutation = useMutation({
     mutationFn: (data: ItemCreate) =>
       ItemsService.createItem({ requestBody: data }),
     onSuccess: () => {
-      showSuccessToast("Item created successfully.")
-      reset()
-      setIsOpen(false)
+      showSuccessToast("Item created successfully.");
+      form.reset();
+      setIsOpen(false);
     },
     onError: (err: ApiError) => {
-      handleError(err)
+      handleError(err);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] })
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["items"] });
     },
-  })
-
-  const onSubmit: SubmitHandler<ItemCreate> = (data) => {
-    mutation.mutate(data)
-  }
+  });
 
   return (
     <DialogRoot
@@ -79,41 +74,57 @@ const AddItem = () => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add Item</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>Fill in the details to add a new item.</Text>
             <VStack gap={4}>
-              <Field
-                required
-                invalid={!!errors.title}
-                errorText={errors.title?.message}
-                label="Title"
+              <form.Field
+                name="title"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return "Title is required.";
+                    return undefined;
+                  },
+                }}
               >
-                <Input
-                  id="title"
-                  {...register("title", {
-                    required: "Title is required.",
-                  })}
-                  placeholder="Title"
-                  type="text"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    required
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Title"
+                  >
+                    <Input
+                      id="title"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Title"
+                      type="text"
+                    />
+                  </Field>
+                )}
+              </form.Field>
 
-              <Field
-                invalid={!!errors.description}
-                errorText={errors.description?.message}
-                label="Description"
-              >
-                <Input
-                  id="description"
-                  {...register("description")}
-                  placeholder="Description"
-                  type="text"
-                />
-              </Field>
+              <form.Field name="description">
+                {(field) => (
+                  <Field
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Description"
+                  >
+                    <Input
+                      id="description"
+                      value={field.state.value ?? undefined}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Description"
+                      type="text"
+                    />
+                  </Field>
+                )}
+              </form.Field>
             </VStack>
           </DialogBody>
 
@@ -122,7 +133,7 @@ const AddItem = () => {
               <Button
                 variant="subtle"
                 colorPalette="gray"
-                disabled={isSubmitting}
+                disabled={form.state.isSubmitting}
               >
                 Cancel
               </Button>
@@ -130,8 +141,8 @@ const AddItem = () => {
             <Button
               variant="solid"
               type="submit"
-              disabled={!isValid}
-              loading={isSubmitting}
+              disabled={!form.state.isValid}
+              loading={form.state.isSubmitting}
             >
               Save
             </Button>
@@ -140,7 +151,7 @@ const AddItem = () => {
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
-  )
-}
+  );
+};
 
-export default AddItem
+export default AddItem;

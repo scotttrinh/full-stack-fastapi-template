@@ -1,64 +1,52 @@
-import { Container, Flex, Image, Input, Text } from "@chakra-ui/react"
-import {
-  Link as RouterLink,
-  createFileRoute,
-  redirect,
-} from "@tanstack/react-router"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { FiLock, FiUser } from "react-icons/fi"
+import { Container, Flex, Image, Input } from "@chakra-ui/react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
+import { FiUser } from "react-icons/fi";
+import { z } from "zod/v4-mini";
 
-import type { UserRegister } from "@/client"
-import { Button } from "@/components/ui/button"
-import { Field } from "@/components/ui/field"
-import { InputGroup } from "@/components/ui/input-group"
-import { PasswordInput } from "@/components/ui/password-input"
-import useAuth, { isLoggedIn } from "@/hooks/useAuth"
-import { confirmPasswordRules, emailPattern, passwordRules } from "@/utils"
-import Logo from "/assets/images/fastapi-logo.svg"
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { InputGroup } from "@/components/ui/input-group";
+import useAuth from "@/hooks/useAuth";
+import Logo from "/assets/images/fastapi-logo.svg";
+import { formatErrors } from "@/utils";
 
 export const Route = createFileRoute("/signup")({
   component: SignUp,
-  beforeLoad: async () => {
-    if (isLoggedIn()) {
-      throw redirect({
-        to: "/",
-      })
-    }
-  },
-})
+  validateSearch: z.object({
+    email: z.optional(z.string().check(z.email())),
+  }),
+});
 
-interface UserRegisterForm extends UserRegister {
-  confirm_password: string
-}
+const NewUserProfileForm = z.object({
+  full_name: z.string().check(z.trim(), z.minLength(1)),
+  email: z.string().check(z.trim(), z.minLength(1), z.email()),
+});
+type NewUserProfileForm = z.output<typeof NewUserProfileForm>;
 
 function SignUp() {
-  const { signUpMutation } = useAuth()
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors, isSubmitting },
-  } = useForm<UserRegisterForm>({
-    mode: "onBlur",
-    criteriaMode: "all",
-    defaultValues: {
-      email: "",
-      full_name: "",
-      password: "",
-      confirm_password: "",
-    },
-  })
+  const { signUpMutation } = useAuth();
+  const { email } = Route.useSearch();
 
-  const onSubmit: SubmitHandler<UserRegisterForm> = (data) => {
-    signUpMutation.mutate(data)
-  }
+  const form = useForm({
+    validators: {
+      onSubmit: NewUserProfileForm,
+    },
+    defaultValues: {
+      full_name: "",
+      email: email ?? "",
+    } as NewUserProfileForm,
+    onSubmit: async ({ value }) => {
+      await signUpMutation.mutateAsync({ ...value, password: "" });
+    },
+  });
 
   return (
     <>
       <Flex flexDir={{ base: "column", md: "row" }} justify="center" h="100vh">
         <Container
           as="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={() => void form.handleSubmit()}
           h="100vh"
           maxW="sm"
           alignItems="stretch"
@@ -74,63 +62,55 @@ function SignUp() {
             alignSelf="center"
             mb={4}
           />
-          <Field
-            invalid={!!errors.full_name}
-            errorText={errors.full_name?.message}
-          >
-            <InputGroup w="100%" startElement={<FiUser />}>
-              <Input
-                id="full_name"
-                minLength={3}
-                {...register("full_name", {
-                  required: "Full Name is required",
-                })}
-                placeholder="Full Name"
-                type="text"
-              />
-            </InputGroup>
-          </Field>
+          <form.Field name="full_name">
+            {(field) => (
+              <Field
+                invalid={!field.state.meta.isValid}
+                errorText={formatErrors(field.state.meta.errors)}
+              >
+                <InputGroup w="100%" startElement={<FiUser />}>
+                  <Input
+                    id="full_name"
+                    minLength={3}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Full Name"
+                    type="text"
+                  />
+                </InputGroup>
+              </Field>
+            )}
+          </form.Field>
+          <form.Field name="email">
+            {(field) => (
+              <Field
+                invalid={!field.state.meta.isValid}
+                errorText={formatErrors(field.state.meta.errors)}
+              >
+                <InputGroup w="100%" startElement={<FiUser />}>
+                  <Input
+                    id="email"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Email"
+                    type="email"
+                  />
+                </InputGroup>
+              </Field>
+            )}
+          </form.Field>
 
-          <Field invalid={!!errors.email} errorText={errors.email?.message}>
-            <InputGroup w="100%" startElement={<FiUser />}>
-              <Input
-                id="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: emailPattern,
-                })}
-                placeholder="Email"
-                type="email"
-              />
-            </InputGroup>
-          </Field>
-          <PasswordInput
-            type="password"
-            startElement={<FiLock />}
-            {...register("password", passwordRules())}
-            placeholder="Password"
-            errors={errors}
-          />
-          <PasswordInput
-            type="confirm_password"
-            startElement={<FiLock />}
-            {...register("confirm_password", confirmPasswordRules(getValues))}
-            placeholder="Confirm Password"
-            errors={errors}
-          />
-          <Button variant="solid" type="submit" loading={isSubmitting}>
-            Sign Up
+          <Button
+            variant="solid"
+            type="submit"
+            loading={form.state.isSubmitting}
+          >
+            Save Profile
           </Button>
-          <Text>
-            Already have an account?{" "}
-            <RouterLink to="/login" className="main-link">
-              Log In
-            </RouterLink>
-          </Text>
         </Container>
       </Flex>
     </>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;

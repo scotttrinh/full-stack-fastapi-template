@@ -1,55 +1,39 @@
-import type { ApiError } from "./client"
-import useCustomToast from "./hooks/useCustomToast"
+import { StandardSchemaV1Issue } from "@tanstack/react-form";
+import { z } from "zod/v4-mini";
 
-export const emailPattern = {
-  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  message: "Invalid email address",
-}
+import type { ApiError } from "./client";
+import useCustomToast from "./hooks/useCustomToast";
 
-export const namePattern = {
-  value: /^[A-Za-z\s\u00C0-\u017F]{1,30}$/,
-  message: "Invalid name",
-}
-
-export const passwordRules = (isRequired = true) => {
-  const rules: any = {
-    minLength: {
-      value: 8,
-      message: "Password must be at least 8 characters",
-    },
-  }
-
-  if (isRequired) {
-    rules.required = "Password is required"
-  }
-
-  return rules
-}
-
-export const confirmPasswordRules = (
-  getValues: () => any,
-  isRequired = true,
-) => {
-  const rules: any = {
-    validate: (value: string) => {
-      const password = getValues().password || getValues().new_password
-      return value === password ? true : "The passwords do not match"
-    },
-  }
-
-  if (isRequired) {
-    rules.required = "Password confirmation is required"
-  }
-
-  return rules
-}
+const ApiErrorSchema = z.object({
+  detail: z.optional(
+    z.union([
+      z.string(),
+      z.pipe(
+        z.array(z.object({ msg: z.string() })),
+        z.transform((data) => data.map((item) => item.msg).join(", ")),
+      ),
+    ]),
+  ),
+});
 
 export const handleError = (err: ApiError) => {
-  const { showErrorToast } = useCustomToast()
-  const errDetail = (err.body as any)?.detail
-  let errorMessage = errDetail || "Something went wrong."
-  if (Array.isArray(errDetail) && errDetail.length > 0) {
-    errorMessage = errDetail[0].msg
-  }
-  showErrorToast(errorMessage)
-}
+  const { showErrorToast } = useCustomToast();
+  const result = ApiErrorSchema.safeParse(err.body);
+
+  showErrorToast(result.data?.detail ?? "Something went wrong.");
+};
+
+export const formatErrors = (
+  errors: (string | StandardSchemaV1Issue | undefined)[],
+): string => {
+  return errors
+    .map((error) => {
+      if (!error) return "";
+      if (typeof error === "string") {
+        return error;
+      }
+
+      return error.message;
+    })
+    .join(", ");
+};
