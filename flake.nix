@@ -57,6 +57,7 @@
             '';
 
             packages = with python.pkgs; [
+              pkgs.nodejs_24
               pip
               uv
               black
