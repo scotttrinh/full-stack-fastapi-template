@@ -15,10 +15,10 @@ import {
 import { useState } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
 
-import { type UserPublic, type UserUpdate, UsersService } from "@/client";
+import { UsersService } from "@/client";
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
-import { emailPattern, handleError, PasswordConfirmation } from "@/utils";
+import { formatErrors, handleError } from "@/utils";
 import { Checkbox } from "../ui/checkbox";
 import {
   DialogBody,
@@ -34,30 +34,18 @@ interface EditUserProps {
   user: UserUpdateForm;
 }
 
-/*
-export type UserUpdate = {
-  email?: string | null
-  is_active?: boolean
-  is_superuser?: boolean
-  full_name?: string | null
-  password?: string | null
-}
-*/
 const UserUpdateForm = z.intersection(
-  z.intersection(
-    z.partial(
-      z.object({
-        email: z.string().check(z.email()),
-        is_active: z.boolean(),
-        is_superuser: z.boolean(),
-        full_name: z.string(),
-      })
-    ),
+  z.partial(
     z.object({
-      id: z.string(),
-    })
+      email: z.string().check(z.email()),
+      is_active: z.boolean(),
+      is_superuser: z.boolean(),
+      full_name: z.nullable(z.string()),
+    }),
   ),
-  PasswordConfirmation
+  z.object({
+    id: z.string(),
+  }),
 );
 type UserUpdateForm = z.output<typeof UserUpdateForm>;
 
@@ -71,9 +59,6 @@ const EditUser = ({ user }: EditUserProps) => {
     },
     defaultValues: user,
     onSubmit: (data) => {
-      if (data.value.password === "") {
-        data.value.password = undefined;
-      }
       mutation.mutate(data.value);
     },
   });
@@ -89,8 +74,8 @@ const EditUser = ({ user }: EditUserProps) => {
     onError: (err: ApiError) => {
       handleError(err);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 
@@ -108,29 +93,19 @@ const EditUser = ({ user }: EditUserProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={form.handleSubmit}>
+        <form onSubmit={() => void form.handleSubmit()}>
           <DialogHeader>
             <DialogTitle>Edit User</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>Update the user details below.</Text>
             <VStack gap={4}>
-              <form.Field
-                name="email"
-                validators={{
-                  onChange: ({ value }) => {
-                    if (!value) return "Email is required";
-                    if (!emailPattern.value.test(value))
-                      return emailPattern.message;
-                    return undefined;
-                  },
-                }}
-              >
+              <form.Field name="email">
                 {(field) => (
                   <Field
                     required
                     invalid={!field.state.meta.isValid}
-                    errorText={field.state.meta.errors.join(", ")}
+                    errorText={formatErrors(field.state.meta.errors)}
                     label="Email"
                   >
                     <Input
@@ -148,7 +123,7 @@ const EditUser = ({ user }: EditUserProps) => {
                 {(field) => (
                   <Field
                     invalid={!field.state.meta.isValid}
-                    errorText={field.state.meta.errors.join(", ")}
+                    errorText={formatErrors(field.state.meta.errors)}
                     label="Full Name"
                   >
                     <Input
@@ -157,60 +132,6 @@ const EditUser = ({ user }: EditUserProps) => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Full name"
                       type="text"
-                    />
-                  </Field>
-                )}
-              </form.Field>
-
-              <form.Field
-                name="password"
-                validators={{
-                  onChange: ({ value }) => {
-                    if (value && value.length < 8)
-                      return "Password must be at least 8 characters";
-                    return undefined;
-                  },
-                }}
-              >
-                {(field) => (
-                  <Field
-                    invalid={!field.state.meta.isValid}
-                    errorText={field.state.meta.errors.join(", ")}
-                    label="Set Password"
-                  >
-                    <Input
-                      id="password"
-                      value={field.state.value ?? undefined}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Password"
-                      type="password"
-                    />
-                  </Field>
-                )}
-              </form.Field>
-
-              <form.Field
-                name="confirm_password"
-                validators={{
-                  onChange: ({ value }) => {
-                    if (value && value !== form.getFieldValue("password"))
-                      return "The passwords do not match";
-                    return undefined;
-                  },
-                }}
-              >
-                {(field) => (
-                  <Field
-                    invalid={!field.state.meta.isValid}
-                    errorText={field.state.meta.errors.join(", ")}
-                    label="Confirm Password"
-                  >
-                    <Input
-                      id="confirm_password"
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Password"
-                      type="password"
                     />
                   </Field>
                 )}

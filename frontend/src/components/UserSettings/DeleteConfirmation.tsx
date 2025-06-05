@@ -1,9 +1,9 @@
-import { Button, ButtonGroup, Text } from "@chakra-ui/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
-import { useForm } from "@tanstack/react-form"
+import { Button, ButtonGroup, Text } from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
 
-import { type ApiError, UsersService } from "@/client"
+import { type ApiError, UsersService } from "@/client";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -14,36 +14,36 @@ import {
   DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import useAuth from "@/hooks/useAuth"
-import useCustomToast from "@/hooks/useCustomToast"
-import { handleError } from "@/utils"
+} from "@/components/ui/dialog";
+import useAuth from "@/hooks/useAuth";
+import useCustomToast from "@/hooks/useCustomToast";
+import { handleError } from "@/utils";
 
 const DeleteConfirmation = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
-  const { showSuccessToast } = useCustomToast()
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccessToast } = useCustomToast();
   const form = useForm({
     onSubmit: () => {
-      mutation.mutate()
-    }
-  })
-  const { logout } = useAuth()
+      mutation.mutate();
+    },
+  });
+  const { logout } = useAuth();
 
   const mutation = useMutation({
     mutationFn: () => UsersService.deleteUserMe(),
     onSuccess: () => {
-      showSuccessToast("Your account has been successfully deleted")
-      setIsOpen(false)
-      logout()
+      showSuccessToast("Your account has been successfully deleted");
+      setIsOpen(false);
+      void logout();
     },
     onError: (err: ApiError) => {
-      handleError(err)
+      handleError(err);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] })
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
-  })
+  });
 
   return (
     <>
@@ -61,7 +61,7 @@ const DeleteConfirmation = () => {
         </DialogTrigger>
 
         <DialogContent>
-          <form onSubmit={form.handleSubmit}>
+          <form onSubmit={() => void form.handleSubmit()}>
             <DialogCloseTrigger />
             <DialogHeader>
               <DialogTitle>Confirmation Required</DialogTitle>
@@ -100,7 +100,7 @@ const DeleteConfirmation = () => {
         </DialogContent>
       </DialogRoot>
     </>
-  )
-}
+  );
+};
 
-export default DeleteConfirmation
+export default DeleteConfirmation;

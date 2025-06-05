@@ -5,15 +5,15 @@ import {
   Input,
   Text,
   VStack,
-} from "@chakra-ui/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
-import { useForm } from "@tanstack/react-form"
-import { FaExchangeAlt } from "react-icons/fa"
+} from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { FaExchangeAlt } from "react-icons/fa";
 
-import { type ApiError, type ItemPublic, ItemsService } from "@/client"
-import useCustomToast from "@/hooks/useCustomToast"
-import { handleError } from "@/utils"
+import { type ApiError, type ItemPublic, ItemsService } from "@/client";
+import useCustomToast from "@/hooks/useCustomToast";
+import { handleError } from "@/utils";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -23,22 +23,22 @@ import {
   DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog"
-import { Field } from "../ui/field"
+} from "../ui/dialog";
+import { Field } from "../ui/field";
 
 interface EditItemProps {
-  item: ItemPublic
+  item: ItemPublic;
 }
 
 interface ItemUpdateForm {
-  title: string
-  description?: string
+  title: string;
+  description?: string;
 }
 
 const EditItem = ({ item }: EditItemProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
-  const { showSuccessToast } = useCustomToast()
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccessToast } = useCustomToast();
   const form = useForm({
     defaultValues: {
       ...item,
@@ -53,17 +53,17 @@ const EditItem = ({ item }: EditItemProps) => {
     mutationFn: (data: ItemUpdateForm) =>
       ItemsService.updateItem({ id: item.id, requestBody: data }),
     onSuccess: () => {
-      showSuccessToast("Item updated successfully.")
-      form.reset()
-      setIsOpen(false)
+      showSuccessToast("Item updated successfully.");
+      form.reset();
+      setIsOpen(false);
     },
     onError: (err: ApiError) => {
-      handleError(err)
+      handleError(err);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] })
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["items"] });
     },
-  })
+  });
 
   return (
     <DialogRoot
@@ -79,7 +79,7 @@ const EditItem = ({ item }: EditItemProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={form.handleSubmit}>
+        <form onSubmit={() => void form.handleSubmit()}>
           <DialogHeader>
             <DialogTitle>Edit Item</DialogTitle>
           </DialogHeader>
@@ -113,9 +113,7 @@ const EditItem = ({ item }: EditItemProps) => {
                 )}
               </form.Field>
 
-              <form.Field
-                name="description"
-              >
+              <form.Field name="description">
                 {(field) => (
                   <Field
                     invalid={!field.state.meta.isValid}
@@ -146,7 +144,11 @@ const EditItem = ({ item }: EditItemProps) => {
                   Cancel
                 </Button>
               </DialogActionTrigger>
-              <Button variant="solid" type="submit" loading={form.state.isSubmitting}>
+              <Button
+                variant="solid"
+                type="submit"
+                loading={form.state.isSubmitting}
+              >
                 Save
               </Button>
             </ButtonGroup>
@@ -155,7 +157,7 @@ const EditItem = ({ item }: EditItemProps) => {
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
-  )
-}
+  );
+};
 
-export default EditItem
+export default EditItem;

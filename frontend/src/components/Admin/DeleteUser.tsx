@@ -1,10 +1,10 @@
-import { Button, DialogTitle, Text } from "@chakra-ui/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
-import { useForm } from "@tanstack/react-form"
-import { FiTrash2 } from "react-icons/fi"
+import { Button, DialogTitle, Text } from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { FiTrash2 } from "react-icons/fi";
 
-import { UsersService } from "@/client"
+import { UsersService } from "@/client";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -14,37 +14,37 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import useCustomToast from "@/hooks/useCustomToast"
+} from "@/components/ui/dialog";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const DeleteUser = ({ id }: { id: string }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
-  const { showSuccessToast, showErrorToast } = useCustomToast()
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccessToast, showErrorToast } = useCustomToast();
   const form = useForm({
     defaultValues: {},
-    onSubmit: async () => {
-      mutation.mutate(id)
+    onSubmit: () => {
+      mutation.mutate(id);
     },
-  })
+  });
 
   const deleteUser = async (id: string) => {
-    await UsersService.deleteUser({ userId: id })
-  }
+    await UsersService.deleteUser({ userId: id });
+  };
 
   const mutation = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      showSuccessToast("The user was deleted successfully")
-      setIsOpen(false)
+      showSuccessToast("The user was deleted successfully");
+      setIsOpen(false);
     },
     onError: () => {
-      showErrorToast("An error occurred while deleting the user")
+      showErrorToast("An error occurred while deleting the user");
     },
-    onSettled: () => {
-      queryClient.invalidateQueries()
+    onSettled: async () => {
+      await queryClient.invalidateQueries();
     },
-  })
+  });
 
   return (
     <DialogRoot
@@ -61,7 +61,7 @@ const DeleteUser = ({ id }: { id: string }) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={form.handleSubmit}>
+        <form onSubmit={() => void form.handleSubmit()}>
           <DialogHeader>
             <DialogTitle>Delete User</DialogTitle>
           </DialogHeader>
@@ -96,7 +96,7 @@ const DeleteUser = ({ id }: { id: string }) => {
         </form>
       </DialogContent>
     </DialogRoot>
-  )
-}
+  );
+};
 
-export default DeleteUser
+export default DeleteUser;

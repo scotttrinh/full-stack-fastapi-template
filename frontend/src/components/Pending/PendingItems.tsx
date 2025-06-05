@@ -1,5 +1,5 @@
-import { Table } from "@chakra-ui/react"
-import { SkeletonText } from "../ui/skeleton"
+import { Table } from "@chakra-ui/react";
+import { SkeletonText } from "../ui/skeleton";
 
 const PendingItems = () => (
   <Table.Root size={{ base: "sm", md: "md" }}>
@@ -12,7 +12,7 @@ const PendingItems = () => (
       </Table.Row>
     </Table.Header>
     <Table.Body>
-      {[...Array(5)].map((_, index) => (
+      {Array.from({ length: 5 }).map((_, index) => (
         <Table.Row key={index}>
           <Table.Cell>
             <SkeletonText noOfLines={1} />
@@ -30,6 +30,6 @@ const PendingItems = () => (
       ))}
     </Table.Body>
   </Table.Root>
-)
+);
 
-export default PendingItems
+export default PendingItems;

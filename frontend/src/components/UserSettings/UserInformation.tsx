@@ -12,15 +12,10 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod/v4-mini";
 
-import {
-  type ApiError,
-  type UserPublic,
-  type UserUpdateMe,
-  UsersService,
-} from "@/client";
+import { type ApiError, type UserUpdateMe, UsersService } from "@/client";
 import useAuth from "@/hooks/useAuth";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Email, handleError } from "@/utils";
+import { handleError, formatErrors } from "@/utils";
 import { Field } from "../ui/field";
 
 const UserUpdateMeForm = z.partial(
@@ -28,8 +23,8 @@ const UserUpdateMeForm = z.partial(
     full_name: z
       .string()
       .check(z.maxLength(256, "Full name must be less than 256 characters")),
-    email: Email,
-  })
+    email: z.string().check(z.email()),
+  }),
 );
 
 const UserInformation = () => {
@@ -63,8 +58,8 @@ const UserInformation = () => {
     onError: (err: ApiError) => {
       handleError(err);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries();
+    onSettled: async () => {
+      await queryClient.invalidateQueries();
     },
   });
 
@@ -82,14 +77,14 @@ const UserInformation = () => {
         <Box
           w={{ sm: "full", md: "sm" }}
           as="form"
-          onSubmit={form.handleSubmit}
+          onSubmit={() => void form.handleSubmit()}
         >
           <form.Field name="full_name">
             {(field) => (
               <Field
                 label="Full name"
                 invalid={!field.state.meta.isValid}
-                errorText={field.state.meta.errors.join(", ")}
+                errorText={formatErrors(field.state.meta.errors)}
               >
                 {editMode ? (
                   <Input
@@ -118,7 +113,7 @@ const UserInformation = () => {
                 mt={4}
                 label="Email"
                 invalid={!field.state.meta.isValid}
-                errorText={field.state.meta.errors.join(", ")}
+                errorText={formatErrors(field.state.meta.errors)}
               >
                 {editMode ? (
                   <Input
