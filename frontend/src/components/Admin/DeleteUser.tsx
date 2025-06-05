@@ -1,7 +1,7 @@
 import { Button, DialogTitle, Text } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 import { FiTrash2 } from "react-icons/fi"
 
 import { UsersService } from "@/client"
@@ -21,10 +21,12 @@ const DeleteUser = ({ id }: { id: string }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useCustomToast()
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm()
+  const form = useForm({
+    defaultValues: {},
+    onSubmit: async () => {
+      mutation.mutate(id)
+    },
+  })
 
   const deleteUser = async (id: string) => {
     await UsersService.deleteUser({ userId: id })
@@ -44,10 +46,6 @@ const DeleteUser = ({ id }: { id: string }) => {
     },
   })
 
-  const onSubmit = async () => {
-    mutation.mutate(id)
-  }
-
   return (
     <DialogRoot
       size={{ base: "xs", md: "md" }}
@@ -63,7 +61,7 @@ const DeleteUser = ({ id }: { id: string }) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Delete User</DialogTitle>
           </DialogHeader>
@@ -80,7 +78,7 @@ const DeleteUser = ({ id }: { id: string }) => {
               <Button
                 variant="subtle"
                 colorPalette="gray"
-                disabled={isSubmitting}
+                disabled={form.state.isSubmitting}
               >
                 Cancel
               </Button>
@@ -89,7 +87,7 @@ const DeleteUser = ({ id }: { id: string }) => {
               variant="solid"
               colorPalette="red"
               type="submit"
-              loading={isSubmitting}
+              loading={form.state.isSubmitting}
             >
               Delete
             </Button>

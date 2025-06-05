@@ -33,7 +33,8 @@ export interface PasswordInputProps
   rootProps?: GroupProps
   startElement?: React.ReactNode
   type: string
-  errors: any
+  isInvalid?: boolean;
+  errorText?: string;
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
@@ -46,7 +47,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       visibilityIcon = { on: <FiEye />, off: <FiEyeOff /> },
       startElement,
       type,
-      errors,
+      isInvalid,
+      errorText,
       ...rest
     } = props
 
@@ -60,8 +62,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 
     return (
       <Field
-        invalid={!!errors[type]}
-        errorText={errors[type]?.message}
+        invalid={isInvalid}
+        errorText={errorText}
         alignSelf="start"
       >
         <InputGroup

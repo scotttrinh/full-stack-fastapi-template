@@ -1,7 +1,7 @@
 import { Button, DialogTitle, Text } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 import { FiTrash2 } from "react-icons/fi"
 
 import { ItemsService } from "@/client"
@@ -21,10 +21,12 @@ const DeleteItem = ({ id }: { id: string }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useCustomToast()
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm()
+  const form = useForm({
+    defaultValues: {},
+    onSubmit: async () => {
+      mutation.mutate(id)
+    },
+  })
 
   const deleteItem = async (id: string) => {
     await ItemsService.deleteItem({ id: id })
@@ -44,10 +46,6 @@ const DeleteItem = ({ id }: { id: string }) => {
     },
   })
 
-  const onSubmit = async () => {
-    mutation.mutate(id)
-  }
-
   return (
     <DialogRoot
       size={{ base: "xs", md: "md" }}
@@ -64,7 +62,7 @@ const DeleteItem = ({ id }: { id: string }) => {
       </DialogTrigger>
 
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit}>
           <DialogCloseTrigger />
           <DialogHeader>
             <DialogTitle>Delete Item</DialogTitle>
@@ -81,7 +79,7 @@ const DeleteItem = ({ id }: { id: string }) => {
               <Button
                 variant="subtle"
                 colorPalette="gray"
-                disabled={isSubmitting}
+                disabled={form.state.isSubmitting}
               >
                 Cancel
               </Button>
@@ -90,7 +88,7 @@ const DeleteItem = ({ id }: { id: string }) => {
               variant="solid"
               colorPalette="red"
               type="submit"
-              loading={isSubmitting}
+              loading={form.state.isSubmitting}
             >
               Delete
             </Button>

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 
 import { type UserCreate, UsersService } from "@/client"
 import type { ApiError } from "@/client/core/ApiError"
@@ -36,16 +36,7 @@ const AddUser = () => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast } = useCustomToast()
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    getValues,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<UserCreateForm>({
-    mode: "onBlur",
-    criteriaMode: "all",
+  const form = useForm({
     defaultValues: {
       email: "",
       full_name: "",
@@ -53,15 +44,18 @@ const AddUser = () => {
       confirm_password: "",
       is_superuser: false,
       is_active: false,
+    } as UserCreateForm,
+    onSubmit: (data) => {
+      mutation.mutate(data.value);
     },
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: (data: UserCreate) =>
       UsersService.createUser({ requestBody: data }),
     onSuccess: () => {
       showSuccessToast("User created successfully.")
-      reset()
+      form.reset()
       setIsOpen(false)
     },
     onError: (err: ApiError) => {
@@ -71,10 +65,6 @@ const AddUser = () => {
       queryClient.invalidateQueries({ queryKey: ["users"] })
     },
   })
-
-  const onSubmit: SubmitHandler<UserCreateForm> = (data) => {
-    mutation.mutate(data)
-  }
 
   return (
     <DialogRoot
@@ -90,7 +80,7 @@ const AddUser = () => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add User</DialogTitle>
           </DialogHeader>
@@ -99,105 +89,140 @@ const AddUser = () => {
               Fill in the form below to add a new user to the system.
             </Text>
             <VStack gap={4}>
-              <Field
-                required
-                invalid={!!errors.email}
-                errorText={errors.email?.message}
-                label="Email"
+              <form.Field
+                name="email"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return "Email is required";
+                    if (!emailPattern.value.test(value)) return emailPattern.message;
+                    return undefined;
+                  },
+                }}
               >
-                <Input
-                  id="email"
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: emailPattern,
-                  })}
-                  placeholder="Email"
-                  type="email"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    required
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Email"
+                  >
+                    <Input
+                      id="email"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Email"
+                      type="email"
+                    />
+                  </Field>
+                )}
+              </form.Field>
 
-              <Field
-                invalid={!!errors.full_name}
-                errorText={errors.full_name?.message}
-                label="Full Name"
+              <form.Field
+                name="full_name"
               >
-                <Input
-                  id="name"
-                  {...register("full_name")}
-                  placeholder="Full name"
-                  type="text"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Full Name"
+                  >
+                    <Input
+                      id="name"
+                      value={field.state.value ?? undefined}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Full name"
+                      type="text"
+                    />
+                  </Field>
+                )}
+              </form.Field>
 
-              <Field
-                required
-                invalid={!!errors.password}
-                errorText={errors.password?.message}
-                label="Set Password"
+              <form.Field
+                name="password"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return "Password is required";
+                    if (value.length < 8) return "Password must be at least 8 characters";
+                    return undefined;
+                  },
+                }}
               >
-                <Input
-                  id="password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
-                  })}
-                  placeholder="Password"
-                  type="password"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    required
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Set Password"
+                  >
+                    <Input
+                      id="password"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Password"
+                      type="password"
+                    />
+                  </Field>
+                )}
+              </form.Field>
 
-              <Field
-                required
-                invalid={!!errors.confirm_password}
-                errorText={errors.confirm_password?.message}
-                label="Confirm Password"
+              <form.Field
+                name="confirm_password"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return "Please confirm your password";
+                    if (value !== form.getFieldValue("password")) return "The passwords do not match";
+                    return undefined;
+                  },
+                }}
               >
-                <Input
-                  id="confirm_password"
-                  {...register("confirm_password", {
-                    required: "Please confirm your password",
-                    validate: (value) =>
-                      value === getValues().password ||
-                      "The passwords do not match",
-                  })}
-                  placeholder="Password"
-                  type="password"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    required
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Confirm Password"
+                  >
+                    <Input
+                      id="confirm_password"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Password"
+                      type="password"
+                    />
+                  </Field>
+                )}
+              </form.Field>
             </VStack>
 
             <Flex mt={4} direction="column" gap={4}>
-              <Controller
-                control={control}
+              <form.Field
                 name="is_superuser"
-                render={({ field }) => (
-                  <Field disabled={field.disabled} colorPalette="teal">
+              >
+                {(field) => (
+                  <Field colorPalette="teal">
                     <Checkbox
-                      checked={field.value}
-                      onCheckedChange={({ checked }) => field.onChange(checked)}
+                      checked={field.state.value}
+                      onCheckedChange={({ checked }) => field.handleChange(checked === true)}
                     >
                       Is superuser?
                     </Checkbox>
                   </Field>
                 )}
-              />
-              <Controller
-                control={control}
+              </form.Field>
+              <form.Field
                 name="is_active"
-                render={({ field }) => (
-                  <Field disabled={field.disabled} colorPalette="teal">
+              >
+                {(field) => (
+                  <Field colorPalette="teal">
                     <Checkbox
-                      checked={field.value}
-                      onCheckedChange={({ checked }) => field.onChange(checked)}
+                      checked={field.state.value}
+                      onCheckedChange={({ checked }) => field.handleChange(checked === true)}
                     >
                       Is active?
                     </Checkbox>
                   </Field>
                 )}
-              />
+              </form.Field>
             </Flex>
           </DialogBody>
 
@@ -206,7 +231,7 @@ const AddUser = () => {
               <Button
                 variant="subtle"
                 colorPalette="gray"
-                disabled={isSubmitting}
+                disabled={form.state.isSubmitting}
               >
                 Cancel
               </Button>
@@ -214,8 +239,8 @@ const AddUser = () => {
             <Button
               variant="solid"
               type="submit"
-              disabled={!isValid}
-              loading={isSubmitting}
+              disabled={!form.state.isValid}
+              loading={form.state.isSubmitting}
             >
               Save
             </Button>

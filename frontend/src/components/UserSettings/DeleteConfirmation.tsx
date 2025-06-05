@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Text } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 
 import { type ApiError, UsersService } from "@/client"
 import {
@@ -23,10 +23,11 @@ const DeleteConfirmation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast } = useCustomToast()
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm()
+  const form = useForm({
+    onSubmit: () => {
+      mutation.mutate()
+    }
+  })
   const { logout } = useAuth()
 
   const mutation = useMutation({
@@ -44,10 +45,6 @@ const DeleteConfirmation = () => {
     },
   })
 
-  const onSubmit = async () => {
-    mutation.mutate()
-  }
-
   return (
     <>
       <DialogRoot
@@ -64,7 +61,7 @@ const DeleteConfirmation = () => {
         </DialogTrigger>
 
         <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit}>
             <DialogCloseTrigger />
             <DialogHeader>
               <DialogTitle>Confirmation Required</DialogTitle>
@@ -84,7 +81,7 @@ const DeleteConfirmation = () => {
                   <Button
                     variant="subtle"
                     colorPalette="gray"
-                    disabled={isSubmitting}
+                    disabled={form.state.isSubmitting}
                   >
                     Cancel
                   </Button>
@@ -93,7 +90,7 @@ const DeleteConfirmation = () => {
                   variant="solid"
                   colorPalette="red"
                   type="submit"
-                  loading={isSubmitting}
+                  loading={form.state.isSubmitting}
                 >
                   Delete
                 </Button>

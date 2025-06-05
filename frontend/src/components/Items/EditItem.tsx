@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 import { FaExchangeAlt } from "react-icons/fa"
 
 import { type ApiError, type ItemPublic, ItemsService } from "@/client"
@@ -39,26 +39,22 @@ const EditItem = ({ item }: EditItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast } = useCustomToast()
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ItemUpdateForm>({
-    mode: "onBlur",
-    criteriaMode: "all",
+  const form = useForm({
     defaultValues: {
       ...item,
       description: item.description ?? undefined,
     },
-  })
+    onSubmit: (data) => {
+      mutation.mutate(data.value);
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: (data: ItemUpdateForm) =>
       ItemsService.updateItem({ id: item.id, requestBody: data }),
     onSuccess: () => {
       showSuccessToast("Item updated successfully.")
-      reset()
+      form.reset()
       setIsOpen(false)
     },
     onError: (err: ApiError) => {
@@ -68,10 +64,6 @@ const EditItem = ({ item }: EditItemProps) => {
       queryClient.invalidateQueries({ queryKey: ["items"] })
     },
   })
-
-  const onSubmit: SubmitHandler<ItemUpdateForm> = async (data) => {
-    mutation.mutate(data)
-  }
 
   return (
     <DialogRoot
@@ -87,41 +79,59 @@ const EditItem = ({ item }: EditItemProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Item</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>Update the item details below.</Text>
             <VStack gap={4}>
-              <Field
-                required
-                invalid={!!errors.title}
-                errorText={errors.title?.message}
-                label="Title"
+              <form.Field
+                name="title"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return "Title is required";
+                    return undefined;
+                  },
+                }}
               >
-                <Input
-                  id="title"
-                  {...register("title", {
-                    required: "Title is required",
-                  })}
-                  placeholder="Title"
-                  type="text"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    required
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Title"
+                  >
+                    <Input
+                      id="title"
+                      value={field.state.value ?? undefined}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Title"
+                      type="text"
+                    />
+                  </Field>
+                )}
+              </form.Field>
 
-              <Field
-                invalid={!!errors.description}
-                errorText={errors.description?.message}
-                label="Description"
+              <form.Field
+                name="description"
               >
-                <Input
-                  id="description"
-                  {...register("description")}
-                  placeholder="Description"
-                  type="text"
-                />
-              </Field>
+                {(field) => (
+                  <Field
+                    invalid={!field.state.meta.isValid}
+                    errorText={field.state.meta.errors.join(", ")}
+                    label="Description"
+                  >
+                    <Input
+                      id="description"
+                      value={field.state.value ?? undefined}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Description"
+                      type="text"
+                    />
+                  </Field>
+                )}
+              </form.Field>
             </VStack>
           </DialogBody>
 
@@ -131,12 +141,12 @@ const EditItem = ({ item }: EditItemProps) => {
                 <Button
                   variant="subtle"
                   colorPalette="gray"
-                  disabled={isSubmitting}
+                  disabled={form.state.isSubmitting}
                 >
                   Cancel
                 </Button>
               </DialogActionTrigger>
-              <Button variant="solid" type="submit" loading={isSubmitting}>
+              <Button variant="solid" type="submit" loading={form.state.isSubmitting}>
                 Save
               </Button>
             </ButtonGroup>
