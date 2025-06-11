@@ -1,20 +1,26 @@
 import uuid
 from typing import Any
 
-from sqlmodel import Session, select
+import gel
 
-from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
+from app.models.data import default
 
 
-def create_user(*, session: Session, user_create: UserCreate) -> User:
-    db_obj = User.model_validate(
-        user_create, update={"hashed_password": get_password_hash(user_create.password)}
+async def create_user(*, client: gel.AsyncIOClient, user_create: default.User) -> default.User:
+    await client.query_required_single(
+        """
+        insert User {
+            full_name := <optional str>$full_name,
+            email := <optional str>$email,
+            identity := <ext::auth::Identity><uuid>$identity_id,
+        }
+        """,
+        {
+            "full_name": user_create.full_name,
+            "email": user_create.email,
+            "identity_id": user_create.identity_id,
+        }
     )
-    session.add(db_obj)
-    session.commit()
-    session.refresh(db_obj)
-    return db_obj
 
 
 def update_user(*, session: Session, db_user: User, user_in: UserUpdate) -> Any:
