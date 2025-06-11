@@ -1,7 +1,7 @@
 import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.deps import (
     CurrentUser,
@@ -10,19 +10,18 @@ from app.api.deps import (
 from app.models.user import (
     User,
 )
-from app.services.user import UserServiceDep, make_user_service
+from app.services.user import UserServiceDep
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get(
     "/",
-    dependencies=[Depends(get_current_active_superuser), Depends(make_user_service)],
-    response_model=list[User],
+    dependencies=[Depends(get_current_active_superuser)]
 )
 async def read_users(
     user_service: UserServiceDep, skip: int = 0, limit: int = 100
-) -> Any:
+) -> list[User]:
     """
     Retrieve users.
     """
@@ -34,7 +33,6 @@ async def read_users(
 @router.post(
     "/",
     dependencies=[Depends(get_current_active_superuser)],
-    response_model=User,
 )
 async def create_user(*, user_service: UserServiceDep, user_in: User):
     """
@@ -45,13 +43,16 @@ async def create_user(*, user_service: UserServiceDep, user_in: User):
     return user
 
 
-@router.patch("/me", response_model=User)
+class UserUpdate(User.__variants__.Base):
+    pass
+
+@router.patch("/me")
 async def update_user_me(
     *,
     user_service: UserServiceDep,
-    user_in: User.__variants__.Base,
+    user_in: UserUpdate,
     current_user: CurrentUser,
-) -> Any:
+) -> User:
     """
     Update own user.
     """
@@ -62,18 +63,18 @@ async def update_user_me(
     return current_user
 
 
-@router.get("/me", response_model=User)
-def read_user_me(current_user: CurrentUser) -> Any:
+@router.get("/me")
+def read_user_me(current_user: CurrentUser) -> User:
     """
     Get current user.
     """
     return current_user
 
 
-@router.delete("/me")
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user_me(
     user_service: UserServiceDep, current_user: CurrentUser
-) -> Any:
+) -> None:
     """
     Delete own user.
     """
@@ -84,7 +85,7 @@ async def delete_user_me(
     await user_service.delete(current_user.id)
 
 
-@router.get("/{user_id}", response_model=User)
+@router.get("/{user_id}")
 async def read_user_by_id(
     user_service: UserServiceDep, user_id: uuid.UUID, current_user: CurrentUser
 ) -> Any:
