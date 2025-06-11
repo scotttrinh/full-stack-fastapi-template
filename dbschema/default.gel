@@ -1,0 +1,45 @@
+using extension auth;
+
+module default {
+  single global spoof_user_id: uuid;
+  single global current_user := assert_single((
+    select User
+    filter
+      .identity ?= global ext::auth::ClientTokenIdentity
+      or .id ?= global spoof_user_id
+  ));
+
+  type User {
+    required identity: ext::auth::Identity {
+      constraint exclusive;
+      # When User is deleted, delete the linked Identity
+      on source delete delete target;
+    };
+
+    email: str {
+      constraint exclusive;
+      constraint min_len_value(1);
+      constraint max_len_value(255);
+    };
+    full_name: str {
+      constraint min_len_value(1);
+      constraint max_len_value(255);
+    };
+    required is_superuser: bool { default := false; };
+  };
+
+  type Item {
+    required owner: User {
+      # When User is deleted, delete all Items
+      on target delete delete source;
+    };
+    title: str {
+      constraint min_len_value(1);
+      constraint max_len_value(255);
+    };
+    description: str {
+      constraint min_len_value(1);
+      constraint max_len_value(255);
+    };
+  };
+}

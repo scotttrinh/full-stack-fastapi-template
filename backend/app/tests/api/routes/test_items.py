@@ -1,7 +1,7 @@
 import uuid
 
+import gel
 from fastapi.testclient import TestClient
-from sqlmodel import Session
 
 from app.core.config import settings
 from app.tests.utils.item import create_random_item
@@ -25,7 +25,7 @@ def test_create_item(
 
 
 def test_read_item(
-    client: TestClient, superuser_token_headers: dict[str, str], db: Session
+    client: TestClient, superuser_token_headers: dict[str, str], db: gel.Client
 ) -> None:
     item = create_random_item(db)
     response = client.get(

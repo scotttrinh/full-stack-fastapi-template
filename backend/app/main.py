@@ -1,13 +1,20 @@
+import logging
 import os
+import uuid
 
+import fastapi
+import gel.auth
+import gel.fastapi
 import sentry_sdk
-from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 
 from app.api.main import api_router
 from app.core.config import settings
+
+logging.basicConfig(level=logging.INFO)
+logging.getLogger("gel.auth").setLevel(logging.DEBUG)
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -16,14 +23,39 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     return route.name
 
 
-if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
-    sentry_sdk.init(dsn=str(settings.SENTRY_DSN), enable_tracing=True)
-
-app = FastAPI(
+app = fastapi.FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
 )
+
+gel_auth = gel.fastapi.gelify(app).auth
+
+
+@app.get("/error")
+def error_page(error: str):
+    return error
+
+
+@gel_auth.on_new_identity
+async def on_new_identity(
+    result: tuple[uuid.UUID, gel.auth.TokenData | None], client: gel.fastapi.Client
+) -> fastapi.Response | None:
+    await client.query_required_single(
+        """
+        with
+          IDENTITY := <ext::auth::Identity><uuid>$identity_id
+        insert User {
+          identity := IDENTITY,
+          email := IDENTITY.<[identity is ext::auth::EmailFactor].email,
+        }
+        """,
+        identity_id=result[0],
+    )
+
+
+if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
+    sentry_sdk.init(dsn=str(settings.SENTRY_DSN), enable_tracing=True)
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -43,6 +75,7 @@ app.mount(
     ),
     name="frontend",
 )
+
 
 @app.get("/{full_path:path}", include_in_schema=False)
 async def frontend_router_redirect():
