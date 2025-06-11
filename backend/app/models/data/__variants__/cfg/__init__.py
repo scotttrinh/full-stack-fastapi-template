@@ -20,6 +20,7 @@ from gel.models.pydantic import (
     InfixOp,
     LazyClassProperty,
     MultiLink,
+    MultiProperty,
     OptionalLink,
     OptionalProperty,
     PathAlias,
@@ -367,7 +368,7 @@ class __AbstractConfig_typeof__(__ConfigObject_typeof__):
         session_idle_transaction_timeout = TypeAliasType('session_idle_transaction_timeout', 'std.duration')
         query_execution_timeout = TypeAliasType('query_execution_timeout', 'std.duration')
         listen_port = TypeAliasType('listen_port', 'std.int32')
-        listen_addresses = TypeAliasType('listen_addresses', 'list[str]')
+        listen_addresses = TypeAliasType('listen_addresses', 'MultiProperty[std.str, str]')
         current_email_provider_name = TypeAliasType('current_email_provider_name', 'OptionalProperty[std.str, str]')
         allow_dml_in_functions = TypeAliasType('allow_dml_in_functions', 'OptionalProperty[std.bool, bool]')
         allow_bare_ddl = TypeAliasType('allow_bare_ddl', 'OptionalProperty[AllowBareDDL, str]')
@@ -377,7 +378,7 @@ class __AbstractConfig_typeof__(__ConfigObject_typeof__):
         allow_user_specified_id = TypeAliasType('allow_user_specified_id', 'OptionalProperty[std.bool, bool]')
         simple_scoping = TypeAliasType('simple_scoping', 'OptionalProperty[std.bool, bool]')
         warn_old_scoping = TypeAliasType('warn_old_scoping', 'OptionalProperty[std.bool, bool]')
-        cors_allow_origins = TypeAliasType('cors_allow_origins', 'list[str]')
+        cors_allow_origins = TypeAliasType('cors_allow_origins', 'MultiProperty[std.str, str]')
         auto_rebuild_query_cache = TypeAliasType('auto_rebuild_query_cache', 'OptionalProperty[std.bool, bool]')
         auto_rebuild_query_cache_timeout = TypeAliasType('auto_rebuild_query_cache_timeout', 'OptionalProperty[std.duration, timedelta]')
         query_cache_mode = TypeAliasType('query_cache_mode', 'OptionalProperty[QueryCacheMode, str]')
@@ -863,7 +864,7 @@ class __Auth_typeof__(__ConfigObject_typeof__):
 
     class __typeof__(__ConfigObject_typeof__.__typeof__):
         priority = TypeAliasType('priority', 'std.int64')
-        user = TypeAliasType('user', 'list[str]')
+        user = TypeAliasType('user', 'MultiProperty[std.str, str]')
         comment = TypeAliasType('comment', 'OptionalProperty[std.str, str]')
         method = TypeAliasType('method', 'OptionalLink[AuthMethod]')
 
@@ -1040,7 +1041,7 @@ class __AuthMethod_typeof__(__ConfigObject_typeof__):
             )
 
     class __typeof__(__ConfigObject_typeof__.__typeof__):
-        transports = TypeAliasType('transports', 'list[str]')
+        transports = TypeAliasType('transports', 'MultiProperty[ConnectionTransport, str]')
 
 
 class AuthMethod(
@@ -1342,7 +1343,7 @@ class __ExtensionConfig_typeof__(__ConfigObject_typeof__):
             )
 
     class __typeof__(__ConfigObject_typeof__.__typeof__):
-        cfg = TypeAliasType('cfg', 'OptionalLink[AbstractConfig]')
+        cfg = TypeAliasType('cfg', 'AbstractConfig')
 
 
 class ExtensionConfig(
@@ -2911,7 +2912,7 @@ class __JWT_typeof__(__AuthMethod_typeof__):
             )
 
     class __typeof__(__AuthMethod_typeof__.__typeof__):
-        transports = TypeAliasType('transports', 'list[str]')
+        transports = TypeAliasType('transports', 'MultiProperty[ConnectionTransport, str]')
 
 
 class JWT(
@@ -3057,7 +3058,7 @@ class __Password_typeof__(__AuthMethod_typeof__):
             )
 
     class __typeof__(__AuthMethod_typeof__.__typeof__):
-        transports = TypeAliasType('transports', 'list[str]')
+        transports = TypeAliasType('transports', 'MultiProperty[ConnectionTransport, str]')
 
 
 class Password(
@@ -3203,7 +3204,7 @@ class __SCRAM_typeof__(__AuthMethod_typeof__):
             )
 
     class __typeof__(__AuthMethod_typeof__.__typeof__):
-        transports = TypeAliasType('transports', 'list[str]')
+        transports = TypeAliasType('transports', 'MultiProperty[ConnectionTransport, str]')
 
 
 class SCRAM(
@@ -3495,7 +3496,7 @@ class __mTLS_typeof__(__AuthMethod_typeof__):
             )
 
     class __typeof__(__AuthMethod_typeof__.__typeof__):
-        transports = TypeAliasType('transports', 'list[str]')
+        transports = TypeAliasType('transports', 'MultiProperty[ConnectionTransport, str]')
 
 
 class mTLS(

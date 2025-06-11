@@ -13,8 +13,10 @@ from gel.models.pydantic import (
     AnnotatedExpr,
     FuncCall,
     MultiLink,
+    MultiProperty,
     OptionalLink,
     OptionalProperty,
+    RequiredMultiLink,
     SchemaPath,
     Unspecified,
     UnspecifiedType
@@ -51,7 +53,7 @@ class AuthConfig(base.AuthConfig, cfg.ExtensionConfig):
     brand_color: OptionalProperty[std.str, str]
     auth_signing_key: OptionalProperty[std.str, str]
     token_time_to_live: OptionalProperty[std.duration, timedelta]
-    allowed_redirect_urls: list[str]
+    allowed_redirect_urls: MultiProperty[std.str, str]
     providers: MultiLink[ProviderConfig]
     ui: OptionalLink[UIConfig]
     webhooks: MultiLink[WebhookConfig]
@@ -79,14 +81,14 @@ class UIConfig(base.UIConfig, cfg.ConfigObject):
 #
 class WebhookConfig(base.WebhookConfig, cfg.ConfigObject):
     url: std.str
-    events: list[builtins.str]
+    events: MultiProperty[WebhookEvent, builtins.str]
     signing_secret_key: OptionalProperty[std.str, str]
 
 #
 # type ext::auth::Factor
 #
 class Factor(base.Factor, Auditable):
-    identity: OptionalLink[LocalIdentity]
+    identity: LocalIdentity
 
 #
 # type ext::auth::Identity
@@ -113,7 +115,7 @@ class WebAuthnAuthenticationChallenge(
     Auditable,
 ):
     challenge: std.bytes
-    factors: MultiLink[WebAuthnFactor]
+    factors: RequiredMultiLink[WebAuthnFactor]
 
 #
 # type ext::auth::WebAuthnRegistrationChallenge

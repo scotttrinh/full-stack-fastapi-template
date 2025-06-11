@@ -13,7 +13,6 @@ from gel.models.pydantic import (
     EmptyDirection,
     ExprCompatible,
     LazyClassProperty,
-    OptionalLink,
     OptionalProperty,
     PathAlias,
     PyConstType,
@@ -22,6 +21,7 @@ from gel.models.pydantic import (
     UnspecifiedType
 )
 
+import builtins as __builtins_1__
 import builtins as builtins
 import builtins as __builtins__
 from builtins import tuple, type
@@ -62,7 +62,7 @@ class __Item_typeof__(std.__Object_typeof__):
     class __typeof__(std.__Object_typeof__.__typeof__):
         description = TypeAliasType('description', 'OptionalProperty[std.str, str]')
         title = TypeAliasType('title', 'OptionalProperty[std.str, str]')
-        owner = TypeAliasType('owner', 'OptionalLink[User]')
+        owner = TypeAliasType('owner', 'User')
 
 
 class Item(
@@ -245,7 +245,8 @@ class __User_typeof__(std.__Object_typeof__):
     class __typeof__(std.__Object_typeof__.__typeof__):
         email = TypeAliasType('email', 'OptionalProperty[std.str, str]')
         full_name = TypeAliasType('full_name', 'OptionalProperty[std.str, str]')
-        identity = TypeAliasType('identity', 'OptionalLink[ext_auth.Identity]')
+        is_superuser = TypeAliasType('is_superuser', 'std.bool')
+        identity = TypeAliasType('identity', 'ext_auth.Identity')
 
 
 class User(
@@ -260,6 +261,7 @@ class User(
             *,
             email: str | None = None,
             full_name: str | None = None,
+            is_superuser: bool,
             identity: ext_auth.Identity | None = None,
         ) -> None:
             """Create a new default::User instance from keyword arguments.
@@ -275,6 +277,7 @@ class User(
             *,
             email: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
             full_name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
             identity: type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update default::User instances in the database.
@@ -289,6 +292,7 @@ class User(
             id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
             email: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
             full_name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
+            is_superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
             identity: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
@@ -304,6 +308,7 @@ class User(
             id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
             email: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
             full_name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
             identity: type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch default::User instances from the database.
@@ -318,6 +323,7 @@ class User(
             id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
             email: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
             full_name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            is_superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
@@ -332,6 +338,7 @@ class User(
                     *,
                     email: str | None = None,
                     full_name: str | None = None,
+                    is_superuser: bool,
                     identity: ext_auth.Identity | None = None,
                 ) -> None:
                     """Create a new default::User instance from keyword arguments.
@@ -347,6 +354,7 @@ class User(
                     *,
                     email: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
                     full_name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
                     identity: type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update default::User instances in the database.
@@ -361,6 +369,7 @@ class User(
                     id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
                     email: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
                     full_name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
+                    is_superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
                     identity: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
@@ -376,6 +385,7 @@ class User(
                     id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
                     email: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
                     full_name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
                     identity: type[__ext_auth__.Identity] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch default::User instances from the database.
@@ -390,6 +400,7 @@ class User(
                     id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
                     email: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
                     full_name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    is_superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
@@ -406,4 +417,4 @@ if not TYPE_CHECKING:
 
 from .ext import auth as ext_auth  # noqa: E402 F403
 
-from builtins import str  # noqa: E402 F403
+from builtins import bool, str  # noqa: E402 F403

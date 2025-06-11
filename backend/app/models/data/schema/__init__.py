@@ -14,6 +14,7 @@ from gel.models.pydantic import (
     ComputedProperty,
     MultiLink,
     MultiLinkWithProps,
+    MultiProperty,
     OptionalLink,
     OptionalProperty
 )
@@ -37,7 +38,7 @@ class Object(base.Object):
 #
 class TupleElement(base.TupleElement):
     name: OptionalProperty[std.str, str]
-    type: OptionalLink[Type]
+    type: Type
 
 #
 # type schema::AnnotationSubject
@@ -66,7 +67,7 @@ class Parameter(base.Parameter, Object):
     kind: base.ParameterKind
     num: std.int64
     default: OptionalProperty[std.str, str]
-    type: OptionalLink[Type]
+    type: Type
 
 #
 # type schema::Source
@@ -107,7 +108,7 @@ class CallableObject(base.CallableObject, AnnotationSubject):
 # type schema::Extension
 #
 class Extension(base.Extension, AnnotationSubject, Object):
-    package: OptionalLink[sys.ExtensionPackage]
+    package: sys.ExtensionPackage
 
 #
 # type schema::Global
@@ -180,12 +181,12 @@ class Operator(base.Operator, CallableObject, VolatilitySubject):
 # type schema::AccessPolicy
 #
 class AccessPolicy(base.AccessPolicy, InheritingObject, AnnotationSubject):
-    access_kinds: list[builtins.str]
+    access_kinds: MultiProperty[base.AccessKind, builtins.str]
     condition: OptionalProperty[std.str, str]
     action: base.AccessPolicyAction
     expr: OptionalProperty[std.str, str]
     errmessage: OptionalProperty[std.str, str]
-    subject: OptionalLink[ObjectType]
+    subject: ObjectType
 
 #
 # type schema::Annotation
@@ -233,18 +234,18 @@ class Index(base.Index, InheritingObject, AnnotationSubject):
 class Rewrite(base.Rewrite, InheritingObject, AnnotationSubject):
     kind: base.TriggerKind
     expr: std.str
-    subject: OptionalLink[Pointer]
+    subject: Pointer
 
 #
 # type schema::Trigger
 #
 class Trigger(base.Trigger, InheritingObject, AnnotationSubject):
     timing: base.TriggerTiming
-    kinds: list[builtins.str]
+    kinds: MultiProperty[base.TriggerKind, builtins.str]
     scope: base.TriggerScope
     expr: OptionalProperty[std.str, str]
     condition: OptionalProperty[std.str, str]
-    subject: OptionalLink[ObjectType]
+    subject: ObjectType
 
 #
 # type schema::PrimitiveType
@@ -334,19 +335,19 @@ class Property(base.Property, Pointer):
 #
 class Array(base.Array, CollectionType):
     dimensions: OptionalProperty[pydantic.Array[std.int16], list[int]]
-    element_type: OptionalLink[Type]
+    element_type: Type
 
 #
 # type schema::MultiRange
 #
 class MultiRange(base.MultiRange, CollectionType):
-    element_type: OptionalLink[Type]
+    element_type: Type
 
 #
 # type schema::Range
 #
 class Range(base.Range, CollectionType):
-    element_type: OptionalLink[Type]
+    element_type: Type
 
 #
 # type schema::Tuple

@@ -23,7 +23,6 @@ from gel.models.pydantic import (
     InfixOp,
     LazyClassProperty,
     LinkClassNamespace,
-    OptionalLink,
     PathAlias,
     PrefixOp,
     PyConstType,
@@ -3137,7 +3136,7 @@ class __BaseObject_typeof__(GelTypeMetadata):
 
     class __typeof__:
         id = TypeAliasType('id', 'uuid')
-        __type__ = TypeAliasType('__type__', 'OptionalLink[__schema__.ObjectType]')
+        __type__ = TypeAliasType('__type__', '__schema__.ObjectType')
 
 
 class __BaseObject_ops__(GelModelMeta):

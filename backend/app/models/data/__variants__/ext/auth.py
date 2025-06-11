@@ -15,10 +15,12 @@ from gel.models.pydantic import (
     ExprCompatible,
     LazyClassProperty,
     MultiLink,
+    MultiProperty,
     OptionalLink,
     OptionalProperty,
     PathAlias,
     PyConstType,
+    RequiredMultiLink,
     SchemaPath,
     Unspecified,
     UnspecifiedType
@@ -266,7 +268,7 @@ class __AuthConfig_typeof__(cfg.__ExtensionConfig_typeof__):
         brand_color = TypeAliasType('brand_color', 'OptionalProperty[std.str, str]')
         auth_signing_key = TypeAliasType('auth_signing_key', 'OptionalProperty[std.str, str]')
         token_time_to_live = TypeAliasType('token_time_to_live', 'OptionalProperty[std.duration, timedelta]')
-        allowed_redirect_urls = TypeAliasType('allowed_redirect_urls', 'list[str]')
+        allowed_redirect_urls = TypeAliasType('allowed_redirect_urls', 'MultiProperty[std.str, str]')
         providers = TypeAliasType('providers', 'MultiLink[ProviderConfig]')
         ui = TypeAliasType('ui', 'OptionalLink[UIConfig]')
         webhooks = TypeAliasType('webhooks', 'MultiLink[WebhookConfig]')
@@ -901,7 +903,7 @@ class __WebhookConfig_typeof__(cfg.__ConfigObject_typeof__):
 
     class __typeof__(cfg.__ConfigObject_typeof__.__typeof__):
         url = TypeAliasType('url', 'std.str')
-        events = TypeAliasType('events', 'list[__builtins__.str]')
+        events = TypeAliasType('events', 'MultiProperty[WebhookEvent, __builtins__.str]')
         signing_secret_key = TypeAliasType('signing_secret_key', 'OptionalProperty[std.str, str]')
 
 
@@ -1086,7 +1088,7 @@ class __Factor_typeof__(__Auditable_typeof__):
             )
 
     class __typeof__(__Auditable_typeof__.__typeof__):
-        identity = TypeAliasType('identity', 'OptionalLink[LocalIdentity]')
+        identity = TypeAliasType('identity', 'LocalIdentity')
 
 
 class Factor(
@@ -1681,7 +1683,7 @@ class __WebAuthnAuthenticationChallenge_typeof__(__Auditable_typeof__):
 
     class __typeof__(__Auditable_typeof__.__typeof__):
         challenge = TypeAliasType('challenge', 'std.bytes')
-        factors = TypeAliasType('factors', 'MultiLink[WebAuthnFactor]')
+        factors = TypeAliasType('factors', 'RequiredMultiLink[WebAuthnFactor]')
 
 
 class WebAuthnAuthenticationChallenge(

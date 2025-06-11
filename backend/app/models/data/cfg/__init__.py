@@ -14,6 +14,7 @@ from gel.models.pydantic import (
     ComputedMultiLink,
     FuncCall,
     MultiLink,
+    MultiProperty,
     OptionalLink,
     OptionalProperty,
     SchemaPath,
@@ -51,7 +52,7 @@ class AbstractConfig(base.AbstractConfig, ConfigObject):
     session_idle_transaction_timeout: std.duration
     query_execution_timeout: std.duration
     listen_port: std.int32
-    listen_addresses: list[str]
+    listen_addresses: MultiProperty[std.str, str]
     current_email_provider_name: OptionalProperty[std.str, str]
     allow_dml_in_functions: OptionalProperty[std.bool, bool]
     allow_bare_ddl: OptionalProperty[base.AllowBareDDL, str]
@@ -61,7 +62,7 @@ class AbstractConfig(base.AbstractConfig, ConfigObject):
     allow_user_specified_id: OptionalProperty[std.bool, bool]
     simple_scoping: OptionalProperty[std.bool, bool]
     warn_old_scoping: OptionalProperty[std.bool, bool]
-    cors_allow_origins: list[str]
+    cors_allow_origins: MultiProperty[std.str, str]
     auto_rebuild_query_cache: OptionalProperty[std.bool, bool]
     auto_rebuild_query_cache_timeout: OptionalProperty[std.duration, timedelta]
     query_cache_mode: OptionalProperty[base.QueryCacheMode, str]
@@ -84,7 +85,7 @@ class AbstractConfig(base.AbstractConfig, ConfigObject):
 #
 class Auth(base.Auth, ConfigObject):
     priority: std.int64
-    user: list[str]
+    user: MultiProperty[std.str, str]
     comment: OptionalProperty[std.str, str]
     method: OptionalLink[AuthMethod]
 
@@ -92,7 +93,7 @@ class Auth(base.Auth, ConfigObject):
 # type cfg::AuthMethod
 #
 class AuthMethod(base.AuthMethod, ConfigObject):
-    transports: list[str]
+    transports: MultiProperty[base.ConnectionTransport, str]
 
 #
 # type cfg::EmailProviderConfig
@@ -104,7 +105,7 @@ class EmailProviderConfig(base.EmailProviderConfig, ConfigObject):
 # type cfg::ExtensionConfig
 #
 class ExtensionConfig(base.ExtensionConfig, ConfigObject):
-    cfg: OptionalLink[AbstractConfig]
+    cfg: AbstractConfig
 
 #
 # type cfg::Config
@@ -131,19 +132,19 @@ class InstanceConfig(base.InstanceConfig, AbstractConfig):
 # type cfg::JWT
 #
 class JWT(base.JWT, AuthMethod):
-    transports: list[str]
+    transports: MultiProperty[base.ConnectionTransport, str]
 
 #
 # type cfg::Password
 #
 class Password(base.Password, AuthMethod):
-    transports: list[str]
+    transports: MultiProperty[base.ConnectionTransport, str]
 
 #
 # type cfg::SCRAM
 #
 class SCRAM(base.SCRAM, AuthMethod):
-    transports: list[str]
+    transports: MultiProperty[base.ConnectionTransport, str]
 
 #
 # type cfg::Trust
@@ -156,7 +157,7 @@ class Trust(base.Trust, AuthMethod):
 # type cfg::mTLS
 #
 class mTLS(base.mTLS, AuthMethod):
-    transports: list[str]
+    transports: MultiProperty[base.ConnectionTransport, str]
 
 #
 # type cfg::SMTPProviderConfig

@@ -20,6 +20,7 @@ from gel.models.pydantic import (
     LazyClassProperty,
     MultiLink,
     MultiLinkWithProps,
+    MultiProperty,
     OptionalComputedProperty,
     OptionalLink,
     OptionalProperty,
@@ -358,7 +359,7 @@ class __TupleElement_typeof__(std.__BaseObject_typeof__):
 
     class __typeof__(std.__BaseObject_typeof__.__typeof__):
         name = TypeAliasType('name', 'OptionalProperty[std.str, str]')
-        type = TypeAliasType('type', 'OptionalLink[Type]')
+        type = TypeAliasType('type', 'Type')
 
 
 class TupleElement(
@@ -713,6 +714,7 @@ class AnnotationSubject(
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     value: OptionalProperty[__std__.str, __builtins__.str]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -750,40 +752,16 @@ class AnnotationSubject(
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         value: OptionalProperty[std.str, __builtins__.str]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Annotation,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                        value: __builtins__.str | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                            value=value,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Annotation,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                        value: __builtins__.str | None = None,
-                    ) -> Self:
-                        return cls(
-                            obj,
-                            owned=owned,
-                            is_owned=is_owned,
-                            value=value,
-                        )
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 AnnotationSubject__annotations.__name__ = 'annotations'
                 AnnotationSubject__annotations.__qualname__ = 'AnnotationSubject.annotations'
@@ -1214,7 +1192,7 @@ class __Parameter_typeof__(__Object_typeof__):
         kind = TypeAliasType('kind', 'ParameterKind')
         num = TypeAliasType('num', 'std.int64')
         default = TypeAliasType('default', 'OptionalProperty[std.str, str]')
-        type = TypeAliasType('type', 'OptionalLink[Type]')
+        type = TypeAliasType('type', 'Type')
 
 
 class Parameter(
@@ -1680,6 +1658,7 @@ class Source(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -1707,6 +1686,7 @@ class Source(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -1741,32 +1721,16 @@ class Source(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Pointer,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Pointer,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Source__pointers.__name__ = 'pointers'
                 Source__pointers.__qualname__ = 'Source.pointers'
@@ -1782,32 +1746,16 @@ class Source(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Index,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Index,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Source__indexes.__name__ = 'indexes'
                 Source__indexes.__qualname__ = 'Source.indexes'
@@ -2681,6 +2629,7 @@ class CallableObject(
                 """link schema::CallableObject.params: schema::Parameter"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -2712,27 +2661,16 @@ class CallableObject(
                     """link schema::CallableObject.params: schema::Parameter"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 CallableObject__params.__name__ = 'params'
                 CallableObject__params.__qualname__ = 'CallableObject.params'
@@ -2771,7 +2709,7 @@ class __Extension_typeof__(__AnnotationSubject_typeof__, __Object_typeof__):
         __AnnotationSubject_typeof__.__typeof__,
         __Object_typeof__.__typeof__,
     ):
-        package = TypeAliasType('package', 'OptionalLink[sys.ExtensionPackage]')
+        package = TypeAliasType('package', 'sys.ExtensionPackage')
 
 
 class Extension(
@@ -3929,6 +3867,7 @@ class InheritingObject(
                 """link schema::InheritingObject.bases: schema::InheritingObject"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -3956,6 +3895,7 @@ class InheritingObject(
                 """link schema::InheritingObject.ancestors: schema::InheritingObject"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -3987,27 +3927,16 @@ class InheritingObject(
                     """link schema::InheritingObject.bases: schema::InheritingObject"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.InheritingObject,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.InheritingObject,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 InheritingObject__bases.__name__ = 'bases'
                 InheritingObject__bases.__qualname__ = 'InheritingObject.bases'
@@ -4022,27 +3951,16 @@ class InheritingObject(
                     """link schema::InheritingObject.ancestors: schema::InheritingObject"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.InheritingObject,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.InheritingObject,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 InheritingObject__ancestors.__name__ = 'ancestors'
                 InheritingObject__ancestors.__qualname__ = 'InheritingObject.ancestors'
@@ -4865,6 +4783,7 @@ class Function(
                 """link schema::Function.used_globals: schema::Global"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -4896,27 +4815,16 @@ class Function(
                     """link schema::Function.used_globals: schema::Global"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Global,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Global,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Function__used_globals.__name__ = 'used_globals'
                 Function__used_globals.__qualname__ = 'Function.used_globals'
@@ -5228,12 +5136,12 @@ class __AccessPolicy_typeof__(
         __InheritingObject_typeof__.__typeof__,
         __AnnotationSubject_typeof__.__typeof__,
     ):
-        access_kinds = TypeAliasType('access_kinds', 'list[__builtins__.str]')
+        access_kinds = TypeAliasType('access_kinds', 'MultiProperty[AccessKind, __builtins__.str]')
         condition = TypeAliasType('condition', 'OptionalProperty[std.str, str]')
         action = TypeAliasType('action', 'AccessPolicyAction')
         expr = TypeAliasType('expr', 'OptionalProperty[std.str, str]')
         errmessage = TypeAliasType('errmessage', 'OptionalProperty[std.str, str]')
-        subject = TypeAliasType('subject', 'OptionalLink[ObjectType]')
+        subject = TypeAliasType('subject', 'ObjectType')
 
 
 class AccessPolicy(
@@ -6056,6 +5964,7 @@ class ConsistencySubject(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -6090,32 +5999,16 @@ class ConsistencySubject(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Constraint,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Constraint,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 ConsistencySubject__constraints.__name__ = 'constraints'
                 ConsistencySubject__constraints.__qualname__ = 'ConsistencySubject.constraints'
@@ -6488,6 +6381,7 @@ class Constraint(
                 class __lprops__(CallableObject.__links__.params.__lprops__):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
                     value: OptionalProperty[__std__.str, __builtins__.str]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -6525,32 +6419,16 @@ class Constraint(
                     ):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
                         value: OptionalProperty[std.str, __builtins__.str]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                        value: __builtins__.str | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            index=index,
-                            value=value,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                        value: __builtins__.str | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index, value=value)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Constraint__params.__name__ = 'params'
                 Constraint__params.__qualname__ = 'Constraint.params'
@@ -6878,6 +6756,7 @@ class Index(
                 """link schema::Index.params: schema::Parameter"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -6909,27 +6788,16 @@ class Index(
                     """link schema::Index.params: schema::Parameter"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Parameter,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Index__params.__name__ = 'params'
                 Index__params.__qualname__ = 'Index.params'
@@ -6973,7 +6841,7 @@ class __Rewrite_typeof__(
     ):
         kind = TypeAliasType('kind', 'TriggerKind')
         expr = TypeAliasType('expr', 'std.str')
-        subject = TypeAliasType('subject', 'OptionalLink[Pointer]')
+        subject = TypeAliasType('subject', 'Pointer')
 
 
 class Rewrite(
@@ -7260,11 +7128,11 @@ class __Trigger_typeof__(
         __AnnotationSubject_typeof__.__typeof__,
     ):
         timing = TypeAliasType('timing', 'TriggerTiming')
-        kinds = TypeAliasType('kinds', 'list[__builtins__.str]')
+        kinds = TypeAliasType('kinds', 'MultiProperty[TriggerKind, __builtins__.str]')
         scope = TypeAliasType('scope', 'TriggerScope')
         expr = TypeAliasType('expr', 'OptionalProperty[std.str, str]')
         condition = TypeAliasType('condition', 'OptionalProperty[std.str, str]')
-        subject = TypeAliasType('subject', 'OptionalLink[ObjectType]')
+        subject = TypeAliasType('subject', 'ObjectType')
 
 
 class Trigger(
@@ -8459,6 +8327,7 @@ class ObjectType(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -8486,6 +8355,7 @@ class ObjectType(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -8520,32 +8390,16 @@ class ObjectType(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.AccessPolicy,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.AccessPolicy,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 ObjectType__access_policies.__name__ = 'access_policies'
                 ObjectType__access_policies.__qualname__ = 'ObjectType.access_policies'
@@ -8561,32 +8415,16 @@ class ObjectType(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Trigger,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Trigger,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 ObjectType__triggers.__name__ = 'triggers'
                 ObjectType__triggers.__qualname__ = 'ObjectType.triggers'
@@ -8954,6 +8792,7 @@ class Pointer(
                 class __lprops__(GelLinkModel):
                     owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
                     is_owned: OptionalProperty[__std__.bool, __builtins_1__.bool]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -8988,32 +8827,16 @@ class Pointer(
                     class __lprops__(GelLinkModel):
                         owned: OptionalProperty[std.bool, __builtins_1__.bool]
                         is_owned: OptionalProperty[std.bool, __builtins_1__.bool]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.Rewrite,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(
-                            owned=owned,
-                            is_owned=is_owned,
-                        )
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.Rewrite,
-                        /,
-                        *,
-                        owned: __builtins_1__.bool | None = None,
-                        is_owned: __builtins_1__.bool | None = None,
-                    ) -> Self:
-                        return cls(obj, owned=owned, is_owned=is_owned)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Pointer__rewrites.__name__ = 'rewrites'
                 Pointer__rewrites.__qualname__ = 'Pointer.rewrites'
@@ -10330,7 +10153,7 @@ class __Array_typeof__(__CollectionType_typeof__):
 
     class __typeof__(__CollectionType_typeof__.__typeof__):
         dimensions = TypeAliasType('dimensions', 'OptionalProperty[pydantic.Array[std.int16], list[int]]')
-        element_type = TypeAliasType('element_type', 'OptionalLink[Type]')
+        element_type = TypeAliasType('element_type', 'Type')
 
 
 class Array(
@@ -10585,7 +10408,7 @@ class __MultiRange_typeof__(__CollectionType_typeof__):
             )
 
     class __typeof__(__CollectionType_typeof__.__typeof__):
-        element_type = TypeAliasType('element_type', 'OptionalLink[Type]')
+        element_type = TypeAliasType('element_type', 'Type')
 
 
 class MultiRange(
@@ -10832,7 +10655,7 @@ class __Range_typeof__(__CollectionType_typeof__):
             )
 
     class __typeof__(__CollectionType_typeof__.__typeof__):
-        element_type = TypeAliasType('element_type', 'OptionalLink[Type]')
+        element_type = TypeAliasType('element_type', 'Type')
 
 
 class Range(
@@ -11316,6 +11139,7 @@ class Tuple(
                 """link schema::Tuple.element_types: schema::TupleElement"""
                 class __lprops__(GelLinkModel):
                     index: OptionalProperty[__std__.int64, __builtins_2__.int]
+                __linkprops__: __lprops__
 
                 def __init__(
                     self,
@@ -11347,27 +11171,16 @@ class Tuple(
                     """link schema::Tuple.element_types: schema::TupleElement"""
                     class __lprops__(GelLinkModel):
                         index: OptionalProperty[std.int64, __builtins_2__.int]
+                    __linkprops__: __lprops__
 
-                    def __init__(
-                        self,
-                        obj: __schema__.TupleElement,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> None:
+                    def __init__(self, obj, /, **link_props) -> None:
                         ProxyModel.__init__(self, obj)
-                        lprops = self.__class__.__lprops__(index=index)
+                        lprops = self.__class__.__lprops__(**link_props)
                         object.__setattr__(self, "__linkprops__", lprops)
 
                     @classmethod
-                    def link(
-                        cls,
-                        obj: __schema__.TupleElement,
-                        /,
-                        *,
-                        index: __builtins_2__.int | None = None,
-                    ) -> Self:
-                        return cls(obj, index=index)
+                    def link(cls, obj, /, **link_props) -> Self:
+                        return cls(obj, **link_props)
 
                 Tuple__element_types.__name__ = 'element_types'
                 Tuple__element_types.__qualname__ = 'Tuple.element_types'
