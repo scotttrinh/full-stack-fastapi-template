@@ -7,7 +7,6 @@ from fastapi import Depends
 
 from app.main import gel_auth
 from app.models.data import User
-from app.models.data.std import uuid
 
 
 class UserService:
@@ -26,24 +25,16 @@ class UserService:
         return user_update
 
     async def list_all(self, skip: int = 0, limit: int = 100) -> list[User]:
-        return await self.client.query(
-            User.select().offset(skip).limit(limit)
-        )
+        return await self.client.query(User.select().offset(skip).limit(limit))
 
-    async def get_by_id(self, user_id: uuid) -> User | None:
-        return await self.client.query_single(
-            User.select().filter(lambda user: user.id == user_id)
-        )
+    async def get_by_id(self, user_id: uuid.UUID) -> User | None:
+        return await self.client.query_single(User.select().filter(id=user_id))
 
     async def get_by_email(self, email: str) -> User | None:
-        return await self.client.query_single(
-            User.select().filter(lambda user: user.email == email)
-        )
+        return await self.client.query_single(User.select().filter(email=email))
 
-    async def delete(self, user_id: uuid) -> None:
-        await self.client.query_single(
-            User.filter(lambda user: user.id == user_id).delete()
-        )
+    async def delete(self, user_id: uuid.UUID) -> None:
+        await self.client.query_single(User.filter(id=user_id).delete())
 
     async def get_current_user(self) -> User | None:
         result = await self.client.query_single(
