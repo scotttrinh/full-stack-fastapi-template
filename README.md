@@ -1,197 +1,189 @@
 # Full Stack FastAPI Template
 
-## Technology Stack and Features
+A modern, production-ready full-stack template built with FastAPI, Gel, and React.
 
-- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
-    - 🧰 [Gel](https://geldata.com) for a full-featured next generation data layer powered by Postgres.
-    - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
-- 🚀 [React](https://react.dev) for the frontend.
-    - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
-    - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
-    - 🤖 An automatically generated frontend client.
-    - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
-    - 🦇 Dark mode support.
-- ✅ Tests with [Pytest](https://pytest.org).
-- 🚢 Simplified deployment which serves the React frontend application directly from your FastAPI server.
-- 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+## 🚀 Technology Stack and Features
 
-## How To Use It
+### Backend
+- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) - Modern, fast Python web framework
+- 🧰 [**Gel**](https://geldata.com) - Next-generation data layer powered by PostgreSQL
+  - 🔐 Built-in authentication with `ext::auth`
+  - 🛡️ Schema-level access policies for authorization
+  - 🎯 Type-safe database queries with auto-generated Python client
+- 🔍 [**Pydantic**](https://docs.pydantic.dev) - Data validation and settings management
+- ✅ [**Pytest**](https://pytest.org) - Testing framework
 
-You can **just fork or clone** this repository and use it as is.
+### Frontend
+- ⚛️ [**React**](https://react.dev) - Modern frontend framework
+- 🏗️ [**TypeScript**](https://www.typescriptlang.org/) - Type safety throughout
+- ⚡ [**Vite**](https://vitejs.dev/) - Lightning-fast build tool
+- 🎨 [**Chakra UI**](https://chakra-ui.com) - Simple, modular component library
+- 📋 [**TanStack Form**](https://tanstack.com/form) - Powerful form management
+- 🤖 Auto-generated API client from OpenAPI schema
+- 🧪 [**Playwright**](https://playwright.dev) - End-to-end testing
+- 🦇 Dark mode support
 
-✨ It just works. ✨
+### Development & Deployment
+- 🚢 **Simplified deployment** - React app served directly from FastAPI
+- 🏭 **GitHub Actions** - CI/CD pipeline included
+- 🔧 **Modern tooling** - UV for Python dependencies, ESLint, Prettier
 
-### How to Use a Private Repository
+## ✨ Quick Start
 
-If you want to have a private repository, GitHub won't allow you to simply fork it as it doesn't allow changing the visibility of forks.
+### Prerequisites
 
-But you can do the following:
+- **Python 3.12+** with [uv](https://docs.astral.sh/uv/) package manager
+- **Node.js 18+** with npm
 
-- Create a new GitHub repo, for example `my-full-stack`.
-- Clone this repository manually, set the name with the name of the project you want to use, for example `my-full-stack`:
+### 1. Clone and Setup
 
-```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
-```
-
-- Enter into the new directory:
-
-```bash
-cd my-full-stack
-```
-
-- Set the new origin to your new repository, copy it from the GitHub interface, for example:
+Clone the repository:
 
 ```bash
-git remote set-url origin git@github.com:octocat/my-full-stack.git
+git clone <your-repo-url>
+cd full-stack-fastapi-template
 ```
 
-- Add this repo as another "remote" to allow you to get updates later:
+### 2. Database Setup
+
+Start local Gel instances:
 
 ```bash
-git remote add upstream git@github.com:fastapi/full-stack-fastapi-template.git
+gel project init
 ```
 
-- Push the code to your new repository:
+### 3. Backend Setup
 
 ```bash
-git push -u origin master
+cd backend
+
+# Install dependencies
+uv sync
+
+# Start the FastAPI development server
+uv run fastapi dev app/main.py
 ```
 
-### Update From the Original Template
+The backend will be available at `http://localhost:8000`
 
-After cloning the repository, and after doing changes, you might want to get the latest changes from this original template.
-
-- Make sure you added the original repository as a remote, you can check it with:
+### 4. Frontend Setup
 
 ```bash
-git remote -v
+cd frontend
 
-origin    git@github.com:octocat/my-full-stack.git (fetch)
-origin    git@github.com:octocat/my-full-stack.git (push)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (fetch)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (push)
+# Install dependencies
+npm install
+
+# Generate API client from backend OpenAPI schema
+npm run generate-client
+
+# Start the Vite development server
+npm run dev
 ```
 
-- Pull the latest changes without merging:
+The frontend will be available at `http://localhost:5173`
+
+## 🔧 Local Configuration
+
+Copy the `.env.example` file to `.env` and configure
 
 ```bash
-git pull --no-commit upstream master
+cp .env.example .env
 ```
 
-This will download the latest changes from this template without committing them, that way you can check everything is right before committing.
+## 🏗️ Project Structure
 
-- If there are conflicts, solve them in your editor.
+```
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── api/            # API routes
+│   │   ├── models/         # Auto-generated Gel models
+│   │   ├── services/       # Business logic
+│   │   └── main.py         # FastAPI app + React hosting
+│   └── pyproject.toml      # Python dependencies
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── pages/          # Page components
+│   │   └── client/         # Auto-generated API client
+│   └── package.json        # Node.js dependencies
+├── dbschema/               # Gel database schema
+│   ├── default.gel         # Main schema file
+│   └── migrations/         # Database migrations
+└── gel.toml               # Gel configuration
+```
 
-- Once you are done, commit the changes:
+## 🔐 Authentication & Authorization
+
+This template uses Gel's built-in authentication system.
+
+- **Authentication**: Handled by `ext::auth` extension
+- **Authorization**: Schema-level access policies in `dbschema/default.gel`
+
+## 🧪 Testing
+
+### Backend Tests
 
 ```bash
-git merge --continue
+cd backend
+uv run pytest
 ```
 
-### Configure
-
-You can then update configs in the `.env` files to customize your configurations.
-
-Before deploying it, make sure you change at least the values for:
-
-- `SECRET_KEY`
-- `FIRST_SUPERUSER_PASSWORD`
-
-You can (and should) pass these as environment variables from secrets.
-
-Read the [deployment.md](./deployment.md) docs for more details.
-
-### Generate Secret Keys
-
-Some environment variables in the `.env` file have a default value of `changethis`.
-
-You have to change them with a secret key, to generate secret keys you can run the following command:
+### Frontend Tests
 
 ```bash
-python -c "import secrets; print(secrets.token_urlsafe(32))"
+cd frontend
+
+# Unit/integration tests
+npm run test
+
+# End-to-end tests
+npm run test:e2e
 ```
 
-Copy the content and use that as password / secret key. And run that again to generate another secure key.
+## 🚀 Production Deployment
 
-## How To Use It - Alternative With Copier
-
-This repository also supports generating a new project using [Copier](https://copier.readthedocs.io).
-
-It will copy all the files, ask you configuration questions, and update the `.env` files with your answers.
-
-### Install Copier
-
-You can install Copier with:
+### Build for Production
 
 ```bash
-pip install copier
+# Build frontend
+cd frontend
+npm run build
+
+# The built files are automatically served by FastAPI
+cd ../backend
+uv run fastapi run app/main.py
 ```
 
-Or better, if you have [`pipx`](https://pipx.pypa.io/), you can run it with:
+### Environment Setup
 
-```bash
-pipx install copier
-```
+For production, ensure you have:
 
-**Note**: If you have `pipx`, installing copier is optional, you could run it directly.
+1. A production Gel instance (Gel Cloud or self-hosted)
+2. Environment variables properly configured
+3. HTTPS enabled
+4. Proper secret key rotation
 
-### Generate a Project With Copier
+## 📚 Development Guides
 
-Decide a name for your new project's directory, you will use it below. For example, `my-awesome-project`.
+- [Backend Development](./backend/README.md) - FastAPI and Gel details
+- [Frontend Development](./frontend/README.md) - React and TypeScript setup
+- [Database Schema](./dbschema/README.md) - Gel schema and migrations
+- [Deployment Guide](./deployment.md) - Production deployment options
 
-Go to the directory that will be the parent of your project, and run the command with your project's name:
+## 🤝 Contributing
 
-```bash
-copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
-If you have `pipx` and you didn't install `copier`, you can run it directly:
+## 📄 License
 
-```bash
-pipx run copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/fastapi/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
+---
 
-### Input Variables
-
-Copier will ask you for some data, you might want to have at hand before generating the project.
-
-But don't worry, you can just update any of that in the `.env` files afterwards.
-
-The input variables, with their default values (some auto generated) are:
-
-- `project_name`: (default: `"FastAPI Project"`) The name of the project, shown to API users (in .env).
-- `stack_name`: (default: `"fastapi-project"`) The name of the stack used for Docker Compose labels and project name (no spaces, no periods) (in .env).
-- `secret_key`: (default: `"changethis"`) The secret key for the project, used for security, stored in .env, you can generate one with the method above.
-- `first_superuser`: (default: `"admin@example.com"`) The email of the first superuser (in .env).
-- `first_superuser_password`: (default: `"changethis"`) The password of the first superuser (in .env).
-- `smtp_host`: (default: "") The SMTP server host to send emails, you can set it later in .env.
-- `smtp_user`: (default: "") The SMTP server user to send emails, you can set it later in .env.
-- `smtp_password`: (default: "") The SMTP server password to send emails, you can set it later in .env.
-- `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
-- `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
-- `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
-
-## Backend Development
-
-Backend docs: [backend/README.md](./backend/README.md).
-
-## Frontend Development
-
-Frontend docs: [frontend/README.md](./frontend/README.md).
-
-## Deployment
-
-Deployment docs: [deployment.md](./deployment.md).
-
-## Development
-
-General development docs: [development.md](./development.md).
-
-This includes custom local domains, `.env` configurations, etc.
-
-## License
-
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+**Built with ❤️ using FastAPI, Gel, and React**

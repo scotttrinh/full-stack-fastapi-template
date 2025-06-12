@@ -1,155 +1,282 @@
-# FastAPI Project - Frontend
+# Frontend - React + TypeScript + Vite
 
-The frontend is built with [Vite](https://vitejs.dev/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router) and [Chakra UI](https://chakra-ui.com/).
+The frontend is built with modern tools and libraries:
 
-## Frontend development
+- ⚡ [**Vite**](https://vitejs.dev/) - Lightning-fast build tool and dev server
+- ⚛️ [**React**](https://reactjs.org/) - Modern frontend framework
+- 🏗️ [**TypeScript**](https://www.typescriptlang.org/) - Type safety throughout
+- 🎨 [**Chakra UI**](https://chakra-ui.com/) - Simple, modular component library
+- 📋 [**TanStack Form**](https://tanstack.com/form) - Powerful form management
+- 🔄 [**TanStack Query**](https://tanstack.com/query) - Data fetching and caching
+- 🧭 [**TanStack Router**](https://tanstack.com/router) - Type-safe routing
+- 🤖 **Auto-generated API client** - From FastAPI OpenAPI schema
 
-Before you begin, ensure that you have either the Node Version Manager (nvm) or Fast Node Manager (fnm) installed on your system.
+## 🚀 Quick Start
 
-- To install fnm follow the [official fnm guide](https://github.com/Schniz/fnm#installation). If you prefer nvm, you can install it using the [official nvm guide](https://github.com/nvm-sh/nvm#installing-and-updating).
+### Prerequisites
 
-- After installing either nvm or fnm, proceed to the `frontend` directory:
+- **Node.js 18+** with npm
+- Backend server running on `http://localhost:8000`
+
+### Setup
+
+Navigate to the frontend directory:
 
 ```bash
 cd frontend
 ```
 
-- If the Node.js version specified in the `.nvmrc` file isn't installed on your system, you can install it using the appropriate command:
-
-```bash
-# If using fnm
-fnm install
-
-# If using nvm
-nvm install
-```
-
-- Once the installation is complete, switch to the installed version:
-
-```bash
-# If using fnm
-fnm use
-
-# If using nvm
-nvm use
-```
-
-- Within the `frontend` directory, install the necessary NPM packages:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-- And start the live server with the following `npm` script:
+Generate the API client from your running backend:
+
+```bash
+cd ..
+./scripts/generate-client.sh
+```
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-- Then open your browser at http://localhost:5173/.
+The frontend will be available at `http://localhost:5173`
 
-Notice that this live server is not running inside Docker, it's for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But building the image at every change will not be as productive as running the local development server with live reload.
+## 🔧 Development Workflow
 
-Check the file `package.json` to see other available options.
+### Node.js Version Management
 
-### Removing the frontend
-
-If you are developing an API-only app and want to remove the frontend, you can do it easily:
-
-- Remove the `./frontend` directory.
-
-- In the `docker-compose.yml` file, remove the whole service / section `frontend`.
-
-- In the `docker-compose.override.yml` file, remove the whole service / section `frontend` and `playwright`.
-
-Done, you have a frontend-less (api-only) app. 🤓
-
----
-
-If you want, you can also remove the `FRONTEND` environment variables from:
-
-- `.env`
-- `./scripts/*.sh`
-
-But it would be only to clean them up, leaving them won't really have any effect either way.
-
-## Generate Client
-
-### Automatically
-
-- Activate the backend virtual environment.
-- From the top level project directory, run the script:
+This project uses Node.js version specified in `.nvmrc`. If you have `fnm` or `nvm` installed:
 
 ```bash
+# Using fnm (recommended)
+fnm install && fnm use
+
+# Using nvm
+nvm install && nvm use
+```
+
+### API Client Generation
+
+The frontend uses an auto-generated client based on your FastAPI OpenAPI schema.
+
+**Automatic Generation:**
+
+```bash
+# From the project root
 ./scripts/generate-client.sh
 ```
 
-- Commit the changes.
-
-### Manually
-
-- Start the Docker Compose stack.
-
-- Download the OpenAPI JSON file from `http://localhost/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
-
-- To generate the frontend client, run:
+**Manual Generation:**
 
 ```bash
+# Make sure your backend is running on localhost:8000
 npm run generate-client
 ```
 
-- Commit the changes.
+> **Note:** Regenerate the client whenever you change your FastAPI API endpoints or models.
 
-Notice that everytime the backend changes (changing the OpenAPI schema), you should follow these steps again to update the frontend client.
+### Environment Configuration
 
-## Using a Remote API
-
-If you want to use a remote API, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
+Create a `.env` file in the `frontend` directory for local overrides:
 
 ```env
-VITE_API_URL=https://api.my-domain.example.com
+# API URL (defaults to http://localhost:8000)
+VITE_API_URL=http://localhost:8000
+
+# For production or remote API
+# VITE_API_URL=https://api.your-domain.com
 ```
 
-Then, when you run the frontend, it will use that URL as the base URL for the API.
+## 📁 Project Structure
 
-## Code Structure
-
-The frontend code is structured as follows:
-
-- `frontend/src` - The main frontend code.
-- `frontend/src/assets` - Static assets.
-- `frontend/src/client` - The generated OpenAPI client.
-- `frontend/src/components` - The different components of the frontend.
-- `frontend/src/hooks` - Custom hooks.
-- `frontend/src/routes` - The different routes of the frontend which include the pages.
-- `theme.tsx` - The Chakra UI custom theme.
-
-## End-to-End Testing with Playwright
-
-The frontend includes initial end-to-end tests using Playwright. To run the tests, you need to have the Docker Compose stack running. Start the stack with the following command:
-
-```bash
-docker compose up -d --wait backend
+```
+frontend/
+├── src/
+│   ├── assets/          # Static assets (images, icons)
+│   ├── client/          # Auto-generated API client
+│   ├── components/      # Reusable React components
+│   ├── hooks/           # Custom React hooks
+│   ├── routes/          # Page components and routing
+│   ├── theme.tsx        # Chakra UI theme configuration
+│   └── main.tsx         # Application entry point
+├── tests/               # End-to-end tests
+├── public/              # Static files served directly
+└── package.json         # Dependencies and scripts
 ```
 
-Then, you can run the tests with the following command:
+## 🧪 Testing
+
+### Unit & Integration Tests
 
 ```bash
-npx playwright test
+npm run test
 ```
 
-You can also run your tests in UI mode to see the browser and interact with it running:
+### End-to-End Tests with Playwright
+
+Make sure your backend is running, then:
 
 ```bash
+# Run tests headlessly
+npm run test:e2e
+
+# Run tests with UI (interactive)
 npx playwright test --ui
+
+# Run specific test file
+npx playwright test tests/auth.spec.ts
 ```
 
-To stop and remove the Docker Compose stack and clean the data created in tests, use the following command:
+### Test Development
+
+- Tests are located in the `tests/` directory
+- Use Playwright for end-to-end testing
+- Mock API responses when needed for isolated testing
+
+## 🏗️ Key Technologies
+
+### TanStack Form
+
+This template uses TanStack Form for form management:
+
+```tsx
+import { useForm } from "@tanstack/react-form";
+
+function MyForm() {
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async ({ value }) => {
+      // Handle form submission
+    },
+  });
+
+  // Form implementation...
+}
+```
+
+### TanStack Query
+
+For data fetching and caching:
+
+```tsx
+import { useQuery } from "@tanstack/react-query";
+import { ItemsService } from "../client";
+
+function ItemsList() {
+  const { data: items, isLoading } = useQuery({
+    queryKey: ["items"],
+    queryFn: () => ItemsService.readItems(),
+  });
+
+  // Component implementation...
+}
+```
+
+### Chakra UI
+
+For consistent, accessible UI components:
+
+```tsx
+import { Box, Button, VStack } from "@chakra-ui/react";
+
+function MyComponent() {
+  return (
+    <Box p={4}>
+      <VStack spacing={4}>
+        <Button colorScheme="blue">Click me</Button>
+      </VStack>
+    </Box>
+  );
+}
+```
+
+## 🚀 Production Build
+
+Build the frontend for production:
 
 ```bash
-docker compose down -v
+npm run build
 ```
 
-To update the tests, navigate to the tests directory and modify the existing test files or add new ones as needed.
+The built files will be in the `dist/` directory and are automatically served by the FastAPI backend in production.
 
-For more information on writing and running Playwright tests, refer to the official [Playwright documentation](https://playwright.dev/docs/intro).
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 🔧 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run test` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run generate-client` - Generate API client
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
+
+## 🎨 Customization
+
+### Theme
+
+Customize the Chakra UI theme in `src/theme.tsx`:
+
+```tsx
+import { extendTheme } from "@chakra-ui/react";
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: "#your-color",
+      // ... more colors
+    },
+  },
+  // ... more theme customizations
+});
+```
+
+### Components
+
+Create reusable components in `src/components/`:
+
+```tsx
+// src/components/MyComponent.tsx
+import { Box, BoxProps } from "@chakra-ui/react";
+
+interface MyComponentProps extends BoxProps {
+  customProp?: string;
+}
+
+export function MyComponent({ customProp, ...props }: MyComponentProps) {
+  return <Box {...props}>Content</Box>;
+}
+```
+
+## 🔗 Integration with Backend
+
+The frontend integrates seamlessly with the FastAPI backend:
+
+- **Authentication**: Uses Gel's built-in auth system
+- **API Client**: Auto-generated from OpenAPI schema
+- **Type Safety**: Full TypeScript support end-to-end
+- **Production**: Served directly from FastAPI server
+
+## 📚 Learn More
+
+- [Vite Documentation](https://vitejs.dev/guide/)
+- [React Documentation](https://react.dev/)
+- [TanStack Form](https://tanstack.com/form)
+- [TanStack Query](https://tanstack.com/query)
+- [Chakra UI](https://chakra-ui.com/docs)
+- [Playwright Testing](https://playwright.dev/docs/intro)
