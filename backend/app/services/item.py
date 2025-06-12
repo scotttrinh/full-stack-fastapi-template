@@ -1,6 +1,7 @@
 from typing import Annotated
 
 import gel
+import gel.fastapi
 from fastapi import Depends
 
 from app.models.data.default import Item
@@ -12,7 +13,7 @@ class ItemService(BaseService[Item]):
         super().__init__(client, Item)
 
 
-def make_item_service(client: gel.AsyncIOClient) -> ItemService:
+def make_item_service(client: gel.fastapi.Client) -> ItemService:
     return ItemService(client)
 
 

@@ -9,7 +9,7 @@ T = TypeVar("T")
 
 class Collection(BaseModel, Generic[T]):
     data: list[T]
-    has_more: bool
+    count: int
 
 
 class CursorPagination(BaseModel):
@@ -19,3 +19,11 @@ class CursorPagination(BaseModel):
 
 
 CursorPaginationDep = Annotated[CursorPagination, Query()]
+
+
+class LimitOffsetPagination(BaseModel):
+    limit: int = 100
+    offset: int = 0
+
+
+LimitOffsetPaginationDep = Annotated[LimitOffsetPagination, Query()]

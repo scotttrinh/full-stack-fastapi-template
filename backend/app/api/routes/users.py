@@ -7,10 +7,8 @@ from app.api.deps import (
     CurrentUser,
     get_current_active_superuser,
 )
-from app.models.user import (
-    User,
-)
-from app.models.utils import Collection, CursorPaginationDep
+from app.models.data import User
+from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.user import UserServiceDep
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -18,14 +16,13 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/", dependencies=[Depends(get_current_active_superuser)])
 async def read_users(
-    user_service: UserServiceDep, cursor_pagination: CursorPaginationDep
+    user_service: UserServiceDep, limit_offset_pagination: LimitOffsetPaginationDep
 ) -> Collection[User]:
     """
     Retrieve users.
     """
 
-    users, has_more = await user_service.list_all(cursor_pagination)
-    return Collection(data=users, has_more=has_more)
+    return await user_service.list_all(limit_offset_pagination)
 
 
 @router.post(

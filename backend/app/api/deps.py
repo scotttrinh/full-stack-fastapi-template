@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException
 
-from app.models.user import User
+from app.models.data import User
 from app.services.user import UserServiceDep
 
 

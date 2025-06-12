@@ -3,7 +3,7 @@ import uuid
 from fastapi import APIRouter, HTTPException, status
 
 from app.models.data import Item
-from app.models.utils import Collection, CursorPaginationDep
+from app.models.utils import Collection, CursorPaginationDep, LimitOffsetPaginationDep
 from app.services.item import ItemServiceDep
 
 router = APIRouter(prefix="/items", tags=["items"])
@@ -11,15 +11,14 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 @router.get("/")
 async def read_items(
-    cursor_pagination: CursorPaginationDep,
+    limit_offset_pagination: LimitOffsetPaginationDep,
     item_service: ItemServiceDep,
 ) -> Collection[Item]:
     """
     Retrieve items.
     """
 
-    items, has_more = await item_service.list_all(cursor_pagination)
-    return Collection(data=items, has_more=has_more)
+    return await item_service.list_all(limit_offset_pagination)
 
 
 @router.get("/{id}")

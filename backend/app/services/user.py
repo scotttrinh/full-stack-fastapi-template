@@ -4,7 +4,6 @@ import gel
 import gel.fastapi
 from fastapi import Depends
 
-from app.main import gel_auth
 from app.models.data import User
 from app.services.base import BaseService
 
@@ -37,7 +36,7 @@ class UserService(BaseService[User]):
 
 
 def make_user_service(
-    client: Annotated[gel.fastapi.Client, gel_auth.maybe_auth_token],
+    client: gel.fastapi.Client,
 ) -> UserService:
     return UserService(client)
 

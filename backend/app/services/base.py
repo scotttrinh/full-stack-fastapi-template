@@ -4,7 +4,7 @@ from typing import Generic, TypeVar
 import gel
 from gel.models.pydantic import GelModel
 
-from app.models.utils import CursorPagination
+from app.models.utils import Collection, LimitOffsetPagination
 
 T = TypeVar("T", bound=GelModel)
 
@@ -35,32 +35,17 @@ class BaseService(Generic[T]):
         await self.client.query_single(self.model_class.filter(id=obj_id).delete())
 
     async def list_all(
-        self, cursor_pagination: CursorPagination
-    ) -> tuple[list[T], bool]:
+        self, limit_offset_pagination: LimitOffsetPagination
+    ) -> Collection[T]:
         # Common pagination logic
-        has_more: bool = await self.client.query_required_single(
+        count: int = await self.client.query_required_single(
             f"""
-            with
-              starting_after := <uuid>$starting_after,
-              NEXT_OBJ := (select {self.model_class.__name__} filter .id > starting_after limit 1),
-            select exists NEXT_OBJ;
-            """,
-            starting_after=cursor_pagination.starting_after,
+            select count(select {self.model_class.__name__})
+            """
         )
         result = await self.client.query(
             self.model_class.select()
-            .filter(
-                lambda obj: (
-                    obj.id > cursor_pagination.starting_after
-                    if cursor_pagination.starting_after is not None
-                    else True
-                ),
-                lambda obj: (
-                    obj.id < cursor_pagination.ending_before
-                    if cursor_pagination.ending_before is not None
-                    else True
-                ),
-            )
-            .limit(cursor_pagination.limit)
+            .offset(limit_offset_pagination.offset)
+            .limit(limit_offset_pagination.limit)
         )
-        return result, has_more
+        return Collection(data=result, count=count)
