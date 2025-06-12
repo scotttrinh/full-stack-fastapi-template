@@ -1,22 +1,19 @@
-import uuid
+from typing import Annotated
 
 import gel
+from fastapi import Depends
 
-from app.models.data import default
+from app.models.data.default import Item
+from app.services.base import BaseService
 
 
-class ItemService:
+class ItemService(BaseService[Item]):
     def __init__(self, client: gel.AsyncIOClient):
-        self.client = client
+        super().__init__(client, Item)
 
-    async def create(self, item_create: default.Item) -> default.Item:
-        return await self.client.query_required_single()
 
-    async def update(self, item_update: default.Item) -> default.Item:
-        return await self.client.query_required_single()
+def make_item_service(client: gel.AsyncIOClient) -> ItemService:
+    return ItemService(client)
 
-    async def get_by_id(self, item_id: uuid.UUID) -> default.Item:
-        return await self.client.query_required_single()
 
-    async def delete(self, item_id: uuid.UUID) -> None:
-        return await self.client.query_required_single()
+ItemServiceDep = Annotated[ItemService, Depends(make_item_service)]

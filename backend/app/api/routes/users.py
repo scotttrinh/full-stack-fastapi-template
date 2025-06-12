@@ -10,24 +10,22 @@ from app.api.deps import (
 from app.models.user import (
     User,
 )
+from app.models.utils import Collection, CursorPaginationDep
 from app.services.user import UserServiceDep
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get(
-    "/",
-    dependencies=[Depends(get_current_active_superuser)]
-)
+@router.get("/", dependencies=[Depends(get_current_active_superuser)])
 async def read_users(
-    user_service: UserServiceDep, skip: int = 0, limit: int = 100
-) -> list[User]:
+    user_service: UserServiceDep, cursor_pagination: CursorPaginationDep
+) -> Collection[User]:
     """
     Retrieve users.
     """
 
-    users = await user_service.list_all(skip=skip, limit=limit)
-    return users
+    users, has_more = await user_service.list_all(cursor_pagination)
+    return Collection(data=users, has_more=has_more)
 
 
 @router.post(
@@ -46,6 +44,7 @@ async def create_user(*, user_service: UserServiceDep, user_in: User):
 class UserUpdate(User.__variants__.Base):
     pass
 
+
 @router.patch("/me")
 async def update_user_me(
     *,
@@ -57,8 +56,9 @@ async def update_user_me(
     Update own user.
     """
 
-    user_data = user_in.model_dump(exclude_unset=True)
-    current_user = current_user.model_copy(update=user_data)
+    current_user = current_user.model_copy(
+        update=user_in.model_dump(exclude_unset=True, exclude={"id"})
+    )
     await user_service.update(current_user)
     return current_user
 
@@ -126,7 +126,9 @@ async def update_user(
             detail="The user with this id does not exist in the system",
         )
 
-    user = user.model_copy(update=user_in.model_dump(exclude_unset=True))
+    user = user.model_copy(
+        update=user_in.model_dump(exclude_unset=True, exclude={"id"})
+    )
     await user_service.update(user)
     return user
 
