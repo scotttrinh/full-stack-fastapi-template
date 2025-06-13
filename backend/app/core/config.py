@@ -1,3 +1,4 @@
+import uuid
 from typing import Annotated, Any, Literal
 
 from pydantic import (
@@ -26,6 +27,7 @@ class Settings(BaseSettings):
     )
     API_V1_STR: str = "/api/v1"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+    GEL_AUTH_SIGNING_KEY: str = str(uuid.uuid4())
 
     BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = (
         []

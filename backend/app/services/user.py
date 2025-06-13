@@ -1,10 +1,12 @@
-from typing import Annotated
+import dataclasses
+from typing import Annotated, Type
 
 import gel
 import gel.fastapi
 from fastapi import Depends
 
 from app.models.data import User
+from app.models.utils import QueryModel
 from app.services.base import BaseService
 
 
@@ -16,9 +18,8 @@ class UserService(BaseService[User]):
         return await self.client.query_single(User.select().filter(email=email))
 
     async def get_current_user(self) -> User | None:
-        result = await self.client.query_single(
-            """
-            select global current_user {
+        return await self.client.query_single(QueryModel(User, """
+            select (global current_user) {
                 id,
                 full_name,
                 email,
@@ -27,12 +28,7 @@ class UserService(BaseService[User]):
                     id,
                 }
             }
-            """
-        )
-        if result is None:
-            return None
-
-        return User(**result)
+            """))
 
 
 def make_user_service(

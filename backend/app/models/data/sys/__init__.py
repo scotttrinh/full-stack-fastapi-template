@@ -27,11 +27,11 @@ from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
 
-    from ..__variants__ import std as __std__, sys as __base__
+    from ..__variants__ import std as ___std__, sys as ___base__
     from ..std import __types__ as std___types__
 
-    import builtins as __builtins_1__
-    import builtins as __builtins__
+    import builtins as ___builtins__
+    import builtins as ___builtins_1__
     from builtins import type
     from uuid import UUID
 
@@ -129,7 +129,7 @@ class QueryStats(base.QueryStats, ExternalObject):
     stats_since: OptionalProperty[std.datetime, datetime]
     minmax_stats_since: OptionalProperty[std.datetime, datetime]
     branch: OptionalLink[Branch]
-def get_current_branch() -> type[__std__.str]:
+def get_current_branch() -> type[___std__.str]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -144,10 +144,10 @@ def get_current_branch() -> type[__std__.str]:
 
 def reset_query_stats(
     *,
-    branch_name: type[__std__.str] | __builtins__.str | None | UnspecifiedType = Unspecified,
-    id: type[__std__.uuid] | UUID | None | UnspecifiedType = Unspecified,
-    minmax_only: type[__std__.bool] | __builtins_1__.bool | None | UnspecifiedType = Unspecified,
-) -> type[__std__.datetime]:
+    branch_name: type[___std__.str] | ___builtins__.str | None | UnspecifiedType = Unspecified,
+    id: type[___std__.uuid] | UUID | None | UnspecifiedType = Unspecified,
+    minmax_only: type[___std__.bool] | ___builtins_1__.bool | None | UnspecifiedType = Unspecified,
+) -> type[___std__.datetime]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {
         "branch_name": branch_name,
@@ -175,11 +175,11 @@ def get_version(
             fname="sys::get_version",
             args=[v for v in args if v is not Unspecified],
             kwargs={n: v for n, v in kw.items() if v is not Unspecified},
-            type_=SchemaPath('tuple<major:std', 'int64, minor:std', 'int64, stage:sys', 'VersionStage, stage_no:std', 'int64, local:array<std|str>>'),
+            type_=SchemaPath('tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>'),
         )
     )
 
-def get_version_as_str() -> type[__std__.str]:
+def get_version_as_str() -> type[___std__.str]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -192,7 +192,7 @@ def get_version_as_str() -> type[__std__.str]:
         )
     )
 
-def get_instance_name() -> type[__std__.str]:
+def get_instance_name() -> type[___std__.str]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -205,7 +205,7 @@ def get_instance_name() -> type[__std__.str]:
         )
     )
 
-def get_transaction_isolation() -> type[__base__.TransactionIsolation]:
+def get_transaction_isolation() -> type[___base__.TransactionIsolation]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -218,7 +218,7 @@ def get_transaction_isolation() -> type[__base__.TransactionIsolation]:
         )
     )
 
-def get_current_database() -> type[__std__.str]:
+def get_current_database() -> type[___std__.str]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]

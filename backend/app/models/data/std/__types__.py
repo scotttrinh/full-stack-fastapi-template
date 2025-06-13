@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 from gel.models.pydantic import (
-    AnyTuple,
+    AnyNamedTuple,
     Array,
     GelModel,
     GelTypeMetadata,
@@ -26,7 +26,7 @@ class _KindMessage_Tuple_hRjfgQ(NamedTuple):
     message: std.str
 
 
-class KindMessage_Tuple_hRjfgQ(_KindMessage_Tuple_hRjfgQ, AnyTuple):
+class KindMessage_Tuple_hRjfgQ(_KindMessage_Tuple_hRjfgQ, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=176916471788808878562760725445109455309)
         name = SchemaPath('tuple<kind:std::net::RequestFailureKind, message:std::str>')
@@ -41,7 +41,7 @@ class _MajorMinor_Tuple_K20e_g(NamedTuple):
     minor: std.int16
 
 
-class MajorMinor_Tuple_K20e_g(_MajorMinor_Tuple_K20e_g, AnyTuple):
+class MajorMinor_Tuple_K20e_g(_MajorMinor_Tuple_K20e_g, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=57723392516177260343067565139426900410)
         name = SchemaPath('tuple<major:std::int16, minor:std::int16>')
@@ -61,7 +61,7 @@ class _MajorMinorStageStage_noLocal_Tuple_Lh76jQ(NamedTuple):
 
 class MajorMinorStageStage_noLocal_Tuple_Lh76jQ(
     _MajorMinorStageStage_noLocal_Tuple_Lh76jQ,
-    AnyTuple,
+    AnyNamedTuple,
 ):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=61305338540392200951852396798821552652)
@@ -82,7 +82,7 @@ class _MajorMinorStageStage_noLocal_Tuple_SKRhXQ(NamedTuple):
 
 class MajorMinorStageStage_noLocal_Tuple_SKRhXQ(
     _MajorMinorStageStage_noLocal_Tuple_SKRhXQ,
-    AnyTuple,
+    AnyNamedTuple,
 ):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=96557927154408612937861582867322211257)
@@ -98,7 +98,7 @@ class _NameExpr_Tuple_9eMVFg(NamedTuple):
     expr: std.str
 
 
-class NameExpr_Tuple_9eMVFg(_NameExpr_Tuple_9eMVFg, AnyTuple):
+class NameExpr_Tuple_9eMVFg(_NameExpr_Tuple_9eMVFg, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=326839938064147697657892507176438779427)
         name = SchemaPath('tuple<name:std::str, expr:std::str>')
@@ -113,7 +113,7 @@ class _TextRefs_Tuple_Z5lveg(NamedTuple):
     refs: Array[std.uuid]
 
 
-class TextRefs_Tuple_Z5lveg(_TextRefs_Tuple_Z5lveg, AnyTuple):
+class TextRefs_Tuple_Z5lveg(_TextRefs_Tuple_Z5lveg, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=137707166060458248461855710211730195906)
         name = SchemaPath('tuple<text:std::str, refs:array<std::uuid>>')
@@ -128,7 +128,7 @@ class _NameValue_Tuple_CO3mqQ(NamedTuple):
     value: std.str
 
 
-class NameValue_Tuple_CO3mqQ(_NameValue_Tuple_CO3mqQ, AnyTuple):
+class NameValue_Tuple_CO3mqQ(_NameValue_Tuple_CO3mqQ, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=11869076702865716584055616908733573978)
         name = SchemaPath('tuple<name:std::str, value:std::str>')
@@ -143,7 +143,7 @@ class _ObjectScore_Tuple_wT628Q(NamedTuple):
     score: std.float32
 
 
-class ObjectScore_Tuple_wT628Q(_ObjectScore_Tuple_wT628Q, AnyTuple):
+class ObjectScore_Tuple_wT628Q(_ObjectScore_Tuple_wT628Q, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=256866636133882169204337367677577691088)
         name = SchemaPath('tuple<object:anyobject, score:std::float32>')
@@ -158,7 +158,7 @@ class _NameExpr_Tuple_J9gV9A(NamedTuple):
     expr: TextRefs_Tuple_Z5lveg
 
 
-class NameExpr_Tuple_J9gV9A(_NameExpr_Tuple_J9gV9A, AnyTuple):
+class NameExpr_Tuple_J9gV9A(_NameExpr_Tuple_J9gV9A, AnyNamedTuple):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=52961873250615995036283599343959502342)
         name = SchemaPath('tuple<name:std::str, expr:tuple<text:std::str, refs:array<std::uuid>>>')

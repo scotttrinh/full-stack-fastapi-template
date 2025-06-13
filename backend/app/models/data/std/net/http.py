@@ -27,11 +27,11 @@ from typing import Any, TYPE_CHECKING
 if TYPE_CHECKING:
 
     from .. import __types__ as std___types__
-    from ...__variants__ import std as __std__
-    from ...__variants__.std.net import http as __base__
+    from ...__variants__ import std as ___std__
+    from ...__variants__.std.net import http as ___base__
 
-    import builtins as __builtins_1__
-    import builtins as __builtins__
+    import builtins as ___builtins__
+    import builtins as ___builtins_1__
     from builtins import type
 
 
@@ -60,11 +60,11 @@ class ScheduledRequest(base.ScheduledRequest):
     body: OptionalProperty[std.bytes, bytes]
     response: OptionalLink[Response]
 def schedule_request(
-    url: type[__std__.str] | __builtins__.str,
+    url: type[___std__.str] | ___builtins__.str,
     *,
-    body: type[__std__.bytes] | __builtins_1__.bytes | None | UnspecifiedType = Unspecified,
-    headers: type[Array[std___types__.NameValue_Tuple_CO3mqQ]] | list[tuple[__builtins__.str, __builtins__.str]] | None | UnspecifiedType = Unspecified,
-    method: type[__base__.Method] | builtins.str | UnspecifiedType = Unspecified,
+    body: type[___std__.bytes] | ___builtins_1__.bytes | None | UnspecifiedType = Unspecified,
+    headers: type[Array[std___types__.NameValue_Tuple_CO3mqQ]] | list[tuple[___builtins__.str, ___builtins__.str]] | None | UnspecifiedType = Unspecified,
+    method: type[___base__.Method] | builtins.str | UnspecifiedType = Unspecified,
 ) -> type[ScheduledRequest]:
     args: list[Any] = [url]
     kw: dict[builtins.str, Any] = {

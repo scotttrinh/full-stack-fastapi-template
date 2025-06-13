@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from .. import std as __std__
+from .. import std as ___std__
 
 from gel.models.pydantic import (
     AnnotatedExpr,
@@ -35,7 +35,7 @@ def digest(data: type[std.str], type: type[std.str]) -> type[std.bytes]:  # type
     args: list[Any] = [data, type]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bytes,
+        ___std__.bytes,
         FuncCall(
             fname="ext::pgcrypto::digest",
             args=[v for v in args if v is not Unspecified],
@@ -49,7 +49,7 @@ def digest(data: type[std.bytes], type: type[std.str]) -> type[std.bytes]:  # ty
     args: list[Any] = [data, type]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bytes,
+        ___std__.bytes,
         FuncCall(
             fname="ext::pgcrypto::digest",
             args=[v for v in args if v is not Unspecified],
@@ -70,7 +70,7 @@ def hmac(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [data, key, type]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bytes,
+        ___std__.bytes,
         FuncCall(
             fname="ext::pgcrypto::hmac",
             args=[v for v in args if v is not Unspecified],
@@ -88,7 +88,7 @@ def hmac(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [data, key, type]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bytes,
+        ___std__.bytes,
         FuncCall(
             fname="ext::pgcrypto::hmac",
             args=[v for v in args if v is not Unspecified],
@@ -105,7 +105,7 @@ def gen_salt() -> type[std.str]:  # type: ignore [overload-cannot-match, unused-
     args: list[Any] = []
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.str,
+        ___std__.str,
         FuncCall(
             fname="ext::pgcrypto::gen_salt",
             args=[v for v in args if v is not Unspecified],
@@ -119,7 +119,7 @@ def gen_salt(type: type[std.str]) -> type[std.str]:  # type: ignore [overload-ca
     args: list[Any] = [type]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.str,
+        ___std__.str,
         FuncCall(
             fname="ext::pgcrypto::gen_salt",
             args=[v for v in args if v is not Unspecified],
@@ -136,7 +136,7 @@ def gen_salt(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [type, iter_count]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.str,
+        ___std__.str,
         FuncCall(
             fname="ext::pgcrypto::gen_salt",
             args=[v for v in args if v is not Unspecified],
@@ -155,7 +155,7 @@ def crypt(
     args: list[Any] = [password, salt]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.str,
+        ___std__.str,
         FuncCall(
             fname="ext::pgcrypto::crypt",
             args=[v for v in args if v is not Unspecified],

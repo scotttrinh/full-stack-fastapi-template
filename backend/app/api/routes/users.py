@@ -2,16 +2,20 @@ import uuid
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 
 from app.api.deps import (
     CurrentUser,
     get_current_active_superuser,
 )
+from app.main import g
 from app.models.data import User
 from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.user import UserServiceDep
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(
+    prefix="/users", tags=["users"], dependencies=[g.auth.maybe_auth_token]
+)
 
 
 @router.get("/", dependencies=[Depends(get_current_active_superuser)])
@@ -25,21 +29,9 @@ async def read_users(
     return await user_service.list_all(limit_offset_pagination)
 
 
-@router.post(
-    "/",
-    dependencies=[Depends(get_current_active_superuser)],
-)
-async def create_user(*, user_service: UserServiceDep, user_in: User):
-    """
-    Create new user.
-    """
-
-    user = await user_service.create(user_in)
-    return user
-
-
-class UserUpdate(User.__variants__.Base):
-    pass
+class UserUpdate(BaseModel):
+    email: str | None = None
+    full_name: str | None = None
 
 
 @router.patch("/me")
@@ -89,7 +81,7 @@ async def read_user_by_id(
     """
     Get a specific user by id.
     """
-    if user_id != current_user.id:
+    if user_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
             status_code=403,
             detail="The user doesn't have enough privileges",

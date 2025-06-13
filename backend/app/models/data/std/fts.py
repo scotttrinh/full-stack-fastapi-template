@@ -41,7 +41,7 @@ def with_options(
         "weight_category": weight_category,
     }
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.document,
+        ___base__.document,
         FuncCall(
             fname="std::fts::with_options",
             args=[v for v in args if v is not Unspecified],
@@ -65,14 +65,14 @@ def search(
             fname="std::fts::search",
             args=[v for v in args if v is not Unspecified],
             kwargs={n: v for n, v in kw.items() if v is not Unspecified},
-            type_=SchemaPath('tuple<object:anyobject, score:std', 'float32>'),
+            type_=SchemaPath('tuple<object:anyobject, score:std::float32>'),
         )
     )
 
 
 
 from . import __types__ as std___types__  # noqa: E402 F403
-from ..__variants__.std import fts as __base__  # noqa: E402 F403
+from ..__variants__.std import fts as ___base__  # noqa: E402 F403
 from ..__variants__.std.fts import (  # noqa: E402 F403
     ElasticLanguage,
     Language,
