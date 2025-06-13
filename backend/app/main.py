@@ -43,7 +43,12 @@ async def on_new_identity(
 ) -> fastapi.Response | None:
     await client.query_required_single(
         """
-        insert User { identity := <ext::auth::Identity><uuid>$identity_id }
+        with
+          IDENTITY := <ext::auth::Identity><uuid>$identity_id
+        insert User {
+          identity := IDENTITY,
+          email := IDENTITY.<[identity is ext::auth::EmailFactor].email,
+        }
         """,
         identity_id=result[0],
     )

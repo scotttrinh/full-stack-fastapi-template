@@ -57,7 +57,7 @@ dev = [
 requires-dist = [
     { name = "emails", specifier = ">=0.6,<1.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.114.2,<1.0.0" },
-    { name = "gel", git = "https://github.com/geldata/gel-python.git?rev=8a374f41ed9e5dc79e3e872f8c05966976ceb335" },
+    { name = "gel", git = "https://github.com/geldata/gel-python.git?rev=master" },
     { name = "httpx", specifier = ">=0.25.1,<1.0.0" },
     { name = "jinja2", specifier = ">=3.1.4,<4.0.0" },
     { name = "pydantic", specifier = ">2.0" },
@@ -359,7 +359,7 @@ wheels = [
 [[package]]
 name = "gel"
 version = "3.1.0"
-source = { git = "https://github.com/geldata/gel-python.git?rev=8a374f41ed9e5dc79e3e872f8c05966976ceb335#8a374f41ed9e5dc79e3e872f8c05966976ceb335" }
+source = { git = "https://github.com/geldata/gel-python.git?rev=master#81d7c82354eb95c6ef905d1f946b5148ec578c2b" }
 dependencies = [
     { name = "certifi", marker = "sys_platform == 'win32'" },
     { name = "pydantic" },

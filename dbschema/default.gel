@@ -1,9 +1,12 @@
 using extension auth;
 
 module default {
+  single global spoof_user_id: uuid;
   single global current_user := assert_single((
     select User
-    filter .identity ?= global ext::auth::ClientTokenIdentity
+    filter
+      .identity ?= global ext::auth::ClientTokenIdentity
+      or .id ?= global spoof_user_id
   ));
 
   type User {
