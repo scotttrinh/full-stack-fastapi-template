@@ -1,4 +1,12 @@
+from fastapi.testclient import TestClient
+
 from app.tests.conftest import TestUsers
+
+
+def test_healthcheck(client: TestClient):
+    response = client.get("/api/v1/utils/health-check")
+    assert response.status_code == 200
+    assert response.json() is True
 
 
 def test_user_impersonation_http_requests(test_users: TestUsers):
