@@ -1,13 +1,11 @@
 import uuid
 from collections.abc import Callable, Generator
 from dataclasses import dataclass
-from typing import Any
 
 import gel.fastapi
 import pytest
 from fastapi.testclient import TestClient
 
-from app.core.config import settings
 from app.main import app
 from app.models.data import Item, User
 
@@ -119,7 +117,11 @@ def test_users(
         register_r.raise_for_status()
 
         register_response = register_r.json()
-        auth_token = register_response["access_token"]
+        assert register_response
+        assert register_response["token_data"]
+        assert register_response["token_data"]["access_token"]
+        assert register_response["identity_id"]
+        auth_token = register_response["token_data"]["access_token"]
         identity_id = register_response["identity_id"]
 
         user_id: uuid.UUID = allaccess_client.query_required_single(
