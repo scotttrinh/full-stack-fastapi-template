@@ -22,11 +22,15 @@ configure current branch reset ext::auth::AuthConfig;
 configure current branch set ext::auth::AuthConfig::app_name := "{settings.PROJECT_NAME}";
 configure current branch set ext::auth::AuthConfig::auth_signing_key := "{signing_key}";
 configure current branch set ext::auth::AuthConfig::allowed_redirect_urls := {{
+  "http://127.0.0.1:8000",
   "http://localhost:8000",
+  "http://testserver",
 }};
 
 configure current branch set cfg::cors_allow_origins := {{
+  "http://127.0.0.1:8000",
   "http://localhost:8000",
+  "http://testserver",
 }};
 
 configure current database insert ext::auth::EmailPasswordProviderConfig {{
