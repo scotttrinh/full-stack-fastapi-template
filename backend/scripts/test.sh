@@ -6,7 +6,7 @@ set -x
 # Store the original GEL_BRANCH value if it exists
 original_gel_branch="${GEL_BRANCH:-}"
 
-branch_name="test-$(openssl rand -hex 8)"
+branch_name="test-$(date +%s)"
 gel branch create "$branch_name"
 
 # n.b. Need to set this environment variable after creating the new branch so
@@ -17,9 +17,10 @@ export GEL_BRANCH="$branch_name"
 # This is like a try/catch block
 {
     set +e
-    coverage run --source=app -m pytest
-    coverage report --show-missing
-    coverage html --title "${@-coverage}"
+    python -m app.configure_auth
+    coverage run --source=app -m pytest "$@"
+    #coverage report --show-missing
+    #coverage html --title "${@-coverage}"
     test_status=$?
     set -e
 }
@@ -35,7 +36,7 @@ fi
 # the TEST_KEEP_TEMP_BRANCH environment variable to keep the branch around for
 # debugging.
 if [ -z "$TEST_KEEP_TEMP_BRANCH" ]; then
-    gel branch drop "$branch_name"
+    gel branch drop "$branch_name" --non-interactive
 fi
 
 exit $test_status
