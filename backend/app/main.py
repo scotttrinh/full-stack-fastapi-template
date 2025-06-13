@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import os
 import uuid
@@ -66,15 +67,21 @@ frontend_dist_path = os.path.join(current_dir, "..", "..", "frontend", "dist")
 static_files_path = os.path.normpath(frontend_dist_path)
 index_path = os.path.join(static_files_path, "index.html")
 
-app.mount(
-    "/",
-    StaticFiles(
-        directory=static_files_path,
-        html=True,
-        check_dir=True,
-    ),
-    name="frontend",
-)
+@contextlib.asynccontextmanager
+async def lifespan(app: fastapi.FastAPI):
+    app.mount(
+        "/",
+        StaticFiles(
+            directory=static_files_path,
+            html=True,
+            check_dir=True,
+        ),
+        name="frontend",
+    )
+    yield
+
+
+app.include_router(fastapi.APIRouter(lifespan=lifespan))
 
 
 @app.get("/{full_path:path}", include_in_schema=False)
