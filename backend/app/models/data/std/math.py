@@ -33,7 +33,7 @@ def lg(x: type[std.float64]) -> type[std.float64]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::lg",
             args=[v for v in args if v is not Unspecified],
@@ -47,7 +47,7 @@ def lg(x: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::lg",
             args=[v for v in args if v is not Unspecified],
@@ -61,7 +61,7 @@ def lg(x: type[std.int64]) -> type[std.float64]:  # type: ignore [overload-canno
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::lg",
             args=[v for v in args if v is not Unspecified],
@@ -81,7 +81,7 @@ def log(
     args: list[Any] = [x]
     kw: dict[str, Any] = {"base": base}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::log",
             args=[v for v in args if v is not Unspecified],
@@ -95,7 +95,7 @@ def sqrt(x: type[std.int64]) -> type[std.float64]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::sqrt",
             args=[v for v in args if v is not Unspecified],
@@ -109,7 +109,7 @@ def sqrt(x: type[std.float64]) -> type[std.float64]:  # type: ignore [overload-c
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::sqrt",
             args=[v for v in args if v is not Unspecified],
@@ -123,7 +123,7 @@ def sqrt(x: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload-c
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::sqrt",
             args=[v for v in args if v is not Unspecified],
@@ -139,7 +139,7 @@ def abs(x: type[std.anyreal] | Decimal | float | int) -> type[std.anyreal]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.anyreal,
+        ___std__.anyreal,
         FuncCall(
             fname="std::math::abs",
             args=[v for v in args if v is not Unspecified],
@@ -153,7 +153,7 @@ def ceil(x: type[std.int64]) -> type[std.int64]:  # type: ignore [overload-canno
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.int64,
+        ___std__.int64,
         FuncCall(
             fname="std::math::ceil",
             args=[v for v in args if v is not Unspecified],
@@ -167,7 +167,7 @@ def ceil(x: type[std.float64]) -> type[std.float64]:  # type: ignore [overload-c
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::ceil",
             args=[v for v in args if v is not Unspecified],
@@ -181,7 +181,7 @@ def ceil(x: type[std.bigint]) -> type[std.bigint]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bigint,
+        ___std__.bigint,
         FuncCall(
             fname="std::math::ceil",
             args=[v for v in args if v is not Unspecified],
@@ -195,7 +195,7 @@ def ceil(x: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload-c
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::ceil",
             args=[v for v in args if v is not Unspecified],
@@ -212,7 +212,7 @@ def floor(x: type[std.int64]) -> type[std.int64]:  # type: ignore [overload-cann
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.int64,
+        ___std__.int64,
         FuncCall(
             fname="std::math::floor",
             args=[v for v in args if v is not Unspecified],
@@ -226,7 +226,7 @@ def floor(x: type[std.float64]) -> type[std.float64]:  # type: ignore [overload-
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::floor",
             args=[v for v in args if v is not Unspecified],
@@ -240,7 +240,7 @@ def floor(x: type[std.bigint]) -> type[std.bigint]:  # type: ignore [overload-ca
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bigint,
+        ___std__.bigint,
         FuncCall(
             fname="std::math::floor",
             args=[v for v in args if v is not Unspecified],
@@ -254,7 +254,7 @@ def floor(x: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload-
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::floor",
             args=[v for v in args if v is not Unspecified],
@@ -271,7 +271,7 @@ def ln(x: type[std.int64]) -> type[std.float64]:  # type: ignore [overload-canno
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::ln",
             args=[v for v in args if v is not Unspecified],
@@ -285,7 +285,7 @@ def ln(x: type[std.float64]) -> type[std.float64]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::ln",
             args=[v for v in args if v is not Unspecified],
@@ -299,7 +299,7 @@ def ln(x: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload-can
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::ln",
             args=[v for v in args if v is not Unspecified],
@@ -316,7 +316,7 @@ def mean(vals: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overloa
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::mean",
             args=[v for v in args if v is not Unspecified],
@@ -330,7 +330,7 @@ def mean(vals: type[std.int64]) -> type[std.float64]:  # type: ignore [overload-
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::mean",
             args=[v for v in args if v is not Unspecified],
@@ -344,7 +344,7 @@ def mean(vals: type[std.float64]) -> type[std.float64]:  # type: ignore [overloa
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::mean",
             args=[v for v in args if v is not Unspecified],
@@ -361,7 +361,7 @@ def stddev(vals: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overl
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::stddev",
             args=[v for v in args if v is not Unspecified],
@@ -375,7 +375,7 @@ def stddev(vals: type[std.int64]) -> type[std.float64]:  # type: ignore [overloa
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::stddev",
             args=[v for v in args if v is not Unspecified],
@@ -389,7 +389,7 @@ def stddev(vals: type[std.float64]) -> type[std.float64]:  # type: ignore [overl
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::stddev",
             args=[v for v in args if v is not Unspecified],
@@ -406,7 +406,7 @@ def stddev_pop(vals: type[std.decimal]) -> type[std.decimal]:  # type: ignore [o
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::stddev_pop",
             args=[v for v in args if v is not Unspecified],
@@ -420,7 +420,7 @@ def stddev_pop(vals: type[std.int64]) -> type[std.float64]:  # type: ignore [ove
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::stddev_pop",
             args=[v for v in args if v is not Unspecified],
@@ -434,7 +434,7 @@ def stddev_pop(vals: type[std.float64]) -> type[std.float64]:  # type: ignore [o
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::stddev_pop",
             args=[v for v in args if v is not Unspecified],
@@ -451,7 +451,7 @@ def var(vals: type[std.decimal]) -> type[std.decimal]:  # type: ignore [overload
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::var",
             args=[v for v in args if v is not Unspecified],
@@ -465,7 +465,7 @@ def var(vals: type[std.int64]) -> type[std.float64]:  # type: ignore [overload-c
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::var",
             args=[v for v in args if v is not Unspecified],
@@ -479,7 +479,7 @@ def var(vals: type[std.float64]) -> type[std.float64]:  # type: ignore [overload
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::var",
             args=[v for v in args if v is not Unspecified],
@@ -496,7 +496,7 @@ def var_pop(vals: type[std.decimal]) -> type[std.decimal]:  # type: ignore [over
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.decimal,
+        ___std__.decimal,
         FuncCall(
             fname="std::math::var_pop",
             args=[v for v in args if v is not Unspecified],
@@ -510,7 +510,7 @@ def var_pop(vals: type[std.int64]) -> type[std.float64]:  # type: ignore [overlo
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::var_pop",
             args=[v for v in args if v is not Unspecified],
@@ -524,7 +524,7 @@ def var_pop(vals: type[std.float64]) -> type[std.float64]:  # type: ignore [over
     args: list[Any] = [vals]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::var_pop",
             args=[v for v in args if v is not Unspecified],
@@ -540,7 +540,7 @@ def pi() -> type[std.float64]:
     args: list[Any] = []
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::pi",
             args=[v for v in args if v is not Unspecified],
@@ -553,7 +553,7 @@ def acos(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::acos",
             args=[v for v in args if v is not Unspecified],
@@ -566,7 +566,7 @@ def asin(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::asin",
             args=[v for v in args if v is not Unspecified],
@@ -579,7 +579,7 @@ def atan(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::atan",
             args=[v for v in args if v is not Unspecified],
@@ -595,7 +595,7 @@ def atan2(
     args: list[Any] = [y, x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::atan2",
             args=[v for v in args if v is not Unspecified],
@@ -608,7 +608,7 @@ def cos(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::cos",
             args=[v for v in args if v is not Unspecified],
@@ -621,7 +621,7 @@ def cot(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::cot",
             args=[v for v in args if v is not Unspecified],
@@ -634,7 +634,7 @@ def sin(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::sin",
             args=[v for v in args if v is not Unspecified],
@@ -647,7 +647,7 @@ def tan(x: type[std.float64] | float) -> type[std.float64]:
     args: list[Any] = [x]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::math::tan",
             args=[v for v in args if v is not Unspecified],
@@ -658,4 +658,4 @@ def tan(x: type[std.float64] | float) -> type[std.float64]:
 
 
 
-from ..__variants__ import std as __std__  # noqa: E402 F403
+from ..__variants__ import std as ___std__  # noqa: E402 F403

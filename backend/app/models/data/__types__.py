@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from . import std
 
-from gel.models.pydantic import AnyTuple, GelTypeMetadata, SchemaPath
+from gel.models.pydantic import AnyNamedTuple, GelTypeMetadata, SchemaPath
 
 from typing import NamedTuple
 from uuid import UUID
@@ -25,7 +25,7 @@ class _HeaderPayloadSignature_Tuple_e_sBBg(NamedTuple):
 
 class HeaderPayloadSignature_Tuple_e_sBBg(
     _HeaderPayloadSignature_Tuple_e_sBBg,
-    AnyTuple,
+    AnyNamedTuple,
 ):
     class __gel_reflection__(GelTypeMetadata.__gel_reflection__):
         id = UUID(int=164798330796699462868874118661116466001)

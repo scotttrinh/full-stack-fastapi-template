@@ -40,7 +40,7 @@ def to_local_datetime(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [s, fmt]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_datetime,
+        ___base__.local_datetime,
         FuncCall(
             fname="std::cal::to_local_datetime",
             args=[v for v in args if v is not Unspecified],
@@ -61,7 +61,7 @@ def to_local_datetime(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [year, month, day, hour, min, sec]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_datetime,
+        ___base__.local_datetime,
         FuncCall(
             fname="std::cal::to_local_datetime",
             args=[v for v in args if v is not Unspecified],
@@ -78,7 +78,7 @@ def to_local_datetime(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [dt, zone]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_datetime,
+        ___base__.local_datetime,
         FuncCall(
             fname="std::cal::to_local_datetime",
             args=[v for v in args if v is not Unspecified],
@@ -101,7 +101,7 @@ def to_local_date(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [s, fmt]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_date,
+        ___base__.local_date,
         FuncCall(
             fname="std::cal::to_local_date",
             args=[v for v in args if v is not Unspecified],
@@ -118,7 +118,7 @@ def to_local_date(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [dt, zone]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_date,
+        ___base__.local_date,
         FuncCall(
             fname="std::cal::to_local_date",
             args=[v for v in args if v is not Unspecified],
@@ -136,7 +136,7 @@ def to_local_date(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [year, month, day]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_date,
+        ___base__.local_date,
         FuncCall(
             fname="std::cal::to_local_date",
             args=[v for v in args if v is not Unspecified],
@@ -156,7 +156,7 @@ def to_local_time(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [s, fmt]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_time,
+        ___base__.local_time,
         FuncCall(
             fname="std::cal::to_local_time",
             args=[v for v in args if v is not Unspecified],
@@ -173,7 +173,7 @@ def to_local_time(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [dt, zone]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_time,
+        ___base__.local_time,
         FuncCall(
             fname="std::cal::to_local_time",
             args=[v for v in args if v is not Unspecified],
@@ -191,7 +191,7 @@ def to_local_time(  # type: ignore [overload-cannot-match, unused-ignore]
     args: list[Any] = [hour, min, sec]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.local_time,
+        ___base__.local_time,
         FuncCall(
             fname="std::cal::to_local_time",
             args=[v for v in args if v is not Unspecified],
@@ -224,7 +224,7 @@ def to_relative_duration(
         "microseconds": microseconds,
     }
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.relative_duration,
+        ___base__.relative_duration,
         FuncCall(
             fname="std::cal::to_relative_duration",
             args=[v for v in args if v is not Unspecified],
@@ -242,7 +242,7 @@ def to_date_duration(
     args: list[Any] = []
     kw: dict[str, Any] = {"years": years, "months": months, "days": days}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.date_duration,
+        ___base__.date_duration,
         FuncCall(
             fname="std::cal::to_date_duration",
             args=[v for v in args if v is not Unspecified],
@@ -258,7 +258,7 @@ def time_get(
     args: list[Any] = [dt, el]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::cal::time_get",
             args=[v for v in args if v is not Unspecified],
@@ -274,7 +274,7 @@ def date_get(
     args: list[Any] = [dt, el]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.float64,
+        ___std__.float64,
         FuncCall(
             fname="std::cal::date_get",
             args=[v for v in args if v is not Unspecified],
@@ -289,7 +289,7 @@ def duration_normalize_hours(
     args: list[Any] = [dur]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.relative_duration,
+        ___base__.relative_duration,
         FuncCall(
             fname="std::cal::duration_normalize_hours",
             args=[v for v in args if v is not Unspecified],
@@ -305,7 +305,7 @@ def duration_normalize_days(  # type: ignore [overload-cannot-match, unused-igno
     args: list[Any] = [dur]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.relative_duration,
+        ___base__.relative_duration,
         FuncCall(
             fname="std::cal::duration_normalize_days",
             args=[v for v in args if v is not Unspecified],
@@ -321,7 +321,7 @@ def duration_normalize_days(  # type: ignore [overload-cannot-match, unused-igno
     args: list[Any] = [dur]
     kw: dict[str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __base__.date_duration,
+        ___base__.date_duration,
         FuncCall(
             fname="std::cal::duration_normalize_days",
             args=[v for v in args if v is not Unspecified],
@@ -338,8 +338,8 @@ def duration_normalize_days(
 
 
 
-from ..__variants__ import std as __std__  # noqa: E402 F403
-from ..__variants__.std import cal as __base__  # noqa: E402 F403
+from ..__variants__ import std as ___std__  # noqa: E402 F403
+from ..__variants__.std import cal as ___base__  # noqa: E402 F403
 from ..__variants__.std.cal import (  # noqa: E402 F403
     date_duration,
     local_date,

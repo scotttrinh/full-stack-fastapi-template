@@ -35,7 +35,7 @@ def base64_encode(
     args: list[Any] = [data]
     kw: dict[str, Any] = {"alphabet": alphabet, "padding": padding}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.str,
+        ___std__.str,
         FuncCall(
             fname="std::enc::base64_encode",
             args=[v for v in args if v is not Unspecified],
@@ -53,7 +53,7 @@ def base64_decode(
     args: list[Any] = [data]
     kw: dict[str, Any] = {"alphabet": alphabet, "padding": padding}
     return AnnotatedExpr(  # type: ignore [return-value]
-        __std__.bytes,
+        ___std__.bytes,
         FuncCall(
             fname="std::enc::base64_decode",
             args=[v for v in args if v is not Unspecified],
@@ -64,7 +64,7 @@ def base64_decode(
 
 
 
-from ..__variants__ import std as __std__  # noqa: E402 F403
+from ..__variants__ import std as ___std__  # noqa: E402 F403
 from ..__variants__.std.enc import Base64Alphabet  # noqa: E402 F403
 
 

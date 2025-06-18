@@ -27,7 +27,7 @@ from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
 
-    from ..__variants__ import std as __std__
+    from ..__variants__ import std as ___std__
 
     import builtins as builtins
     from builtins import type
@@ -174,9 +174,9 @@ class SMTPProviderConfig(base.SMTPProviderConfig, EmailProviderConfig):
     timeout_per_attempt: std.duration
 def get_config_json(
     *,
-    sources: type[Array[__std__.str]] | list[builtins.str] | None | UnspecifiedType = Unspecified,
-    max_source: type[__std__.str] | builtins.str | None | UnspecifiedType = Unspecified,
-) -> type[__std__.json]:
+    sources: type[Array[___std__.str]] | list[builtins.str] | None | UnspecifiedType = Unspecified,
+    max_source: type[___std__.str] | builtins.str | None | UnspecifiedType = Unspecified,
+) -> type[___std__.json]:
     args: list[Any] = []
     kw: dict[str, Any] = {"sources": sources, "max_source": max_source}
     return AnnotatedExpr(  # type: ignore [return-value]

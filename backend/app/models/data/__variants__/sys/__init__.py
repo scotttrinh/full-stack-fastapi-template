@@ -8,41 +8,52 @@ from __future__ import annotations
 
 from .. import schema
 
+from gel.models import pydantic
 from gel.models.pydantic import (
     AnyEnum,
     Array,
+    Cardinality,
     ComputedProperty,
+    DEFAULT_VALUE,
+    DefaultValue,
     Direction,
     EmptyDirection,
     ExprCompatible,
+    GelModelMeta,
     LazyClassProperty,
     MultiLink,
+    OptionalComputedProperty,
     OptionalLink,
     OptionalProperty,
     PathAlias,
+    PointerKind,
     PyConstType,
     SchemaPath,
     Unspecified,
     UnspecifiedType
 )
 
-import builtins as __builtins_2__
-import builtins as __builtins_1__
-import builtins as builtins
-import builtins as __builtins__
-import datetime as __datetime__
-import datetime as __datetime_1__
+import builtins as ___builtins_2__
+import builtins as ___builtins_3__
+import builtins as ___builtins__
+import builtins as ___builtins_1__
+import datetime as ___datetime_1__
+import datetime as ___datetime__
 from builtins import list, tuple, type
 from collections.abc import Callable, Iterable
-from typing import TYPE_CHECKING, TypeVar
+from typing import Literal, TYPE_CHECKING, TypeVar
 from typing_extensions import Self, TypeAliasType
 from uuid import UUID
 
 if TYPE_CHECKING:
 
-    from .. import std as __std__
-    from ... import schema as __schema__, sys
-    from ...std import __types__ as __std___types____, __types__ as std___types__
+    from .. import std as ___std__
+    from ... import schema as ___schema__, sys
+    from ...std import __types__ as ___std___types____, __types__ as std___types__
+
+    from gel.models.pydantic import GelPointerReflection
+
+    from builtins import dict, str
 
 
 class OutputFormat(AnyEnum):
@@ -85,13 +96,22 @@ class VersionStage(AnyEnum):
 #
 # type sys::SystemObject
 #
-class __SystemObject_typeof__(schema.__Object_typeof__):
-    class __gel_reflection__(schema.__Object_typeof__.__gel_reflection__):
+class __SystemObject_typeof_base__(schema.__Object_typeof_base__):
+    class __gel_reflection__(schema.__Object_typeof_base__.__gel_reflection__):
         id = UUID(int=90350303980132584494185812701624669976)
         name = SchemaPath('sys', 'SystemObject')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, GelPointerReflection]:
+            my_ptrs: dict[str, GelPointerReflection] = {}
+            return (
+                my_ptrs
+                | schema.__Object_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=90350303980132584494185812701624669976),
@@ -103,7 +123,19 @@ class __SystemObject_typeof__(schema.__Object_typeof__):
                 compound_type=False,
             )
 
+class __SystemObject_typeof__(
+    schema.__Object_typeof__,
+    __SystemObject_typeof_base__,
+):
     class __typeof__(schema.__Object_typeof__.__typeof__):
+        pass
+
+
+class __SystemObject_typeof_partial__(
+    schema.__Object_typeof_partial__,
+    __SystemObject_typeof_base__,
+):
+    class __typeof__(schema.__Object_typeof_partial__.__typeof__):
         pass
 
 
@@ -117,10 +149,10 @@ class SystemObject(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
         ) -> None:
             """Create a new sys::SystemObject instance from keyword arguments.
 
@@ -128,30 +160,31 @@ class SystemObject(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::SystemObject instances in the database.
             """
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::SystemObject instances from the database.
@@ -159,45 +192,49 @@ class SystemObject(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::SystemObject instances from the database.
             """
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
 
 
     class __variants__(schema.Object.__variants__):
-        class Base(__SystemObject_typeof__, schema.Object.__variants__.Base):
+        class Base(
+            __SystemObject_typeof__,
+            schema.Object.__variants__.Base,
+            __gel_variant__="Base",
+        ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                 ) -> None:
                     """Create a new sys::SystemObject instance from keyword arguments.
 
@@ -205,30 +242,31 @@ class SystemObject(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::SystemObject instances in the database.
                     """
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::SystemObject instances from the database.
@@ -236,36 +274,60 @@ class SystemObject(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::SystemObject instances from the database.
                     """
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            schema.Object.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            pass
 
-        Any = TypeVar("Any", bound="SystemObject | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __SystemObject_typeof_partial__,
+            Base,
+            schema.Object.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            schema.Object.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            pass
+
+
+        Any = TypeVar("Any", bound="SystemObject | Base | Required | Partial")
     class __links__(schema.Object.__links__):
+        pass
+    class __links_partial__(schema.Object.__links_partial__):
         pass
 
 if not TYPE_CHECKING:
@@ -276,19 +338,52 @@ if not TYPE_CHECKING:
 #
 # type sys::ExtensionPackage
 #
-class __ExtensionPackage_typeof__(
-    __SystemObject_typeof__,
-    schema.__AnnotationSubject_typeof__,
+class __ExtensionPackage_typeof_base__(
+    __SystemObject_typeof_base__,
+    schema.__AnnotationSubject_typeof_base__,
 ):
     class __gel_reflection__(
-        __SystemObject_typeof__.__gel_reflection__,
-        schema.__AnnotationSubject_typeof__.__gel_reflection__,
+        __SystemObject_typeof_base__.__gel_reflection__,
+        schema.__AnnotationSubject_typeof_base__.__gel_reflection__,
     ):
         id = UUID(int=180071320089194630696024936739719303821)
         name = SchemaPath('sys', 'ExtensionPackage')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, pydantic.GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, pydantic.GelPointerReflection]:
+            my_ptrs: dict[str, pydantic.GelPointerReflection] = {
+                'script': pydantic.GelPointerReflection(
+                    name='script',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'version': pydantic.GelPointerReflection(
+                    name='version',
+                    type=SchemaPath('tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>'),
+                    typexpr='tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+            }
+            return (
+                my_ptrs
+                | __SystemObject_typeof_base__.__gel_reflection__.pointers
+                | schema.__AnnotationSubject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=180071320089194630696024936739719303821),
@@ -300,12 +395,30 @@ class __ExtensionPackage_typeof__(
                 compound_type=False,
             )
 
+class __ExtensionPackage_typeof__(
+    __SystemObject_typeof__,
+    schema.__AnnotationSubject_typeof__,
+    __ExtensionPackage_typeof_base__,
+):
     class __typeof__(
         __SystemObject_typeof__.__typeof__,
         schema.__AnnotationSubject_typeof__.__typeof__,
     ):
         script = TypeAliasType('script', 'std.str')
         version = TypeAliasType('version', 'MajorMinorStageStage_noLocal_Tuple_SKRhXQ')
+
+
+class __ExtensionPackage_typeof_partial__(
+    __SystemObject_typeof_partial__,
+    schema.__AnnotationSubject_typeof_partial__,
+    __ExtensionPackage_typeof_base__,
+):
+    class __typeof__(
+        __SystemObject_typeof_partial__.__typeof__,
+        schema.__AnnotationSubject_typeof_partial__.__typeof__,
+    ):
+        script = TypeAliasType('script', 'OptionalProperty[std.str, builtins.str]')
+        version = TypeAliasType('version', 'OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]')
 
 
 class ExtensionPackage(
@@ -319,13 +432,13 @@ class ExtensionPackage(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
             annotations: Iterable[schema.Annotation] = [],
-            script: str,
-            version: tuple[int, int, __builtins__.str, int, list[str]],
+            script: builtins.str,
+            version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
         ) -> None:
             """Create a new sys::ExtensionPackage instance from keyword arguments.
 
@@ -333,17 +446,18 @@ class ExtensionPackage(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::ExtensionPackage instances in the database.
@@ -351,18 +465,18 @@ class ExtensionPackage(
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::ExtensionPackage instances from the database.
@@ -370,17 +484,17 @@ class ExtensionPackage(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::ExtensionPackage instances from the database.
@@ -388,15 +502,15 @@ class ExtensionPackage(
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            script: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            script: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
@@ -410,19 +524,20 @@ class ExtensionPackage(
             __ExtensionPackage_typeof__,
             SystemObject.__variants__.Base,
             schema.AnnotationSubject.__variants__.Base,
+            __gel_variant__="Base",
         ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                     annotations: Iterable[schema.Annotation] = [],
-                    script: str,
-                    version: tuple[int, int, __builtins__.str, int, list[str]],
+                    script: builtins.str,
+                    version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
                 ) -> None:
                     """Create a new sys::ExtensionPackage instance from keyword arguments.
 
@@ -430,17 +545,18 @@ class ExtensionPackage(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::ExtensionPackage instances in the database.
@@ -448,18 +564,18 @@ class ExtensionPackage(
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::ExtensionPackage instances from the database.
@@ -467,17 +583,17 @@ class ExtensionPackage(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::ExtensionPackage instances from the database.
@@ -485,24 +601,56 @@ class ExtensionPackage(
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    script: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    script: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            SystemObject.__variants__.Required,
+            schema.AnnotationSubject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            script: std.str
+            version: MajorMinorStageStage_noLocal_Tuple_SKRhXQ
 
-        Any = TypeVar("Any", bound="ExtensionPackage | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __ExtensionPackage_typeof_partial__,
+            Base,
+            SystemObject.__variants__.PartialBase,
+            schema.AnnotationSubject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            SystemObject.__variants__.Partial,
+            schema.AnnotationSubject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            script: OptionalProperty[std.str, builtins.str]
+            version: OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]
+
+
+        Any = TypeVar("Any", bound="ExtensionPackage | Base | Required | Partial")
     class __links__(
         SystemObject.__links__,
         schema.AnnotationSubject.__links__,
+    ):
+        pass
+    class __links_partial__(
+        SystemObject.__links_partial__,
+        schema.AnnotationSubject.__links_partial__,
     ):
         pass
 
@@ -514,19 +662,63 @@ if not TYPE_CHECKING:
 #
 # type sys::ExtensionPackageMigration
 #
-class __ExtensionPackageMigration_typeof__(
-    __SystemObject_typeof__,
-    schema.__AnnotationSubject_typeof__,
+class __ExtensionPackageMigration_typeof_base__(
+    __SystemObject_typeof_base__,
+    schema.__AnnotationSubject_typeof_base__,
 ):
     class __gel_reflection__(
-        __SystemObject_typeof__.__gel_reflection__,
-        schema.__AnnotationSubject_typeof__.__gel_reflection__,
+        __SystemObject_typeof_base__.__gel_reflection__,
+        schema.__AnnotationSubject_typeof_base__.__gel_reflection__,
     ):
         id = UUID(int=302620932575936177542260435729933168552)
         name = SchemaPath('sys', 'ExtensionPackageMigration')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, pydantic.GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, pydantic.GelPointerReflection]:
+            my_ptrs: dict[str, pydantic.GelPointerReflection] = {
+                'script': pydantic.GelPointerReflection(
+                    name='script',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'from_version': pydantic.GelPointerReflection(
+                    name='from_version',
+                    type=SchemaPath('tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>'),
+                    typexpr='tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'to_version': pydantic.GelPointerReflection(
+                    name='to_version',
+                    type=SchemaPath('tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>'),
+                    typexpr='tuple<major:std::int64, minor:std::int64, stage:sys::VersionStage, stage_no:std::int64, local:array<std::str>>',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+            }
+            return (
+                my_ptrs
+                | __SystemObject_typeof_base__.__gel_reflection__.pointers
+                | schema.__AnnotationSubject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=302620932575936177542260435729933168552),
@@ -538,6 +730,11 @@ class __ExtensionPackageMigration_typeof__(
                 compound_type=False,
             )
 
+class __ExtensionPackageMigration_typeof__(
+    __SystemObject_typeof__,
+    schema.__AnnotationSubject_typeof__,
+    __ExtensionPackageMigration_typeof_base__,
+):
     class __typeof__(
         __SystemObject_typeof__.__typeof__,
         schema.__AnnotationSubject_typeof__.__typeof__,
@@ -545,6 +742,20 @@ class __ExtensionPackageMigration_typeof__(
         script = TypeAliasType('script', 'std.str')
         from_version = TypeAliasType('from_version', 'MajorMinorStageStage_noLocal_Tuple_SKRhXQ')
         to_version = TypeAliasType('to_version', 'MajorMinorStageStage_noLocal_Tuple_SKRhXQ')
+
+
+class __ExtensionPackageMigration_typeof_partial__(
+    __SystemObject_typeof_partial__,
+    schema.__AnnotationSubject_typeof_partial__,
+    __ExtensionPackageMigration_typeof_base__,
+):
+    class __typeof__(
+        __SystemObject_typeof_partial__.__typeof__,
+        schema.__AnnotationSubject_typeof_partial__.__typeof__,
+    ):
+        script = TypeAliasType('script', 'OptionalProperty[std.str, builtins.str]')
+        from_version = TypeAliasType('from_version', 'OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]')
+        to_version = TypeAliasType('to_version', 'OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]')
 
 
 class ExtensionPackageMigration(
@@ -558,14 +769,14 @@ class ExtensionPackageMigration(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
             annotations: Iterable[schema.Annotation] = [],
-            script: str,
-            from_version: tuple[int, int, __builtins__.str, int, list[str]],
-            to_version: tuple[int, int, __builtins__.str, int, list[str]],
+            script: builtins.str,
+            from_version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
+            to_version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
         ) -> None:
             """Create a new sys::ExtensionPackageMigration instance from keyword arguments.
 
@@ -573,17 +784,18 @@ class ExtensionPackageMigration(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             from_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
             to_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
@@ -592,19 +804,19 @@ class ExtensionPackageMigration(
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            from_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
-            to_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            from_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+            to_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::ExtensionPackageMigration instances from the database.
@@ -612,17 +824,17 @@ class ExtensionPackageMigration(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             from_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
             to_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
@@ -631,15 +843,15 @@ class ExtensionPackageMigration(
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            script: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            script: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
@@ -653,20 +865,21 @@ class ExtensionPackageMigration(
             __ExtensionPackageMigration_typeof__,
             SystemObject.__variants__.Base,
             schema.AnnotationSubject.__variants__.Base,
+            __gel_variant__="Base",
         ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                     annotations: Iterable[schema.Annotation] = [],
-                    script: str,
-                    from_version: tuple[int, int, __builtins__.str, int, list[str]],
-                    to_version: tuple[int, int, __builtins__.str, int, list[str]],
+                    script: builtins.str,
+                    from_version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
+                    to_version: tuple[int, int, ___builtins_1__.str, int, list[builtins.str]],
                 ) -> None:
                     """Create a new sys::ExtensionPackageMigration instance from keyword arguments.
 
@@ -674,17 +887,18 @@ class ExtensionPackageMigration(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     from_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                     to_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
@@ -693,19 +907,19 @@ class ExtensionPackageMigration(
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    from_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
-                    to_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    from_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
+                    to_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::ExtensionPackageMigration instances from the database.
@@ -713,17 +927,17 @@ class ExtensionPackageMigration(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    script: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    script: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     from_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                     to_version: type[std___types__.MajorMinorStageStage_noLocal_Tuple_SKRhXQ] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
@@ -732,24 +946,58 @@ class ExtensionPackageMigration(
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    script: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    script: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            SystemObject.__variants__.Required,
+            schema.AnnotationSubject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            script: std.str
+            from_version: MajorMinorStageStage_noLocal_Tuple_SKRhXQ
+            to_version: MajorMinorStageStage_noLocal_Tuple_SKRhXQ
 
-        Any = TypeVar("Any", bound="ExtensionPackageMigration | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __ExtensionPackageMigration_typeof_partial__,
+            Base,
+            SystemObject.__variants__.PartialBase,
+            schema.AnnotationSubject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            SystemObject.__variants__.Partial,
+            schema.AnnotationSubject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            script: OptionalProperty[std.str, builtins.str]
+            from_version: OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]
+            to_version: OptionalProperty[MajorMinorStageStage_noLocal_Tuple_SKRhXQ, tuple[int, int, ___builtins_1__.str, int, list[builtins.str]]]
+
+
+        Any = TypeVar("Any", bound="ExtensionPackageMigration | Base | Required | Partial")
     class __links__(
         SystemObject.__links__,
         schema.AnnotationSubject.__links__,
+    ):
+        pass
+    class __links_partial__(
+        SystemObject.__links_partial__,
+        schema.AnnotationSubject.__links_partial__,
     ):
         pass
 
@@ -761,13 +1009,22 @@ if not TYPE_CHECKING:
 #
 # type sys::ExternalObject
 #
-class __ExternalObject_typeof__(__SystemObject_typeof__):
-    class __gel_reflection__(__SystemObject_typeof__.__gel_reflection__):
+class __ExternalObject_typeof_base__(__SystemObject_typeof_base__):
+    class __gel_reflection__(__SystemObject_typeof_base__.__gel_reflection__):
         id = UUID(int=302417707415983282126938051159487614287)
         name = SchemaPath('sys', 'ExternalObject')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, GelPointerReflection]:
+            my_ptrs: dict[str, GelPointerReflection] = {}
+            return (
+                my_ptrs
+                | __SystemObject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=302417707415983282126938051159487614287),
@@ -779,7 +1036,19 @@ class __ExternalObject_typeof__(__SystemObject_typeof__):
                 compound_type=False,
             )
 
+class __ExternalObject_typeof__(
+    __SystemObject_typeof__,
+    __ExternalObject_typeof_base__,
+):
     class __typeof__(__SystemObject_typeof__.__typeof__):
+        pass
+
+
+class __ExternalObject_typeof_partial__(
+    __SystemObject_typeof_partial__,
+    __ExternalObject_typeof_base__,
+):
+    class __typeof__(__SystemObject_typeof_partial__.__typeof__):
         pass
 
 
@@ -793,10 +1062,10 @@ class ExternalObject(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
         ) -> None:
             """Create a new sys::ExternalObject instance from keyword arguments.
 
@@ -804,30 +1073,31 @@ class ExternalObject(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::ExternalObject instances in the database.
             """
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::ExternalObject instances from the database.
@@ -835,45 +1105,49 @@ class ExternalObject(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::ExternalObject instances from the database.
             """
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
 
 
     class __variants__(SystemObject.__variants__):
-        class Base(__ExternalObject_typeof__, SystemObject.__variants__.Base):
+        class Base(
+            __ExternalObject_typeof__,
+            SystemObject.__variants__.Base,
+            __gel_variant__="Base",
+        ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                 ) -> None:
                     """Create a new sys::ExternalObject instance from keyword arguments.
 
@@ -881,30 +1155,31 @@ class ExternalObject(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::ExternalObject instances in the database.
                     """
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::ExternalObject instances from the database.
@@ -912,36 +1187,60 @@ class ExternalObject(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::ExternalObject instances from the database.
                     """
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            SystemObject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            pass
 
-        Any = TypeVar("Any", bound="ExternalObject | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __ExternalObject_typeof_partial__,
+            Base,
+            SystemObject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            SystemObject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            pass
+
+
+        Any = TypeVar("Any", bound="ExternalObject | Base | Required | Partial")
     class __links__(SystemObject.__links__):
+        pass
+    class __links_partial__(SystemObject.__links_partial__):
         pass
 
 if not TYPE_CHECKING:
@@ -952,21 +1251,88 @@ if not TYPE_CHECKING:
 #
 # type sys::Role
 #
-class __Role_typeof__(
-    __SystemObject_typeof__,
-    schema.__InheritingObject_typeof__,
-    schema.__AnnotationSubject_typeof__,
+class __Role_typeof_base__(
+    __SystemObject_typeof_base__,
+    schema.__InheritingObject_typeof_base__,
+    schema.__AnnotationSubject_typeof_base__,
 ):
     class __gel_reflection__(
-        __SystemObject_typeof__.__gel_reflection__,
-        schema.__InheritingObject_typeof__.__gel_reflection__,
-        schema.__AnnotationSubject_typeof__.__gel_reflection__,
+        __SystemObject_typeof_base__.__gel_reflection__,
+        schema.__InheritingObject_typeof_base__.__gel_reflection__,
+        schema.__AnnotationSubject_typeof_base__.__gel_reflection__,
     ):
         id = UUID(int=6415088929791825864887870917823511316)
         name = SchemaPath('sys', 'Role')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, pydantic.GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, pydantic.GelPointerReflection]:
+            my_ptrs: dict[str, pydantic.GelPointerReflection] = {
+                'name': pydantic.GelPointerReflection(
+                    name='name',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'superuser': pydantic.GelPointerReflection(
+                    name='superuser',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'is_superuser': pydantic.GelPointerReflection(
+                    name='is_superuser',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=True,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'password': pydantic.GelPointerReflection(
+                    name='password',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'member_of': pydantic.GelPointerReflection(
+                    name='member_of',
+                    type=SchemaPath('sys', 'Role'),
+                    typexpr='sys::Role',
+                    kind=PointerKind('Link'),
+                    cardinality=Cardinality('Many'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+            }
+            return (
+                my_ptrs
+                | __SystemObject_typeof_base__.__gel_reflection__.pointers
+                | schema.__InheritingObject_typeof_base__.__gel_reflection__.pointers
+                | schema.__AnnotationSubject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=6415088929791825864887870917823511316),
@@ -978,6 +1344,12 @@ class __Role_typeof__(
                 compound_type=False,
             )
 
+class __Role_typeof__(
+    __SystemObject_typeof__,
+    schema.__InheritingObject_typeof__,
+    schema.__AnnotationSubject_typeof__,
+    __Role_typeof_base__,
+):
     class __typeof__(
         __SystemObject_typeof__.__typeof__,
         schema.__InheritingObject_typeof__.__typeof__,
@@ -986,8 +1358,26 @@ class __Role_typeof__(
         name = TypeAliasType('name', 'std.str')
         superuser = TypeAliasType('superuser', 'std.bool')
         is_superuser = TypeAliasType('is_superuser', 'ComputedProperty[std.bool, bool]')
-        password = TypeAliasType('password', 'OptionalProperty[std.str, str]')
+        password = TypeAliasType('password', 'OptionalProperty[std.str, builtins.str]')
         member_of = TypeAliasType('member_of', 'MultiLink[Role]')
+
+
+class __Role_typeof_partial__(
+    __SystemObject_typeof_partial__,
+    schema.__InheritingObject_typeof_partial__,
+    schema.__AnnotationSubject_typeof_partial__,
+    __Role_typeof_base__,
+):
+    class __typeof__(
+        __SystemObject_typeof_partial__.__typeof__,
+        schema.__InheritingObject_typeof_partial__.__typeof__,
+        schema.__AnnotationSubject_typeof_partial__.__typeof__,
+    ):
+        name = TypeAliasType('name', 'OptionalProperty[std.str, builtins.str]')
+        superuser = TypeAliasType('superuser', 'OptionalProperty[std.bool, bool]')
+        is_superuser = TypeAliasType('is_superuser', 'OptionalComputedProperty[std.bool, bool]')
+        password = TypeAliasType('password', 'OptionalProperty[std.str, builtins.str]')
+        member_of = TypeAliasType('member_of', 'MultiLink[Role | Role.__variants__.Partial]')
 
 
 class Role(
@@ -1002,17 +1392,17 @@ class Role(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
             annotations: Iterable[schema.Annotation] = [],
-            abstract: bool | None = None,
-            inherited_fields: list[str] | None = None,
+            abstract: bool | None | DefaultValue = DEFAULT_VALUE,
+            inherited_fields: list[builtins.str] | None = None,
             bases: Iterable[schema.InheritingObject] = [],
             ancestors: Iterable[schema.InheritingObject] = [],
             superuser: bool,
-            password: str | None = None,
+            password: builtins.str | None = None,
             member_of: Iterable[Role] = [],
         ) -> None:
             """Create a new sys::Role instance from keyword arguments.
@@ -1021,22 +1411,23 @@ class Role(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            abstract: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inherited_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            bases: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            ancestors: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            password: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            abstract: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inherited_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            bases: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            ancestors: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            password: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             member_of: type[sys.Role] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::Role instances in the database.
@@ -1044,25 +1435,25 @@ class Role(
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            abstract: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            final: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inherited_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            bases: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            ancestors: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            is_superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            password: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            member_of: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Role] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            abstract: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            final: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inherited_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            bases: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            ancestors: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            superuser: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            is_superuser: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            password: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            member_of: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Role] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::Role instances from the database.
@@ -1070,24 +1461,24 @@ class Role(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            abstract: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            final: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inherited_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            bases: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            ancestors: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-            superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            password: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            abstract: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            final: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inherited_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            bases: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            ancestors: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+            superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            is_superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            password: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             member_of: type[sys.Role] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::Role instances from the database.
@@ -1095,19 +1486,19 @@ class Role(
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            abstract: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            final: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            is_superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            password: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            abstract: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            final: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            superuser: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            is_superuser: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            password: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
@@ -1123,23 +1514,24 @@ class Role(
             SystemObject.__variants__.Base,
             schema.InheritingObject.__variants__.Base,
             schema.AnnotationSubject.__variants__.Base,
+            __gel_variant__="Base",
         ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                     annotations: Iterable[schema.Annotation] = [],
-                    abstract: bool | None = None,
-                    inherited_fields: list[str] | None = None,
+                    abstract: bool | None | DefaultValue = DEFAULT_VALUE,
+                    inherited_fields: list[builtins.str] | None = None,
                     bases: Iterable[schema.InheritingObject] = [],
                     ancestors: Iterable[schema.InheritingObject] = [],
                     superuser: bool,
-                    password: str | None = None,
+                    password: builtins.str | None = None,
                     member_of: Iterable[Role] = [],
                 ) -> None:
                     """Create a new sys::Role instance from keyword arguments.
@@ -1148,22 +1540,23 @@ class Role(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    abstract: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inherited_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    bases: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    ancestors: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    password: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    abstract: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inherited_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    bases: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    ancestors: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    password: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     member_of: type[sys.Role] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::Role instances in the database.
@@ -1171,25 +1564,25 @@ class Role(
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    abstract: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    final: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inherited_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    bases: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    ancestors: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    is_superuser: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    password: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    member_of: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Role] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    abstract: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    final: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inherited_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    bases: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    ancestors: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    superuser: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    is_superuser: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    password: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    member_of: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Role] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::Role instances from the database.
@@ -1197,24 +1590,24 @@ class Role(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    abstract: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    final: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inherited_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    bases: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    ancestors: type[__schema__.InheritingObject] | UnspecifiedType = Unspecified,
-                    superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    is_superuser: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    password: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    abstract: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    final: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inherited_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    bases: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    ancestors: type[___schema__.InheritingObject] | UnspecifiedType = Unspecified,
+                    superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    is_superuser: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    password: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     member_of: type[sys.Role] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::Role instances from the database.
@@ -1222,29 +1615,69 @@ class Role(
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    abstract: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    final: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    is_superuser: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    password: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    abstract: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    final: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    superuser: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    is_superuser: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    password: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            SystemObject.__variants__.Required,
+            schema.InheritingObject.__variants__.Required,
+            schema.AnnotationSubject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            name: std.str
+            superuser: std.bool
+            is_superuser: ComputedProperty[std.bool, bool]
 
-        Any = TypeVar("Any", bound="Role | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __Role_typeof_partial__,
+            Base,
+            SystemObject.__variants__.PartialBase,
+            schema.InheritingObject.__variants__.PartialBase,
+            schema.AnnotationSubject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            SystemObject.__variants__.Partial,
+            schema.InheritingObject.__variants__.Partial,
+            schema.AnnotationSubject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            name: OptionalProperty[std.str, builtins.str]
+            superuser: OptionalProperty[std.bool, bool]
+            is_superuser: OptionalComputedProperty[std.bool, bool]
+            password: OptionalProperty[std.str, builtins.str]
+            member_of: MultiLink[___sys__.Role | ___sys__.Role.__variants__.Partial]
+
+
+        Any = TypeVar("Any", bound="Role | Base | Required | Partial")
     class __links__(
         SystemObject.__links__,
         schema.InheritingObject.__links__,
         schema.AnnotationSubject.__links__,
+    ):
+        pass
+    class __links_partial__(
+        SystemObject.__links_partial__,
+        schema.InheritingObject.__links_partial__,
+        schema.AnnotationSubject.__links_partial__,
     ):
         pass
 
@@ -1256,19 +1689,52 @@ if not TYPE_CHECKING:
 #
 # type sys::Branch
 #
-class __Branch_typeof__(
-    __ExternalObject_typeof__,
-    schema.__AnnotationSubject_typeof__,
+class __Branch_typeof_base__(
+    __ExternalObject_typeof_base__,
+    schema.__AnnotationSubject_typeof_base__,
 ):
     class __gel_reflection__(
-        __ExternalObject_typeof__.__gel_reflection__,
-        schema.__AnnotationSubject_typeof__.__gel_reflection__,
+        __ExternalObject_typeof_base__.__gel_reflection__,
+        schema.__AnnotationSubject_typeof_base__.__gel_reflection__,
     ):
         id = UUID(int=49778529390898516016872303811592688699)
         name = SchemaPath('sys', 'Branch')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, pydantic.GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, pydantic.GelPointerReflection]:
+            my_ptrs: dict[str, pydantic.GelPointerReflection] = {
+                'name': pydantic.GelPointerReflection(
+                    name='name',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('One'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'last_migration': pydantic.GelPointerReflection(
+                    name='last_migration',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+            }
+            return (
+                my_ptrs
+                | __ExternalObject_typeof_base__.__gel_reflection__.pointers
+                | schema.__AnnotationSubject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=49778529390898516016872303811592688699),
@@ -1280,12 +1746,30 @@ class __Branch_typeof__(
                 compound_type=False,
             )
 
+class __Branch_typeof__(
+    __ExternalObject_typeof__,
+    schema.__AnnotationSubject_typeof__,
+    __Branch_typeof_base__,
+):
     class __typeof__(
         __ExternalObject_typeof__.__typeof__,
         schema.__AnnotationSubject_typeof__.__typeof__,
     ):
         name = TypeAliasType('name', 'std.str')
-        last_migration = TypeAliasType('last_migration', 'OptionalProperty[std.str, str]')
+        last_migration = TypeAliasType('last_migration', 'OptionalProperty[std.str, builtins.str]')
+
+
+class __Branch_typeof_partial__(
+    __ExternalObject_typeof_partial__,
+    schema.__AnnotationSubject_typeof_partial__,
+    __Branch_typeof_base__,
+):
+    class __typeof__(
+        __ExternalObject_typeof_partial__.__typeof__,
+        schema.__AnnotationSubject_typeof_partial__.__typeof__,
+    ):
+        name = TypeAliasType('name', 'OptionalProperty[std.str, builtins.str]')
+        last_migration = TypeAliasType('last_migration', 'OptionalProperty[std.str, builtins.str]')
 
 
 class Branch(
@@ -1299,12 +1783,12 @@ class Branch(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
             annotations: Iterable[schema.Annotation] = [],
-            last_migration: str | None = None,
+            last_migration: builtins.str | None = None,
         ) -> None:
             """Create a new sys::Branch instance from keyword arguments.
 
@@ -1312,34 +1796,35 @@ class Branch(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            last_migration: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            last_migration: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::Branch instances in the database.
             """
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            last_migration: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            last_migration: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::Branch instances from the database.
@@ -1347,32 +1832,32 @@ class Branch(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-            last_migration: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+            last_migration: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::Branch instances from the database.
             """
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            last_migration: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            last_migration: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
@@ -1386,18 +1871,19 @@ class Branch(
             __Branch_typeof__,
             ExternalObject.__variants__.Base,
             schema.AnnotationSubject.__variants__.Base,
+            __gel_variant__="Base",
         ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
                     annotations: Iterable[schema.Annotation] = [],
-                    last_migration: str | None = None,
+                    last_migration: builtins.str | None = None,
                 ) -> None:
                     """Create a new sys::Branch instance from keyword arguments.
 
@@ -1405,34 +1891,35 @@ class Branch(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    last_migration: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    last_migration: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::Branch instances in the database.
                     """
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    last_migration: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    last_migration: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::Branch instances from the database.
@@ -1440,41 +1927,72 @@ class Branch(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    annotations: type[__schema__.Annotation] | UnspecifiedType = Unspecified,
-                    last_migration: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    annotations: type[___schema__.Annotation] | UnspecifiedType = Unspecified,
+                    last_migration: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::Branch instances from the database.
                     """
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    last_migration: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    last_migration: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            ExternalObject.__variants__.Required,
+            schema.AnnotationSubject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            name: std.str
 
-        Any = TypeVar("Any", bound="Branch | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __Branch_typeof_partial__,
+            Base,
+            ExternalObject.__variants__.PartialBase,
+            schema.AnnotationSubject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            ExternalObject.__variants__.Partial,
+            schema.AnnotationSubject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            name: OptionalProperty[std.str, builtins.str]
+            last_migration: OptionalProperty[std.str, builtins.str]
+
+
+        Any = TypeVar("Any", bound="Branch | Base | Required | Partial")
     class __links__(
         ExternalObject.__links__,
         schema.AnnotationSubject.__links__,
+    ):
+        pass
+    class __links_partial__(
+        ExternalObject.__links_partial__,
+        schema.AnnotationSubject.__links_partial__,
     ):
         pass
 
@@ -1486,13 +2004,344 @@ if not TYPE_CHECKING:
 #
 # type sys::QueryStats
 #
-class __QueryStats_typeof__(__ExternalObject_typeof__):
-    class __gel_reflection__(__ExternalObject_typeof__.__gel_reflection__):
+class __QueryStats_typeof_base__(__ExternalObject_typeof_base__):
+    class __gel_reflection__(
+        __ExternalObject_typeof_base__.__gel_reflection__,
+    ):
         id = UUID(int=274580524048681063750167790732145947985)
         name = SchemaPath('sys', 'QueryStats')
-        @LazyClassProperty["__schema__.ObjectType"]
+        @LazyClassProperty["dict[str, pydantic.GelPointerReflection]"]
         @classmethod
-        def object(cls) -> __schema__.ObjectType:
+        def pointers(cls) -> dict[str, pydantic.GelPointerReflection]:
+            my_ptrs: dict[str, pydantic.GelPointerReflection] = {
+                'query': pydantic.GelPointerReflection(
+                    name='query',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'query_type': pydantic.GelPointerReflection(
+                    name='query_type',
+                    type=SchemaPath('sys', 'QueryType'),
+                    typexpr='sys::QueryType',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'tag': pydantic.GelPointerReflection(
+                    name='tag',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'compilation_config': pydantic.GelPointerReflection(
+                    name='compilation_config',
+                    type=SchemaPath('std', 'json'),
+                    typexpr='std::json',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'protocol_version': pydantic.GelPointerReflection(
+                    name='protocol_version',
+                    type=SchemaPath('tuple<major:std::int16, minor:std::int16>'),
+                    typexpr='tuple<major:std::int16, minor:std::int16>',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'default_namespace': pydantic.GelPointerReflection(
+                    name='default_namespace',
+                    type=SchemaPath('std', 'str'),
+                    typexpr='std::str',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'namespace_aliases': pydantic.GelPointerReflection(
+                    name='namespace_aliases',
+                    type=SchemaPath('std', 'json'),
+                    typexpr='std::json',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'output_format': pydantic.GelPointerReflection(
+                    name='output_format',
+                    type=SchemaPath('sys', 'OutputFormat'),
+                    typexpr='sys::OutputFormat',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'expect_one': pydantic.GelPointerReflection(
+                    name='expect_one',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'implicit_limit': pydantic.GelPointerReflection(
+                    name='implicit_limit',
+                    type=SchemaPath('std', 'int64'),
+                    typexpr='std::int64',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'inline_typeids': pydantic.GelPointerReflection(
+                    name='inline_typeids',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'inline_typenames': pydantic.GelPointerReflection(
+                    name='inline_typenames',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'inline_objectids': pydantic.GelPointerReflection(
+                    name='inline_objectids',
+                    type=SchemaPath('std', 'bool'),
+                    typexpr='std::bool',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'plans': pydantic.GelPointerReflection(
+                    name='plans',
+                    type=SchemaPath('std', 'int64'),
+                    typexpr='std::int64',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'total_plan_time': pydantic.GelPointerReflection(
+                    name='total_plan_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'min_plan_time': pydantic.GelPointerReflection(
+                    name='min_plan_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'max_plan_time': pydantic.GelPointerReflection(
+                    name='max_plan_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'mean_plan_time': pydantic.GelPointerReflection(
+                    name='mean_plan_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'stddev_plan_time': pydantic.GelPointerReflection(
+                    name='stddev_plan_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'calls': pydantic.GelPointerReflection(
+                    name='calls',
+                    type=SchemaPath('std', 'int64'),
+                    typexpr='std::int64',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'total_exec_time': pydantic.GelPointerReflection(
+                    name='total_exec_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'min_exec_time': pydantic.GelPointerReflection(
+                    name='min_exec_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'max_exec_time': pydantic.GelPointerReflection(
+                    name='max_exec_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'mean_exec_time': pydantic.GelPointerReflection(
+                    name='mean_exec_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'stddev_exec_time': pydantic.GelPointerReflection(
+                    name='stddev_exec_time',
+                    type=SchemaPath('std', 'duration'),
+                    typexpr='std::duration',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'rows': pydantic.GelPointerReflection(
+                    name='rows',
+                    type=SchemaPath('std', 'int64'),
+                    typexpr='std::int64',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'stats_since': pydantic.GelPointerReflection(
+                    name='stats_since',
+                    type=SchemaPath('std', 'datetime'),
+                    typexpr='std::datetime',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'minmax_stats_since': pydantic.GelPointerReflection(
+                    name='minmax_stats_since',
+                    type=SchemaPath('std', 'datetime'),
+                    typexpr='std::datetime',
+                    kind=PointerKind('Property'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+                'branch': pydantic.GelPointerReflection(
+                    name='branch',
+                    type=SchemaPath('sys', 'Branch'),
+                    typexpr='sys::Branch',
+                    kind=PointerKind('Link'),
+                    cardinality=Cardinality('AtMostOne'),
+                    computed=False,
+                    readonly=False,
+                    has_default=False,
+                    properties={},
+                ),
+            }
+            return (
+                my_ptrs
+                | __ExternalObject_typeof_base__.__gel_reflection__.pointers
+            )
+
+        @LazyClassProperty["___schema__.ObjectType"]
+        @classmethod
+        def object(cls) -> ___schema__.ObjectType:
             from ...schema import ObjectType
             return ObjectType(
                 id=UUID(int=274580524048681063750167790732145947985),
@@ -1504,15 +2353,19 @@ class __QueryStats_typeof__(__ExternalObject_typeof__):
                 compound_type=False,
             )
 
+class __QueryStats_typeof__(
+    __ExternalObject_typeof__,
+    __QueryStats_typeof_base__,
+):
     class __typeof__(__ExternalObject_typeof__.__typeof__):
-        query = TypeAliasType('query', 'OptionalProperty[std.str, str]')
-        query_type = TypeAliasType('query_type', 'OptionalProperty[QueryType, __builtins__.str]')
-        tag = TypeAliasType('tag', 'OptionalProperty[std.str, str]')
-        compilation_config = TypeAliasType('compilation_config', 'OptionalProperty[std.json, str]')
+        query = TypeAliasType('query', 'OptionalProperty[std.str, builtins.str]')
+        query_type = TypeAliasType('query_type', 'OptionalProperty[QueryType, ___builtins_1__.str]')
+        tag = TypeAliasType('tag', 'OptionalProperty[std.str, builtins.str]')
+        compilation_config = TypeAliasType('compilation_config', 'OptionalProperty[std.json, builtins.str]')
         protocol_version = TypeAliasType('protocol_version', 'OptionalProperty[MajorMinor_Tuple_K20e_g, tuple[int, int]]')
-        default_namespace = TypeAliasType('default_namespace', 'OptionalProperty[std.str, str]')
-        namespace_aliases = TypeAliasType('namespace_aliases', 'OptionalProperty[std.json, str]')
-        output_format = TypeAliasType('output_format', 'OptionalProperty[OutputFormat, __builtins__.str]')
+        default_namespace = TypeAliasType('default_namespace', 'OptionalProperty[std.str, builtins.str]')
+        namespace_aliases = TypeAliasType('namespace_aliases', 'OptionalProperty[std.json, builtins.str]')
+        output_format = TypeAliasType('output_format', 'OptionalProperty[OutputFormat, ___builtins_1__.str]')
         expect_one = TypeAliasType('expect_one', 'OptionalProperty[std.bool, bool]')
         implicit_limit = TypeAliasType('implicit_limit', 'OptionalProperty[std.int64, int]')
         inline_typeids = TypeAliasType('inline_typeids', 'OptionalProperty[std.bool, bool]')
@@ -1536,6 +2389,42 @@ class __QueryStats_typeof__(__ExternalObject_typeof__):
         branch = TypeAliasType('branch', 'OptionalLink[Branch]')
 
 
+class __QueryStats_typeof_partial__(
+    __ExternalObject_typeof_partial__,
+    __QueryStats_typeof_base__,
+):
+    class __typeof__(__ExternalObject_typeof_partial__.__typeof__):
+        query = TypeAliasType('query', 'OptionalProperty[std.str, builtins.str]')
+        query_type = TypeAliasType('query_type', 'OptionalProperty[QueryType, ___builtins_1__.str]')
+        tag = TypeAliasType('tag', 'OptionalProperty[std.str, builtins.str]')
+        compilation_config = TypeAliasType('compilation_config', 'OptionalProperty[std.json, builtins.str]')
+        protocol_version = TypeAliasType('protocol_version', 'OptionalProperty[MajorMinor_Tuple_K20e_g, tuple[int, int]]')
+        default_namespace = TypeAliasType('default_namespace', 'OptionalProperty[std.str, builtins.str]')
+        namespace_aliases = TypeAliasType('namespace_aliases', 'OptionalProperty[std.json, builtins.str]')
+        output_format = TypeAliasType('output_format', 'OptionalProperty[OutputFormat, ___builtins_1__.str]')
+        expect_one = TypeAliasType('expect_one', 'OptionalProperty[std.bool, bool]')
+        implicit_limit = TypeAliasType('implicit_limit', 'OptionalProperty[std.int64, int]')
+        inline_typeids = TypeAliasType('inline_typeids', 'OptionalProperty[std.bool, bool]')
+        inline_typenames = TypeAliasType('inline_typenames', 'OptionalProperty[std.bool, bool]')
+        inline_objectids = TypeAliasType('inline_objectids', 'OptionalProperty[std.bool, bool]')
+        plans = TypeAliasType('plans', 'OptionalProperty[std.int64, int]')
+        total_plan_time = TypeAliasType('total_plan_time', 'OptionalProperty[std.duration, timedelta]')
+        min_plan_time = TypeAliasType('min_plan_time', 'OptionalProperty[std.duration, timedelta]')
+        max_plan_time = TypeAliasType('max_plan_time', 'OptionalProperty[std.duration, timedelta]')
+        mean_plan_time = TypeAliasType('mean_plan_time', 'OptionalProperty[std.duration, timedelta]')
+        stddev_plan_time = TypeAliasType('stddev_plan_time', 'OptionalProperty[std.duration, timedelta]')
+        calls = TypeAliasType('calls', 'OptionalProperty[std.int64, int]')
+        total_exec_time = TypeAliasType('total_exec_time', 'OptionalProperty[std.duration, timedelta]')
+        min_exec_time = TypeAliasType('min_exec_time', 'OptionalProperty[std.duration, timedelta]')
+        max_exec_time = TypeAliasType('max_exec_time', 'OptionalProperty[std.duration, timedelta]')
+        mean_exec_time = TypeAliasType('mean_exec_time', 'OptionalProperty[std.duration, timedelta]')
+        stddev_exec_time = TypeAliasType('stddev_exec_time', 'OptionalProperty[std.duration, timedelta]')
+        rows = TypeAliasType('rows', 'OptionalProperty[std.int64, int]')
+        stats_since = TypeAliasType('stats_since', 'OptionalProperty[std.datetime, datetime]')
+        minmax_stats_since = TypeAliasType('minmax_stats_since', 'OptionalProperty[std.datetime, datetime]')
+        branch = TypeAliasType('branch', 'OptionalLink[Branch | Branch.__variants__.Partial]')
+
+
 class QueryStats(
     __QueryStats_typeof__,
     ExternalObject,
@@ -1546,18 +2435,18 @@ class QueryStats(
             self,
             /,
             *,
-            name: str,
-            internal: bool,
-            builtin: bool,
-            computed_fields: list[str] | None = None,
-            query: str | None = None,
-            query_type: __builtins__.str | None = None,
-            tag: str | None = None,
-            compilation_config: str | None = None,
+            name: builtins.str,
+            internal: bool | DefaultValue = DEFAULT_VALUE,
+            builtin: bool | DefaultValue = DEFAULT_VALUE,
+            computed_fields: list[builtins.str] | None = None,
+            query: builtins.str | None = None,
+            query_type: ___builtins_1__.str | None = None,
+            tag: builtins.str | None = None,
+            compilation_config: builtins.str | None = None,
             protocol_version: tuple[int, int] | None = None,
-            default_namespace: str | None = None,
-            namespace_aliases: str | None = None,
-            output_format: __builtins__.str | None = None,
+            default_namespace: builtins.str | None = None,
+            namespace_aliases: builtins.str | None = None,
+            output_format: ___builtins_1__.str | None = None,
             expect_one: bool | None = None,
             implicit_limit: int | None = None,
             inline_typeids: bool | None = None,
@@ -1586,43 +2475,44 @@ class QueryStats(
             """
             ...
 
+    if TYPE_CHECKING:
         @classmethod
-        def update(  # type: ignore [override, unused-ignore]
+        def update(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
             *,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            query: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            query: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             query_type: type[QueryType] | UnspecifiedType = Unspecified,
-            tag: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            compilation_config: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
-            protocol_version: type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-            default_namespace: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            namespace_aliases: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
+            tag: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            compilation_config: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
+            protocol_version: type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+            default_namespace: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            namespace_aliases: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
             output_format: type[OutputFormat] | UnspecifiedType = Unspecified,
-            expect_one: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            implicit_limit: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            inline_typeids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_typenames: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_objectids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            plans: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            calls: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            rows: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
-            minmax_stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
+            expect_one: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            implicit_limit: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            inline_typeids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_typenames: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_objectids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            plans: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            calls: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            rows: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
+            minmax_stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
             branch: type[sys.Branch] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Update sys::QueryStats instances in the database.
@@ -1630,44 +2520,44 @@ class QueryStats(
             ...
 
         @classmethod
-        def select(  # type: ignore [override, unused-ignore]
+        def select(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: PathAlias,
-            id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            query: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            query_type: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[QueryType] | UnspecifiedType = Unspecified,
-            tag: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            compilation_config: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.json] | UnspecifiedType = Unspecified,
-            protocol_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-            default_namespace: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-            namespace_aliases: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.json] | UnspecifiedType = Unspecified,
-            output_format: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[OutputFormat] | UnspecifiedType = Unspecified,
-            expect_one: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            implicit_limit: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-            inline_typeids: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_typenames: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_objectids: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-            plans: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            calls: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-            rows: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-            stats_since: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.datetime] | UnspecifiedType = Unspecified,
-            minmax_stats_since: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.datetime] | UnspecifiedType = Unspecified,
-            branch: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Branch] | UnspecifiedType = Unspecified,
+            *exprs: PathAlias | Literal["*"],
+            id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            query: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            query_type: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[QueryType] | UnspecifiedType = Unspecified,
+            tag: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            compilation_config: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.json] | UnspecifiedType = Unspecified,
+            protocol_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+            default_namespace: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+            namespace_aliases: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.json] | UnspecifiedType = Unspecified,
+            output_format: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[OutputFormat] | UnspecifiedType = Unspecified,
+            expect_one: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            implicit_limit: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+            inline_typeids: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_typenames: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_objectids: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+            plans: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            calls: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+            rows: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+            stats_since: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.datetime] | UnspecifiedType = Unspecified,
+            minmax_stats_since: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.datetime] | UnspecifiedType = Unspecified,
+            branch: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Branch] | UnspecifiedType = Unspecified,
             **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
         ) -> type[Self]:
             """Fetch sys::QueryStats instances from the database.
@@ -1675,43 +2565,43 @@ class QueryStats(
             ...
 
         @classmethod
-        def filter(  # type: ignore [override, unused-ignore]
+        def filter(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], type[__std__.bool]],
-            id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-            name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-            query: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], type[___std__.bool]],
+            id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+            name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+            query: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
             query_type: type[QueryType] | UnspecifiedType = Unspecified,
-            tag: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            compilation_config: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
-            protocol_version: type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-            default_namespace: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-            namespace_aliases: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
+            tag: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            compilation_config: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
+            protocol_version: type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+            default_namespace: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+            namespace_aliases: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
             output_format: type[OutputFormat] | UnspecifiedType = Unspecified,
-            expect_one: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            implicit_limit: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            inline_typeids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_typenames: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            inline_objectids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-            plans: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            calls: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            total_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            min_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            max_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            mean_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            stddev_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-            rows: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-            stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
-            minmax_stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
+            expect_one: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            implicit_limit: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            inline_typeids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_typenames: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            inline_objectids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+            plans: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            calls: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            total_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            min_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            max_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            mean_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            stddev_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+            rows: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+            stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
+            minmax_stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
             branch: type[sys.Branch] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Fetch sys::QueryStats instances from the database.
@@ -1719,63 +2609,67 @@ class QueryStats(
             ...
 
         @classmethod
-        def order_by(  # type: ignore [override, unused-ignore]
+        def order_by(  # type: ignore [misc, override, unused-ignore]
             cls,
             /,
-            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-            id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            query: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            tag: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            compilation_config: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            default_namespace: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            namespace_aliases: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            expect_one: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            implicit_limit: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            inline_typeids: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            inline_typenames: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            inline_objectids: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            plans: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            total_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            min_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            max_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            mean_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            stddev_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            calls: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            total_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            min_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            max_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            mean_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            stddev_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            rows: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            stats_since: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-            minmax_stats_since: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+            *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+            id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            query: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            tag: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            compilation_config: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            default_namespace: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            namespace_aliases: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            expect_one: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            implicit_limit: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            inline_typeids: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            inline_typenames: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            inline_objectids: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            plans: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            total_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            min_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            max_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            mean_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            stddev_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            calls: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            total_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            min_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            max_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            mean_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            stddev_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            rows: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            stats_since: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+            minmax_stats_since: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
         ) -> type[Self]:
             """Specify the sort order for the selection"""
             ...
 
 
     class __variants__(ExternalObject.__variants__):
-        class Base(__QueryStats_typeof__, ExternalObject.__variants__.Base):
+        class Base(
+            __QueryStats_typeof__,
+            ExternalObject.__variants__.Base,
+            __gel_variant__="Base",
+        ):
             if TYPE_CHECKING:
                 def __init__(
                     self,
                     /,
                     *,
-                    name: str,
-                    internal: bool,
-                    builtin: bool,
-                    computed_fields: list[str] | None = None,
-                    query: str | None = None,
-                    query_type: __builtins__.str | None = None,
-                    tag: str | None = None,
-                    compilation_config: str | None = None,
+                    name: builtins.str,
+                    internal: bool | DefaultValue = DEFAULT_VALUE,
+                    builtin: bool | DefaultValue = DEFAULT_VALUE,
+                    computed_fields: list[builtins.str] | None = None,
+                    query: builtins.str | None = None,
+                    query_type: ___builtins_1__.str | None = None,
+                    tag: builtins.str | None = None,
+                    compilation_config: builtins.str | None = None,
                     protocol_version: tuple[int, int] | None = None,
-                    default_namespace: str | None = None,
-                    namespace_aliases: str | None = None,
-                    output_format: __builtins__.str | None = None,
+                    default_namespace: builtins.str | None = None,
+                    namespace_aliases: builtins.str | None = None,
+                    output_format: ___builtins_1__.str | None = None,
                     expect_one: bool | None = None,
                     implicit_limit: int | None = None,
                     inline_typeids: bool | None = None,
@@ -1804,43 +2698,44 @@ class QueryStats(
                     """
                     ...
 
+            if TYPE_CHECKING:
                 @classmethod
-                def update(  # type: ignore [override, unused-ignore]
+                def update(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
                     *,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    query: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    query: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     query_type: type[QueryType] | UnspecifiedType = Unspecified,
-                    tag: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    compilation_config: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
-                    protocol_version: type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-                    default_namespace: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    namespace_aliases: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
+                    tag: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    compilation_config: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
+                    protocol_version: type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+                    default_namespace: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    namespace_aliases: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
                     output_format: type[OutputFormat] | UnspecifiedType = Unspecified,
-                    expect_one: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    implicit_limit: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    inline_typeids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_typenames: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_objectids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    plans: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    calls: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    rows: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
-                    minmax_stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
+                    expect_one: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    implicit_limit: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    inline_typeids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_typenames: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_objectids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    plans: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    calls: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    rows: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
+                    minmax_stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
                     branch: type[sys.Branch] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Update sys::QueryStats instances in the database.
@@ -1848,44 +2743,44 @@ class QueryStats(
                     ...
 
                 @classmethod
-                def select(  # type: ignore [override, unused-ignore]
+                def select(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: PathAlias,
-                    id: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    query: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    query_type: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[QueryType] | UnspecifiedType = Unspecified,
-                    tag: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    compilation_config: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.json] | UnspecifiedType = Unspecified,
-                    protocol_version: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-                    default_namespace: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.str] | UnspecifiedType = Unspecified,
-                    namespace_aliases: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.json] | UnspecifiedType = Unspecified,
-                    output_format: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[OutputFormat] | UnspecifiedType = Unspecified,
-                    expect_one: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    implicit_limit: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    inline_typeids: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_typenames: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_objectids: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    plans: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_plan_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    calls: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_exec_time: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    rows: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    stats_since: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.datetime] | UnspecifiedType = Unspecified,
-                    minmax_stats_since: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[__std__.datetime] | UnspecifiedType = Unspecified,
-                    branch: builtins.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Branch] | UnspecifiedType = Unspecified,
+                    *exprs: PathAlias | Literal["*"],
+                    id: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    query: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    query_type: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[QueryType] | UnspecifiedType = Unspecified,
+                    tag: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    compilation_config: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.json] | UnspecifiedType = Unspecified,
+                    protocol_version: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+                    default_namespace: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.str] | UnspecifiedType = Unspecified,
+                    namespace_aliases: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.json] | UnspecifiedType = Unspecified,
+                    output_format: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[OutputFormat] | UnspecifiedType = Unspecified,
+                    expect_one: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    implicit_limit: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    inline_typeids: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_typenames: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_objectids: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    plans: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_plan_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    calls: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_exec_time: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    rows: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    stats_since: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.datetime] | UnspecifiedType = Unspecified,
+                    minmax_stats_since: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[___std__.datetime] | UnspecifiedType = Unspecified,
+                    branch: ___builtins__.bool | Callable[[type[Self]], ExprCompatible] | ExprCompatible | type[sys.Branch] | UnspecifiedType = Unspecified,
                     **computed: Callable[[type[Self]], ExprCompatible] | ExprCompatible | PyConstType,
                 ) -> type[Self]:
                     """Fetch sys::QueryStats instances from the database.
@@ -1893,43 +2788,43 @@ class QueryStats(
                     ...
 
                 @classmethod
-                def filter(  # type: ignore [override, unused-ignore]
+                def filter(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], type[__std__.bool]],
-                    id: UUID | type[__std__.uuid] | UnspecifiedType = Unspecified,
-                    name: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    internal: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    builtin: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    computed_fields: type[Array[__std__.str]] | UnspecifiedType = Unspecified,
-                    query: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], type[___std__.bool]],
+                    id: UUID | type[___std__.uuid] | UnspecifiedType = Unspecified,
+                    name: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    internal: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    builtin: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    computed_fields: type[Array[___std__.str]] | UnspecifiedType = Unspecified,
+                    query: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
                     query_type: type[QueryType] | UnspecifiedType = Unspecified,
-                    tag: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    compilation_config: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
-                    protocol_version: type[__std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
-                    default_namespace: __builtins__.str | type[__std__.str] | UnspecifiedType = Unspecified,
-                    namespace_aliases: __builtins__.str | type[__std__.json] | UnspecifiedType = Unspecified,
+                    tag: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    compilation_config: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
+                    protocol_version: type[___std___types____.MajorMinor_Tuple_K20e_g] | UnspecifiedType = Unspecified,
+                    default_namespace: ___builtins_1__.str | type[___std__.str] | UnspecifiedType = Unspecified,
+                    namespace_aliases: ___builtins_1__.str | type[___std__.json] | UnspecifiedType = Unspecified,
                     output_format: type[OutputFormat] | UnspecifiedType = Unspecified,
-                    expect_one: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    implicit_limit: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    inline_typeids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_typenames: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    inline_objectids: __builtins_1__.bool | type[__std__.bool] | UnspecifiedType = Unspecified,
-                    plans: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_plan_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    calls: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    total_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    min_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    max_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    mean_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    stddev_exec_time: __datetime__.timedelta | type[__std__.duration] | UnspecifiedType = Unspecified,
-                    rows: __builtins_2__.int | type[__std__.int64] | UnspecifiedType = Unspecified,
-                    stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
-                    minmax_stats_since: __datetime_1__.datetime | type[__std__.datetime] | UnspecifiedType = Unspecified,
+                    expect_one: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    implicit_limit: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    inline_typeids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_typenames: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    inline_objectids: ___builtins_2__.bool | type[___std__.bool] | UnspecifiedType = Unspecified,
+                    plans: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_plan_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    calls: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    total_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    min_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    max_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    mean_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    stddev_exec_time: ___datetime__.timedelta | type[___std__.duration] | UnspecifiedType = Unspecified,
+                    rows: ___builtins_3__.int | type[___std__.int64] | UnspecifiedType = Unspecified,
+                    stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
+                    minmax_stats_since: ___datetime_1__.datetime | type[___std__.datetime] | UnspecifiedType = Unspecified,
                     branch: type[sys.Branch] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Fetch sys::QueryStats instances from the database.
@@ -1937,46 +2832,98 @@ class QueryStats(
                     ...
 
                 @classmethod
-                def order_by(  # type: ignore [override, unused-ignore]
+                def order_by(  # type: ignore [misc, override, unused-ignore]
                     cls,
                     /,
-                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | builtins.str, EmptyDirection | builtins.str],
-                    id: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    name: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    internal: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    builtin: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    query: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    tag: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    compilation_config: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    default_namespace: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    namespace_aliases: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    expect_one: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    implicit_limit: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    inline_typeids: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    inline_typenames: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    inline_objectids: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    plans: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    total_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    min_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    max_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    mean_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    stddev_plan_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    calls: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    total_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    min_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    max_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    mean_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    stddev_exec_time: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    rows: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    stats_since: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
-                    minmax_stats_since: Direction | builtins.str | builtins.str | builtins.bool | tuple[Direction | builtins.str, EmptyDirection | builtins.str] | UnspecifiedType = Unspecified,
+                    *exprs: Callable[[type[Self]], ExprCompatible] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str] | tuple[Callable[[type[Self]], ExprCompatible], Direction | ___builtins__.str, EmptyDirection | ___builtins__.str],
+                    id: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    name: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    internal: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    builtin: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    query: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    tag: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    compilation_config: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    default_namespace: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    namespace_aliases: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    expect_one: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    implicit_limit: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    inline_typeids: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    inline_typenames: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    inline_objectids: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    plans: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    total_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    min_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    max_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    mean_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    stddev_plan_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    calls: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    total_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    min_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    max_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    mean_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    stddev_exec_time: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    rows: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    stats_since: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
+                    minmax_stats_since: Direction | ___builtins__.str | ___builtins__.str | ___builtins__.bool | tuple[Direction | ___builtins__.str, EmptyDirection | ___builtins__.str] | UnspecifiedType = Unspecified,
                 ) -> type[Self]:
                     """Specify the sort order for the selection"""
                     ...
 
+        class Required(
+            Base,
+            ExternalObject.__variants__.Required,
+            __gel_variant__="Required",
+        ):
+            pass
 
-        Any = TypeVar("Any", bound="QueryStats | Base")
+        class PartialBase(  # type: ignore [misc, unused-ignore]
+            __QueryStats_typeof_partial__,
+            Base,
+            ExternalObject.__variants__.PartialBase,
+            __gel_variant__="PartialBase",
+        ):
+            pass
+
+        class Partial(  # type: ignore [misc, unused-ignore]
+            PartialBase,
+            ExternalObject.__variants__.Partial,
+            __gel_variant__="Partial",
+        ):
+            query: OptionalProperty[std.str, builtins.str]
+            query_type: OptionalProperty[QueryType, ___builtins_1__.str]
+            tag: OptionalProperty[std.str, builtins.str]
+            compilation_config: OptionalProperty[std.json, builtins.str]
+            protocol_version: OptionalProperty[MajorMinor_Tuple_K20e_g, tuple[int, int]]
+            default_namespace: OptionalProperty[std.str, builtins.str]
+            namespace_aliases: OptionalProperty[std.json, builtins.str]
+            output_format: OptionalProperty[OutputFormat, ___builtins_1__.str]
+            expect_one: OptionalProperty[std.bool, bool]
+            implicit_limit: OptionalProperty[std.int64, int]
+            inline_typeids: OptionalProperty[std.bool, bool]
+            inline_typenames: OptionalProperty[std.bool, bool]
+            inline_objectids: OptionalProperty[std.bool, bool]
+            plans: OptionalProperty[std.int64, int]
+            total_plan_time: OptionalProperty[std.duration, timedelta]
+            min_plan_time: OptionalProperty[std.duration, timedelta]
+            max_plan_time: OptionalProperty[std.duration, timedelta]
+            mean_plan_time: OptionalProperty[std.duration, timedelta]
+            stddev_plan_time: OptionalProperty[std.duration, timedelta]
+            calls: OptionalProperty[std.int64, int]
+            total_exec_time: OptionalProperty[std.duration, timedelta]
+            min_exec_time: OptionalProperty[std.duration, timedelta]
+            max_exec_time: OptionalProperty[std.duration, timedelta]
+            mean_exec_time: OptionalProperty[std.duration, timedelta]
+            stddev_exec_time: OptionalProperty[std.duration, timedelta]
+            rows: OptionalProperty[std.int64, int]
+            stats_since: OptionalProperty[std.datetime, datetime]
+            minmax_stats_since: OptionalProperty[std.datetime, datetime]
+            branch: OptionalLink[___sys__.Branch | ___sys__.Branch.__variants__.Partial]
+
+
+        Any = TypeVar("Any", bound="QueryStats | Base | Required | Partial")
     class __links__(ExternalObject.__links__):
+        pass
+    class __links_partial__(ExternalObject.__links_partial__):
         pass
 
 if not TYPE_CHECKING:
@@ -1985,10 +2932,12 @@ if not TYPE_CHECKING:
 
 
 from .. import std  # noqa: E402 F403
+from ... import sys as ___sys__  # noqa: E402 F403
 from ...std.__types__ import (  # noqa: E402 F403
     MajorMinorStageStage_noLocal_Tuple_SKRhXQ,
     MajorMinor_Tuple_K20e_g
 )
 
-from builtins import bool, int, str  # noqa: E402 F403
+import builtins as builtins  # noqa: E402 F403
+from builtins import bool, int  # noqa: E402 F403
 from datetime import datetime, timedelta  # noqa: E402 F403

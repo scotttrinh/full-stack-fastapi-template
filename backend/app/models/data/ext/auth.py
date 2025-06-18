@@ -28,10 +28,10 @@ from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
 
-    from .. import std as __std__
+    from .. import std as ___std__
     from ..__types__ import HeaderPayloadSignature_Tuple_e_sBBg
 
-    import builtins as __builtins__
+    import builtins as ___builtins__
     from builtins import type
 
 
@@ -249,7 +249,7 @@ class WebAuthnFactor(base.WebAuthnFactor, EmailFactor):
     public_key: std.bytes
 def webhook_signing_key_exists(
     webhook_config: type[WebhookConfig],
-) -> type[__std__.bool]:
+) -> type[___std__.bool]:
     args: list[Any] = [webhook_config]
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -262,7 +262,7 @@ def webhook_signing_key_exists(
         )
     )
 
-def signing_key_exists() -> type[__std__.bool]:
+def signing_key_exists() -> type[___std__.bool]:
     args: list[Any] = []
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -276,10 +276,10 @@ def signing_key_exists() -> type[__std__.bool]:
     )
 
 def _jwt_check_signature(
-    jwt: type[HeaderPayloadSignature_Tuple_e_sBBg] | tuple[__builtins__.str, __builtins__.str, __builtins__.str],
-    key: type[__std__.str] | __builtins__.str,
+    jwt: type[HeaderPayloadSignature_Tuple_e_sBBg] | tuple[___builtins__.str, ___builtins__.str, ___builtins__.str],
+    key: type[___std__.str] | ___builtins__.str,
     algo: type[JWTAlgo] | builtins.str | UnspecifiedType = Unspecified,
-) -> type[__std__.json]:
+) -> type[___std__.json]:
     args: list[Any] = [jwt, key, algo]
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
@@ -293,7 +293,7 @@ def _jwt_check_signature(
     )
 
 def _jwt_parse(
-    token: type[__std__.str] | __builtins__.str,
+    token: type[___std__.str] | ___builtins__.str,
 ) -> type[HeaderPayloadSignature_Tuple_e_sBBg]:
     args: list[Any] = [token]
     kw: dict[builtins.str, Any] = {}
@@ -303,15 +303,15 @@ def _jwt_parse(
             fname="ext::auth::_jwt_parse",
             args=[v for v in args if v is not Unspecified],
             kwargs={n: v for n, v in kw.items() if v is not Unspecified},
-            type_=SchemaPath('tuple<header:std', 'str, payload:std', 'str, signature:std', 'str>'),
+            type_=SchemaPath('tuple<header:std::str, payload:std::str, signature:std::str>'),
         )
     )
 
 def _jwt_verify(
-    token: type[__std__.str] | __builtins__.str,
-    key: type[__std__.str] | __builtins__.str,
+    token: type[___std__.str] | ___builtins__.str,
+    key: type[___std__.str] | ___builtins__.str,
     algo: type[JWTAlgo] | builtins.str | UnspecifiedType = Unspecified,
-) -> type[__std__.json]:
+) -> type[___std__.json]:
     args: list[Any] = [token, key, algo]
     kw: dict[builtins.str, Any] = {}
     return AnnotatedExpr(  # type: ignore [return-value]
