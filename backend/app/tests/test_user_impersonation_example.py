@@ -29,7 +29,7 @@ def test_user_impersonation_http_requests(client: TestClient, test_users: TestUs
     # Create an item as user1
     item_data = {"title": "Test Item", "description": "This is a test item"}
     response = client.post("/api/v1/items/", json=item_data, cookies=test_users.user1.cookies)
-    assert response.status_code == 200
+    assert response.status_code == 200, response.text
     created_item = response.json()
     assert created_item["title"] == "Test Item"
 
@@ -86,11 +86,11 @@ def test_mixed_http_and_database_operations(client: TestClient, test_users: Test
     # Verify the item exists in the database as user1
     db_items = test_users.user1.db.query(
         """
-        select Item { 
-            title, 
-            description, 
-            owner: { email } 
-        } 
+        select Item {
+            title,
+            description,
+            owner: { email }
+        }
         filter .title = "Mixed Test Item"
     """
     )
