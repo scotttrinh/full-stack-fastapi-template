@@ -43,8 +43,9 @@ async def on_new_identity(
     client: gel.fastapi.Client,
     request: fastapi.Request,
 ) -> fastapi.Response | None:
-    async with request.form() as form:
-        full_name = form.get("full_name")
+    json = await request.json()
+    full_name = json.get("full_name")
+
     await client.query_required_single(
         """
         with
@@ -52,7 +53,7 @@ async def on_new_identity(
         insert User {
           identity := IDENTITY,
           email := (select ext::auth::EmailPasswordFactor filter .identity = IDENTITY).email,
-          full_name := <str>$full_name,
+          full_name := <optional str>$full_name,
         }
         """,
         identity_id=result[0],
