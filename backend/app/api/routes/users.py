@@ -12,7 +12,7 @@ from app.models.data import User
 from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.user import UserServiceDep
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/users", tags=["users"], dependencies=[g.auth.maybe_auth_token])
 
 
 @router.get("/", dependencies=[Depends(get_current_active_superuser)])

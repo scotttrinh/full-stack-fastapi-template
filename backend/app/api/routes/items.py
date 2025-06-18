@@ -1,13 +1,17 @@
 import uuid
 
 from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel
 
 from app.api.deps import CurrentUser
+from app.main import g
 from app.models.data import Item
 from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.item import ItemServiceDep
 
-router = APIRouter(prefix="/items", tags=["items"])
+router = APIRouter(
+    prefix="/items", tags=["items"], dependencies=[g.auth.maybe_auth_token]
+)
 
 
 @router.get("/")
@@ -38,15 +42,24 @@ async def read_item(
     return item
 
 
+class ItemCreate(BaseModel):
+    title: str | None = None
+    description: str | None = None
+
+
 @router.post("/")
-async def create_item(*, item_in: Item, item_service: ItemServiceDep, current_user: CurrentUser) -> Item:
+async def create_item(
+    *, item_in: ItemCreate, item_service: ItemServiceDep, current_user: CurrentUser
+) -> Item:
     """
     Create new item.
     """
 
-    item_in.owner = current_user
-
-    item = await item_service.create(item_in)
+    new_item = Item(
+        **item_in.model_dump(),
+        owner=current_user,
+    )
+    item = await item_service.create(new_item)
     return item
 
 
