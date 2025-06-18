@@ -40,7 +40,7 @@ class BaseService(Generic[T]):
         # Common pagination logic
         count: int = await self.client.query_required_single(
             f"""
-            select count(select {self.model_class.__name__})
+            select count((select {self.model_class.__name__}))
             """
         )
         result = await self.client.query(
