@@ -2,8 +2,9 @@ import uuid
 
 from fastapi import APIRouter, HTTPException, status
 
+from app.api.deps import CurrentUser
 from app.models.data import Item
-from app.models.utils import Collection, CursorPaginationDep, LimitOffsetPaginationDep
+from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.item import ItemServiceDep
 
 router = APIRouter(prefix="/items", tags=["items"])
@@ -38,10 +39,12 @@ async def read_item(
 
 
 @router.post("/")
-async def create_item(*, item_in: Item, item_service: ItemServiceDep) -> Item:
+async def create_item(*, item_in: Item, item_service: ItemServiceDep, current_user: CurrentUser) -> Item:
     """
     Create new item.
     """
+
+    item_in.owner = current_user
 
     item = await item_service.create(item_in)
     return item

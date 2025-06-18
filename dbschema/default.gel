@@ -1,12 +1,9 @@
 using extension auth;
 
 module default {
-  single global spoof_user_id: uuid;
   single global current_user := assert_single((
     select User
-    filter
-      .identity ?= global ext::auth::ClientTokenIdentity
-      or .id ?= global spoof_user_id
+    filter .identity ?= global ext::auth::ClientTokenIdentity
   ));
 
   type User {
@@ -26,6 +23,17 @@ module default {
       constraint max_len_value(255);
     };
     required is_superuser: bool { default := false; };
+
+    access policy superuser_has_full_access
+    allow all
+    using ((global current_user.is_superuser) ?? false);
+
+    access policy anyone_can_create
+    allow insert;
+
+    access policy can_access_self
+    allow all
+    using (.id ?= global current_user.id);
   };
 
   type Item {
@@ -41,5 +49,16 @@ module default {
       constraint min_len_value(1);
       constraint max_len_value(255);
     };
+
+    access policy superuser_can_access_all
+    allow all
+    using ((global current_user.is_superuser) ?? false);
+
+    access policy can_create_item
+    allow insert;
+
+    access policy can_access_owned
+    allow all
+    using (.owner ?= global current_user);
   };
 }

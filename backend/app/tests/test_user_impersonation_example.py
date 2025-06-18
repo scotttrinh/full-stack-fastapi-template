@@ -9,18 +9,18 @@ def test_healthcheck(client: TestClient):
     assert response.json() is True
 
 
-def test_user_impersonation_http_requests(test_users: TestUsers):
+def test_user_impersonation_http_requests(client: TestClient, test_users: TestUsers):
     """Example of making HTTP requests as different users."""
 
     # Make a request as superuser1
-    response = test_users.superuser1.request.get("/api/v1/users/me")
+    response = client.get("/api/v1/users/me", cookies=test_users.superuser1.cookies)
     assert response.status_code == 200
     user_data = response.json()
     assert user_data["email"] == "superuser1@example.com"
     assert user_data["is_superuser"] is True
 
     # Make a request as regular user1
-    response = test_users.user1.request.get("/api/v1/users/me")
+    response = client.get("/api/v1/users/me", cookies=test_users.user1.cookies)
     assert response.status_code == 200
     user_data = response.json()
     assert user_data["email"] == "user1@example.com"
@@ -28,14 +28,14 @@ def test_user_impersonation_http_requests(test_users: TestUsers):
 
     # Create an item as user1
     item_data = {"title": "Test Item", "description": "This is a test item"}
-    response = test_users.user1.request.post("/api/v1/items/", json=item_data)
+    response = client.post("/api/v1/items/", json=item_data, cookies=test_users.user1.cookies)
     assert response.status_code == 200
     created_item = response.json()
     assert created_item["title"] == "Test Item"
 
     # Try to access the item as user2 (should not be allowed due to ownership)
     item_id = created_item["id"]
-    response = test_users.user2.request.get(f"/api/v1/items/{item_id}")
+    response = client.get(f"/api/v1/items/{item_id}", cookies=test_users.user2.cookies)
     # This will depend on your access control policies
 
 
@@ -47,7 +47,7 @@ def test_user_impersonation_database_queries(test_users: TestUsers):
     assert len(users) >= 4  # At least our 4 test users
 
     # Query as regular user1 (may have limited access depending on policies)
-    current_user = test_users.user1.db.query_single(
+    current_user = test_users.user1.db.query_required_single(
         "select global current_user { email, is_superuser }"
     )
     assert current_user.email == "user1@example.com"
@@ -71,22 +71,7 @@ def test_user_impersonation_database_queries(test_users: TestUsers):
     assert any(item.title == "Database Item" for item in items)
 
 
-def test_using_get_user_method(test_users: TestUsers):
-    """Example of using the get_user method for dynamic user selection."""
-
-    user_types = ["superuser1", "user1", "user2"]
-
-    for user_type in user_types:
-        user = test_users.get_user(user_type)
-        response = user.request.get("/api/v1/users/me")
-        assert response.status_code == 200
-
-        user_data = response.json()
-        expected_email = f"{user_type}@example.com"
-        assert user_data["email"] == expected_email
-
-
-def test_mixed_http_and_database_operations(test_users: TestUsers):
+def test_mixed_http_and_database_operations(client: TestClient, test_users: TestUsers):
     """Example of combining HTTP requests and database queries."""
 
     # Create an item via HTTP API as user1
@@ -94,7 +79,7 @@ def test_mixed_http_and_database_operations(test_users: TestUsers):
         "title": "Mixed Test Item",
         "description": "Created via HTTP, verified via DB",
     }
-    response = test_users.user1.request.post("/api/v1/items/", json=item_data)
+    response = client.post("/api/v1/items/", json=item_data, cookies=test_users.user1.cookies)
     assert response.status_code == 200
     created_item = response.json()
 
@@ -120,7 +105,7 @@ def test_mixed_http_and_database_operations(test_users: TestUsers):
     assert "Mixed Test Item" in item_titles
 
 
-def test_access_control_between_users(test_users: TestUsers):
+def test_access_control_between_users(client: TestClient, test_users: TestUsers):
     """Example of testing access control between different users."""
 
     # User1 creates an item
@@ -128,22 +113,22 @@ def test_access_control_between_users(test_users: TestUsers):
         "title": "User1's Private Item",
         "description": "Should only be accessible to user1",
     }
-    response = test_users.user1.request.post("/api/v1/items/", json=item_data)
+    response = client.post("/api/v1/items/", json=item_data, cookies=test_users.user1.cookies)
     assert response.status_code == 200
     created_item = response.json()
     item_id = created_item["id"]
 
     # User1 can access their own item
-    response = test_users.user1.request.get(f"/api/v1/items/{item_id}")
+    response = client.get(f"/api/v1/items/{item_id}", cookies=test_users.user1.cookies)
     assert response.status_code == 200
 
     # User2 cannot access user1's item (depending on your access policies)
-    response = test_users.user2.request.get(f"/api/v1/items/{item_id}")
+    response = client.get(f"/api/v1/items/{item_id}", cookies=test_users.user2.cookies)
     # The exact status code will depend on your access control implementation
     # This is just an example of how you'd test it
 
     # Superuser can access any item
-    response = test_users.superuser1.request.get(f"/api/v1/items/{item_id}")
+    response = client.get(f"/api/v1/items/{item_id}", cookies=test_users.superuser1.cookies)
     assert response.status_code == 200
 
 
@@ -156,8 +141,8 @@ def test_direct_database_client_access(test_users: TestUsers):
     superuser_db = test_users.superuser1.db
 
     # Current user should be different for each client
-    user1_current = user1_db.query_single("select global current_user { email }")
-    user2_current = user2_db.query_single("select global current_user { email }")
+    user1_current = user1_db.query_required_single("select global current_user { email }")
+    user2_current = user2_db.query_required_single("select global current_user { email }")
 
     assert user1_current.email == "user1@example.com"
     assert user2_current.email == "user2@example.com"

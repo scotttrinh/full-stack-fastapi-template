@@ -7,6 +7,7 @@ from app.api.deps import (
     CurrentUser,
     get_current_active_superuser,
 )
+from app.main import g
 from app.models.data import User
 from app.models.utils import Collection, LimitOffsetPaginationDep
 from app.services.user import UserServiceDep
@@ -42,7 +43,7 @@ class UserUpdate(User.__variants__.Base):
     pass
 
 
-@router.patch("/me")
+@router.patch("/me", dependencies=[g.auth.maybe_auth_token])
 async def update_user_me(
     *,
     user_service: UserServiceDep,

@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.models.data import Item, User
+from app.models.data.ext.auth import Identity
 
 
 @dataclass
@@ -21,19 +22,19 @@ class TestUser:
     is_superuser: bool
     client: TestClient
     auth_token: str
-    _db_client: gel.Client
-    _impersonate_user: Callable[[str], gel.Client]
-
-    @property
-    def db(self) -> gel.Client:
-        """Get an impersonated database client for this user."""
-        return self._impersonate_user(str(self.id))
+    db: gel.Client
 
     @property
     def request(self) -> TestClient:
         """Get an authenticated test client for this user."""
         self.client.headers = self._get_headers()
         return self.client
+
+    @property
+    def cookies(self) -> dict[str, str]:
+        return {
+            "gel_auth_token": self.auth_token,
+        }
 
     def _get_headers(self) -> dict[str, str]:
         """Get authentication headers for this user with valid cookie attributes."""
@@ -67,20 +68,13 @@ def db() -> Generator[gel.Client, None, None]:
     yield client
     client.query(Item.delete())
     client.query(User.delete())
+    client.query(Identity.delete())
 
 
 @pytest.fixture(scope="session")
 def client() -> Generator[TestClient, None, None]:
-    with TestClient(app) as c:
+    with TestClient(app, follow_redirects=False) as c:
         yield c
-
-
-@pytest.fixture(scope="session")
-def impersonate_user(db: gel.Client) -> Callable[[str], gel.Client]:
-    def _impersonate_user(user_id: str) -> gel.Client:
-        return db.with_globals({"spoof_user_id": user_id})
-
-    return _impersonate_user
 
 
 @pytest.fixture(scope="session")
@@ -96,69 +90,55 @@ def allaccess_client(db: gel.Client) -> gel.Client:
 def test_users(
     db: gel.Client,
     allaccess_client: gel.Client,
-    impersonate_user: Callable[[str], gel.Client],
+    client: TestClient,
 ) -> TestUsers:
     """Create test users for impersonation testing."""
 
     def create_user(
-        email: str, password: str, full_name: str, is_superuser: bool = False
+        email: str,
+        password: str,
+        full_name: str,
+        is_superuser: bool = False,
     ) -> TestUser:
-        # Create a new client instance for this user
-        user_client = TestClient(app)
-
         # Register the user
-        register_r = user_client.post(
+        register_r = client.post(
             "/auth/register",
             data={
                 "email": email,
                 "password": password,
+                "full_name": full_name,
             },
         )
-        register_r.raise_for_status()
 
-        register_response = register_r.json()
-        assert register_response
-        assert register_response["token_data"]
-        assert register_response["token_data"]["access_token"]
-        assert register_response["identity_id"]
-        auth_token = register_response["token_data"]["access_token"]
-        identity_id = register_response["identity_id"]
+        assert register_r.status_code == 303
 
-        user_id: uuid.UUID = allaccess_client.query_required_single(
-            """
-            with
-              USER := assert_exists(
-                (<ext::auth::Identity><uuid>$identity_id.<[identity is User]),
-                "User not found for identity"
-              )
-            select USER.id;
-            """,
-            identity_id=identity_id,
-        )
+        auth_token = register_r.cookies.pop("gel_auth_token")
+        nonlocal db
+        db = db.with_globals({"ext::auth::client_token": auth_token})
+
+        user = db.query_required_single("select (global current_user) {*}")
+        assert user.email == email
+        assert user.full_name == full_name
 
         if is_superuser:
-            allaccess_client.query(
+            allaccess_client.query_required_single(
                 """
                 with
-                  USER := assert_exists(
-                    (<ext::auth::Identity><uuid>$identity_id.<[identity is User]),
-                    "User not found for identity"
-                  )
+                  USER := <User><uuid>$user_id
                 update USER set { is_superuser := true };
                 """,
-                identity_id=identity_id,
+                user_id=user.id,
             )
 
         return TestUser(
             email=email,
             password=password,
             full_name=full_name,
-            id=user_id,
+            id=user.id,
             is_superuser=is_superuser,
-            client=user_client,
+            client=client,
             auth_token=auth_token,
-            _db_client=db,
-            _impersonate_user=impersonate_user,
+            db=db,
         )
 
     # Create test users

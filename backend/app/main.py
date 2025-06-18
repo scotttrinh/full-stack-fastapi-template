@@ -11,7 +11,6 @@ from fastapi.responses import FileResponse
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 
-from app.api.main import api_router
 from app.core.config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -30,7 +29,7 @@ app = fastapi.FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 
-gel_auth = gel.fastapi.gelify(app).auth
+g = gel.fastapi.gelify(app)
 
 
 @app.get("/error")
@@ -38,26 +37,34 @@ def error_page(error: str):
     return error
 
 
-@gel_auth.on_new_identity
+@g.auth.on_new_identity
 async def on_new_identity(
-    result: tuple[uuid.UUID, gel.auth.TokenData | None], client: gel.fastapi.Client
+    result: tuple[uuid.UUID, gel.auth.TokenData | None],
+    client: gel.fastapi.Client,
+    request: fastapi.Request,
 ) -> fastapi.Response | None:
+    async with request.form() as form:
+        full_name = form.get("full_name")
     await client.query_required_single(
         """
         with
           IDENTITY := <ext::auth::Identity><uuid>$identity_id
         insert User {
           identity := IDENTITY,
-          email := IDENTITY.<[identity is ext::auth::EmailFactor].email,
+          email := (select ext::auth::EmailPasswordFactor filter .identity = IDENTITY).email,
+          full_name := <str>$full_name,
         }
         """,
         identity_id=result[0],
+        full_name=full_name,
     )
 
 
 if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
     sentry_sdk.init(dsn=str(settings.SENTRY_DSN), enable_tracing=True)
 
+
+from app.api.main import api_router  # noqa: E402, I001
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # Serve the React frontend application directly from your FastAPI server
@@ -66,6 +73,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 frontend_dist_path = os.path.join(current_dir, "..", "..", "frontend", "dist")
 static_files_path = os.path.normpath(frontend_dist_path)
 index_path = os.path.join(static_files_path, "index.html")
+
 
 @contextlib.asynccontextmanager
 async def lifespan(app: fastapi.FastAPI):
