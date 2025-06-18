@@ -1,3 +1,4 @@
+import dataclasses
 import uuid
 from typing import Annotated, Generic, TypeVar
 
@@ -27,3 +28,12 @@ class LimitOffsetPagination(BaseModel):
 
 
 LimitOffsetPaginationDep = Annotated[LimitOffsetPagination, Query()]
+
+
+@dataclasses.dataclass
+class QueryModel:
+    type: type
+    query: str
+
+    def __edgeql__(self):
+        return (self.type, self.query)
