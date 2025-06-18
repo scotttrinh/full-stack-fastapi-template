@@ -1,5 +1,5 @@
 import uuid
-from collections.abc import Callable, Generator
+from collections.abc import Generator
 from dataclasses import dataclass
 
 import gel.fastapi
@@ -8,7 +8,6 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.models.data import Item, User
-from app.models.data.ext.auth import Identity
 
 
 @dataclass
@@ -68,7 +67,6 @@ def db() -> Generator[gel.Client, None, None]:
     yield client
     client.query(Item.delete())
     client.query(User.delete())
-    client.query(Identity.delete())
 
 
 @pytest.fixture(scope="session")
@@ -103,7 +101,7 @@ def test_users(
         # Register the user
         register_r = client.post(
             "/auth/register",
-            data={
+            json={
                 "email": email,
                 "password": password,
                 "full_name": full_name,
