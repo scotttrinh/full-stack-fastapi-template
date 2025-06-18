@@ -4,7 +4,7 @@ from typing import Generic, TypeVar
 import gel
 from gel.models.pydantic import GelModel
 
-from app.models.utils import Collection, LimitOffsetPagination
+from app.models.utils import Collection, LimitOffsetPagination, QueryModel
 
 T = TypeVar("T", bound=GelModel)
 
@@ -43,9 +43,17 @@ class BaseService(Generic[T]):
             select count((select {self.model_class.__name__}))
             """
         )
+        q = QueryModel(
+            self.model_class,
+            f"""
+            select {self.model_class.__name__} {{ ** }}
+            offset <int64>$offset
+            limit <int64>$limit
+            """,
+        )
         result = await self.client.query(
-            self.model_class.select()
-            .offset(limit_offset_pagination.offset)
-            .limit(limit_offset_pagination.limit)
+            q,  # type: ignore
+            offset=limit_offset_pagination.offset,
+            limit=limit_offset_pagination.limit,
         )
         return Collection(data=result, count=count)
