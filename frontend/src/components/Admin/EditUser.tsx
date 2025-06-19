@@ -38,7 +38,6 @@ const UserUpdateForm = z.intersection(
   z.partial(
     z.object({
       email: z.string().check(z.email()),
-      is_active: z.boolean(),
       is_superuser: z.boolean(),
       full_name: z.nullable(z.string()),
     }),
@@ -149,20 +148,6 @@ const EditUser = ({ user }: EditUserProps) => {
                       }
                     >
                       Is superuser?
-                    </Checkbox>
-                  </Field>
-                )}
-              </form.Field>
-              <form.Field name="is_active">
-                {(field) => (
-                  <Field colorPalette="teal">
-                    <Checkbox
-                      checked={field.state.value}
-                      onCheckedChange={({ checked }) =>
-                        field.handleChange(checked === true)
-                      }
-                    >
-                      Is active?
                     </Checkbox>
                   </Field>
                 )}

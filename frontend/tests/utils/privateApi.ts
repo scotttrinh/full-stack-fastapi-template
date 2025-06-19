@@ -1,6 +1,5 @@
-// Note: the `PrivateService` is only available when generating the client
-// for local environments
-import { OpenAPI, PrivateService } from "../../src/client";
+// Updated to use Gel auth registration endpoint
+import { OpenAPI, GelAuthService } from "../../src/client";
 
 OpenAPI.BASE = `${process.env.VITE_API_URL}`;
 
@@ -11,11 +10,10 @@ export const createUser = async ({
   email: string;
   password: string;
 }) => {
-  return await PrivateService.createUser({
+  return await GelAuthService.gelAuthEmailPasswordSignUp({
     requestBody: {
       email,
       password,
-      is_verified: true,
       full_name: "Test User",
     },
   });

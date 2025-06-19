@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { FaExchangeAlt } from "react-icons/fa";
 
-import { type ApiError, type Item, ItemsService } from "@/client";
+import { type ApiError, type Item, type ItemUpdate, ItemsService } from "@/client";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
 import {
@@ -31,8 +31,8 @@ interface EditItemProps {
 }
 
 interface ItemUpdateForm {
-  title: string;
-  description?: string;
+  title?: string | null;
+  description?: string | null;
 }
 
 const EditItem = ({ item }: EditItemProps) => {
@@ -41,8 +41,8 @@ const EditItem = ({ item }: EditItemProps) => {
   const { showSuccessToast } = useCustomToast();
   const form = useForm({
     defaultValues: {
-      ...item,
-      description: item.description ?? undefined,
+      title: item.title ?? "",
+      description: item.description ?? "",
     },
     onSubmit: (data) => {
       mutation.mutate(data.value);
@@ -51,7 +51,7 @@ const EditItem = ({ item }: EditItemProps) => {
 
   const mutation = useMutation({
     mutationFn: (data: ItemUpdateForm) =>
-      ItemsService.updateItem({ id: item.id, requestBody: data }),
+      ItemsService.updateItem({ id: item.id, requestBody: data as ItemUpdate }),
     onSuccess: () => {
       showSuccessToast("Item updated successfully.");
       form.reset();
@@ -104,7 +104,7 @@ const EditItem = ({ item }: EditItemProps) => {
                   >
                     <Input
                       id="title"
-                      value={field.state.value ?? undefined}
+                      value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Title"
                       type="text"
@@ -122,7 +122,7 @@ const EditItem = ({ item }: EditItemProps) => {
                   >
                     <Input
                       id="description"
-                      value={field.state.value ?? undefined}
+                      value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Description"
                       type="text"
