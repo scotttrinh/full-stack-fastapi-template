@@ -11,7 +11,7 @@ async def get_current_user(
 ) -> User:
     user = await user_service.get_current_user()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=401, detail="Unauthorized")
     return user
 
 
