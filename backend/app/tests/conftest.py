@@ -14,6 +14,7 @@ from app.models.data import Item, User
 class TestUser:
     """A test user with authentication details and convenience methods."""
 
+    __test__ = False
     email: str
     password: str
     full_name: str
@@ -47,6 +48,7 @@ class TestUser:
 class TestUsers:
     """Container for all test users with convenience methods."""
 
+    __test__ = False
     superuser1: TestUser
     superuser2: TestUser
     user1: TestUser
