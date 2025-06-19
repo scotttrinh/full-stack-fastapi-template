@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { FaExchangeAlt } from "react-icons/fa";
 
-import { type ApiError, type ItemPublic, ItemsService } from "@/client";
+import { type ApiError, type Item, ItemsService } from "@/client";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
 import {
@@ -27,7 +27,7 @@ import {
 import { Field } from "../ui/field";
 
 interface EditItemProps {
-  item: ItemPublic;
+  item: Item;
 }
 
 interface ItemUpdateForm {
