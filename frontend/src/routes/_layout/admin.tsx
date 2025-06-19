@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod/v4-mini";
 
-import { type UserPublic, UsersService } from "@/client";
+import { type User, UsersService } from "@/client";
 import { UserActionsMenu } from "@/components/Common/UserActionsMenu";
 import PendingUsers from "@/components/Pending/PendingUsers";
 import {
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_layout/admin")({
 
 function UsersTable() {
   const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"]);
+  const currentUser = queryClient.getQueryData<User>(["currentUser"]);
   const navigate = useNavigate({ from: Route.fullPath });
   const { page } = Route.useSearch();
 
@@ -66,7 +66,6 @@ function UsersTable() {
             <Table.ColumnHeader w="sm">Full name</Table.ColumnHeader>
             <Table.ColumnHeader w="sm">Email</Table.ColumnHeader>
             <Table.ColumnHeader w="sm">Role</Table.ColumnHeader>
-            <Table.ColumnHeader w="sm">Status</Table.ColumnHeader>
             <Table.ColumnHeader w="sm">Actions</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -87,7 +86,6 @@ function UsersTable() {
               <Table.Cell>
                 {user.is_superuser ? "Superuser" : "User"}
               </Table.Cell>
-              <Table.Cell>{user.is_active ? "Active" : "Inactive"}</Table.Cell>
               <Table.Cell>
                 <UserActionsMenu
                   user={user}

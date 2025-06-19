@@ -10,10 +10,15 @@ export const Route = createFileRoute("/_layout")({
 });
 
 function Layout() {
-  const { isLoggedIn, loginMutation } = useAuth();
+  const { isLoggedIn, login, isLoading } = useAuth();
+
+  if (isLoading) {
+    return null; // Or a loading spinner
+  }
 
   if (!isLoggedIn) {
-    return loginMutation.mutate();
+    login();
+    return null;
   }
 
   return (

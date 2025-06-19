@@ -35,8 +35,11 @@ npm install
 Generate the API client from your running backend:
 
 ```bash
-cd ..
+# From the project root
 ./scripts/generate-client.sh
+
+# Or manually from frontend directory
+npm run generate-client
 ```
 
 Start the development server:
@@ -47,7 +50,31 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
+> **💡 Pro Tip**: Use the top-level `./scripts/dev` command to start both backend and frontend together with hot reloading!
+
 ## 🔧 Development Workflow
+
+### Integrated Development
+
+This frontend is designed to work seamlessly with the FastAPI backend:
+
+**Development Mode:**
+- Backend proxies frontend requests to Vite dev server
+- Hot module reloading works perfectly
+- API calls go through the backend at `http://localhost:8000`
+
+**Quick Start:**
+```bash
+# Start everything (from project root)
+./scripts/dev
+
+# Or start individually:
+# Terminal 1: Backend
+cd backend && uv run fastapi dev app/main.py
+
+# Terminal 2: Frontend  
+cd frontend && npm run dev
+```
 
 ### Node.js Version Management
 

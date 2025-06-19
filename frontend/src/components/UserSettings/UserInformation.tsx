@@ -12,13 +12,13 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod/v4-mini";
 
-import { type ApiError, type UserUpdateMe, UsersService } from "@/client";
+import { type ApiError, type UserUpdate, UsersService } from "@/client";
 import useAuth from "@/hooks/useAuth";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError, formatErrors } from "@/utils";
 import { Field } from "../ui/field";
 
-const UserUpdateMeForm = z.partial(
+const UserUpdateForm = z.partial(
   z.object({
     full_name: z
       .string()
@@ -34,7 +34,7 @@ const UserInformation = () => {
   const { user: currentUser } = useAuth();
   const form = useForm({
     validators: {
-      onBlur: UserUpdateMeForm,
+      onBlur: UserUpdateForm,
     },
     onSubmit: (data) => {
       mutation.mutate(data.value);
@@ -42,7 +42,7 @@ const UserInformation = () => {
     defaultValues: {
       full_name: currentUser?.full_name,
       email: currentUser?.email,
-    } as UserUpdateMe,
+    } as UserUpdate,
   });
 
   const toggleEditMode = () => {
@@ -50,7 +50,7 @@ const UserInformation = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: (data: UserUpdateMe) =>
+    mutationFn: (data: UserUpdate) =>
       UsersService.updateUserMe({ requestBody: data }),
     onSuccess: () => {
       showSuccessToast("User updated successfully.");

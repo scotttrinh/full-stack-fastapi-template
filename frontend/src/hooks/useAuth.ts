@@ -1,68 +1,85 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useCallback } from "react";
+import { z } from "zod/v4";
 
-import {
-  type ApiError,
-  type UserPublic,
-  type UserRegister,
-  UsersService,
-} from "@/client";
-import { handleError } from "@/utils";
+import { type User_Output, UsersService } from "@/client";
+
+const UnauthorizedApiError = z.object({
+  status: z.literal(401),
+});
 
 export const useAuth = () => {
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data: user } = useQuery<UserPublic | null, Error>({
+
+  const {
+    data: user,
+    error,
+    refetch,
+  } = useQuery<User_Output | null, Error>({
     queryKey: ["currentUser"],
-    queryFn: () => UsersService.readUserMe(),
+    queryFn: async () => {
+      try {
+        return await UsersService.readUserMe();
+      } catch (err) {
+        if (UnauthorizedApiError.safeParse(err).success) {
+          return null;
+        }
+        throw err;
+      }
+    },
+    retry: (failureCount, error) => {
+      if (UnauthorizedApiError.safeParse(error).success) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+    refetchInterval: 10 * 60 * 1000,
   });
 
-  const signUpMutation = useMutation({
-    mutationFn: (data: UserRegister) =>
-      UsersService.registerUser({ requestBody: data }),
-
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      return await fetch('/auth/sign-out', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    },
     onSuccess: () => {
-      void navigate({ to: "/" });
+      queryClient.setQueryData(["currentUser"], null);
     },
-    onError: (err: ApiError) => {
-      handleError(err);
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    onError: (error) => {
+      console.error("Logout failed:", error);
     },
   });
 
-  const login = async () => {
-    await navigate({
-      href: new URL("/api/v1/auth/login", window.location.origin).href,
-      reloadDocument: true,
-    });
-  };
+  const invalidateUser = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+  }, [queryClient]);
 
-  const loginMutation = useMutation({
-    mutationFn: login,
-    onError: (err: ApiError) => {
-      handleError(err);
-    },
-  });
+  const login = useCallback(() => {
+    window.location.href = "/auth/sign-in";
+  }, []);
 
-  const logout = async () => {
-    await navigate({
-      href: new URL("/api/v1/auth/logout", window.location.origin).href,
-      reloadDocument: true,
-    });
-  };
+  const register = useCallback(() => {
+    window.location.href = "/auth/sign-up";
+  }, []);
+
+  const logout = useCallback(async () => {
+    await logoutMutation.mutateAsync();
+    window.location.href = "/auth/sign-in";
+  }, [logoutMutation]);
 
   return {
-    signUpMutation,
-    loginMutation,
-    logout,
     user,
     error,
-    resetError: () => setError(null),
     isLoggedIn: user !== null,
+    isLoading: user === undefined,
+    login,
+    register,
+    logout,
+    refetch,
+    invalidateUser,
   };
 };
 

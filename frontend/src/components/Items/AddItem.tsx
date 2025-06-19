@@ -99,7 +99,7 @@ const AddItem = () => {
                   >
                     <Input
                       id="title"
-                      value={field.state.value}
+                      value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Title"
                       type="text"
@@ -117,7 +117,7 @@ const AddItem = () => {
                   >
                     <Input
                       id="description"
-                      value={field.state.value ?? undefined}
+                      value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Description"
                       type="text"
