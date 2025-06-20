@@ -32,6 +32,7 @@ async def read_users(
 class UserUpdate(BaseModel):
     email: str | None = None
     full_name: str | None = None
+    is_superuser: bool | None = None
 
 
 @router.patch("/me")
@@ -102,7 +103,7 @@ async def update_user(
     *,
     user_service: UserServiceDep,
     user_id: uuid.UUID,
-    user_in: User.__variants__.Base,
+    user_in: UserUpdate,
 ) -> Any:
     """
     Update a user.

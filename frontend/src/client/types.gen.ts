@@ -6,31 +6,31 @@ export type Collection_Item_ = {
 };
 
 export type Collection_User_ = {
-    data: Array<User_Output>;
+    data: Array<User>;
     count: number;
 };
+
+export type description = string | null;
 
 export type HTTPValidationError = {
     detail?: Array<ValidationError>;
 };
 
 export type Identity = {
-    id: IdProperty_uuid_UUID__Output;
+    id: IdProperty_uuid_UUID_;
     created_at?: string;
     modified_at: string;
     issuer: string;
     subject: string;
 };
 
-export type IdProperty_uuid_UUID__Input = string;
-
-export type IdProperty_uuid_UUID__Output = string;
+export type IdProperty_uuid_UUID_ = string;
 
 export type Item = {
-    id: IdProperty_uuid_UUID__Output;
+    id: IdProperty_uuid_UUID_;
     description?: OptionalProperty_str_str_;
     title?: OptionalProperty_str_str_;
-    owner: User_Output;
+    owner: User;
 };
 
 export type ItemCreate = {
@@ -39,7 +39,8 @@ export type ItemCreate = {
 };
 
 export type ItemUpdate = {
-    id?: IdProperty_uuid_UUID__Input;
+    description: description;
+    title: description;
 };
 
 export type OptionalProperty_str_str_ = string | null;
@@ -63,12 +64,8 @@ export type SignUpBody = {
     password: string;
 };
 
-export type User_Input = {
-    id?: IdProperty_uuid_UUID__Input;
-};
-
-export type User_Output = {
-    id: IdProperty_uuid_UUID__Output;
+export type User = {
+    id: IdProperty_uuid_UUID_;
     email?: OptionalProperty_str_str_;
     full_name?: OptionalProperty_str_str_;
     is_superuser?: boolean;
@@ -161,7 +158,7 @@ export type UsersReadUsersData = {
 
 export type UsersReadUsersResponse = (Collection_User_);
 
-export type UsersReadUserMeResponse = (User_Output);
+export type UsersReadUserMeResponse = (User);
 
 export type UsersDeleteUserMeResponse = (void);
 
@@ -169,7 +166,7 @@ export type UsersUpdateUserMeData = {
     requestBody: UserUpdate;
 };
 
-export type UsersUpdateUserMeResponse = (User_Output);
+export type UsersUpdateUserMeResponse = (User);
 
 export type UsersReadUserByIdData = {
     userId: string;
@@ -178,11 +175,11 @@ export type UsersReadUserByIdData = {
 export type UsersReadUserByIdResponse = (unknown);
 
 export type UsersUpdateUserData = {
-    requestBody: User_Input;
+    requestBody: UserUpdate;
     userId: string;
 };
 
-export type UsersUpdateUserResponse = (User_Output);
+export type UsersUpdateUserResponse = (User);
 
 export type UsersDeleteUserData = {
     userId: string;

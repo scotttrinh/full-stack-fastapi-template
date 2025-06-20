@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod/v4-mini";
 
-import { type User_Output, UsersService } from "@/client";
+import { type User, UsersService } from "@/client";
 import { UserActionsMenu } from "@/components/Common/UserActionsMenu";
 import PendingUsers from "@/components/Pending/PendingUsers";
 import {
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_layout/admin")({
 
 function UsersTable() {
   const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<User_Output>(["currentUser"]);
+  const currentUser = queryClient.getQueryData<User>(["currentUser"]);
   const navigate = useNavigate({ from: Route.fullPath });
   const { page } = Route.useSearch();
 

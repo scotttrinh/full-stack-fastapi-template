@@ -266,7 +266,7 @@ export class UsersService {
     /**
      * Read User Me
      * Get current user.
-     * @returns User_Output Successful Response
+     * @returns User Successful Response
      * @throws ApiError
      */
     public static readUserMe(): CancelablePromise<UsersReadUserMeResponse> {
@@ -294,7 +294,7 @@ export class UsersService {
      * Update own user.
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns User_Output Successful Response
+     * @returns User Successful Response
      * @throws ApiError
      */
     public static updateUserMe(data: UsersUpdateUserMeData): CancelablePromise<UsersUpdateUserMeResponse> {
@@ -336,7 +336,7 @@ export class UsersService {
      * @param data The data for the request.
      * @param data.userId
      * @param data.requestBody
-     * @returns User_Output Successful Response
+     * @returns User Successful Response
      * @throws ApiError
      */
     public static updateUser(data: UsersUpdateUserData): CancelablePromise<UsersUpdateUserResponse> {

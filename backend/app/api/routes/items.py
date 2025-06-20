@@ -63,8 +63,9 @@ async def create_item(
     return item
 
 
-class ItemUpdate(Item.__variants__.Base):
-    pass
+class ItemUpdate(BaseModel):
+    description: Item.__typeof__.description
+    title: Item.__typeof__.description
 
 
 @router.put("/{id}")
@@ -82,11 +83,10 @@ async def update_item(
     if existing_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    item = existing_item.model_copy(
-        update=item_in.model_dump(exclude_unset=True, exclude={"id"})
-    )
-    item = await item_service.update(item)
-    return item
+    existing_item.description = item_in.description
+    existing_item.title = item_in.title
+    await item_service.update(existing_item)
+    return existing_item
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
