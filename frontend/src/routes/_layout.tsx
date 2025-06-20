@@ -17,6 +17,7 @@ function Layout() {
   }
 
   if (!isLoggedIn) {
+    console.log("Logging in");
     login();
     return null;
   }

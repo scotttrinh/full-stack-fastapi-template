@@ -2,7 +2,7 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { z } from "zod/v4";
 
-import { type User_Output, UsersService } from "@/client";
+import { type User, UsersService } from "@/client";
 
 const UnauthorizedApiError = z.object({
   status: z.literal(401),
@@ -15,7 +15,7 @@ export const useAuth = () => {
     data: user,
     error,
     refetch,
-  } = useQuery<User_Output | null, Error>({
+  } = useQuery<User | null, Error>({
     queryKey: ["currentUser"],
     queryFn: async () => {
       try {

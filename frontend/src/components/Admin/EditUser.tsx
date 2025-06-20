@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
 
-import { UsersService } from "@/client";
+import { UsersService, type User } from "@/client";
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
 import { formatErrors, handleError } from "@/utils";
@@ -31,21 +31,15 @@ import {
 import { Field } from "../ui/field";
 
 interface EditUserProps {
-  user: UserUpdateForm;
+  user: User;
 }
 
-const UserUpdateForm = z.intersection(
-  z.partial(
-    z.object({
-      email: z.string().check(z.email()),
-      is_superuser: z.boolean(),
-      full_name: z.nullable(z.string()),
-    }),
-  ),
-  z.object({
-    id: z.string(),
-  }),
-);
+const UserUpdateForm = z.object({
+  id: z.string(),
+  email: z.union([z.string().check(z.email()), z.null(), z.undefined()]),
+  is_superuser: z.union([z.boolean(), z.undefined()]),
+  full_name: z.union([z.string(), z.null(), z.undefined()]),
+});
 type UserUpdateForm = z.output<typeof UserUpdateForm>;
 
 const EditUser = ({ user }: EditUserProps) => {
@@ -56,7 +50,12 @@ const EditUser = ({ user }: EditUserProps) => {
     validators: {
       onSubmit: UserUpdateForm,
     },
-    defaultValues: user,
+    defaultValues: {
+      email: user.email,
+      is_superuser: user.is_superuser,
+      full_name: user.full_name,
+      id: user.id,
+    },
     onSubmit: (data) => {
       mutation.mutate(data.value);
     },
