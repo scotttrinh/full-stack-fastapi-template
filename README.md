@@ -24,9 +24,13 @@ A modern, production-ready full-stack template built with FastAPI, Gel, and Reac
 - 🦇 Dark mode support
 
 ### Development & Deployment
+- 🚀 **One-command development** - `./scripts/dev` starts everything
+- 🔄 **Auto-migrations** - Gel watches schema changes and applies them automatically
+- 🤖 **Auto-codegen** - Models regenerated automatically on schema changes
+- 🔥 **Hot module reloading** - Backend proxies to Vite dev server
 - 🚢 **Simplified deployment** - React app served directly from FastAPI
 - 🏭 **GitHub Actions** - CI/CD pipeline included
-- 🔧 **Modern tooling** - UV for Python dependencies, ESLint, Prettier
+- 🔧 **Modern tooling** - UV for Python, Vite for frontend, Gel for data
 
 ## ✨ Quick Start
 
@@ -34,54 +38,49 @@ A modern, production-ready full-stack template built with FastAPI, Gel, and Reac
 
 - **Python 3.12+** with [uv](https://docs.astral.sh/uv/) package manager
 - **Node.js 18+** with npm
+- **Gel CLI** - Install with `curl -sSfL https://sh.gel.dev | sh`
 
-### 1. Clone and Setup
-
-Clone the repository:
+### 🚀 One-Command Setup
 
 ```bash
+# Clone the repository
 git clone <your-repo-url>
 cd full-stack-fastapi-template
+
+# Run the setup script
+./scripts/setup
 ```
 
-### 2. Database Setup
-
-Start local Gel instances:
+### 🏃‍♂️ Start Development
 
 ```bash
-gel project init
+# Start the full development environment
+./scripts/dev
 ```
 
-### 3. Backend Setup
+This will start:
+- **Gel database**
+- **FastAPI backend** on `http://localhost:8000`
+- **Vite frontend** on `http://localhost:5173` (with hot reload)
+
+The backend automatically proxies to the Vite dev server for seamless development with hot module reloading.
+
+**✨ Development Features:**
+- **Schema watching**: Modify `dbschema/default.gel` and see changes applied instantly
+- **Auto-codegen**: Python models regenerated automatically on schema changes  
+- **Hot reloading**: Frontend changes reflect immediately via Vite
+- **Integrated API**: Backend and frontend work together seamlessly
+
+### 🧪 Run Tests
 
 ```bash
-cd backend
+# Run all tests
+./scripts/test
 
-# Install dependencies
-uv sync
-
-# Start the FastAPI development server
-uv run fastapi dev app/main.py
+# For CI environments
+./scripts/test-ci
 ```
 
-The backend will be available at `http://localhost:8000`
-
-### 4. Frontend Setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Generate API client from backend OpenAPI schema
-npm run generate-client
-
-# Start the Vite development server
-npm run dev
-```
-
-The frontend will be available at `http://localhost:5173`
 
 ## 🔧 Local Configuration
 
@@ -89,6 +88,35 @@ Copy the `.env.example` file to `.env` and configure
 
 ```bash
 cp .env.example .env
+```
+
+## 🛠️ Development Scripts
+
+The project includes several convenience scripts in `./scripts/`:
+
+- **`./scripts/setup`** - One-time project setup (dependencies, database, client generation)
+- **`./scripts/dev`** - Start full development environment (database + backend + frontend)
+- **`./scripts/test`** - Run all tests (backend + frontend)
+- **`./scripts/test-ci`** - Run tests in CI environment
+- **`./scripts/generate-client.sh`** - Generate frontend API client from backend OpenAPI schema
+
+These scripts handle the coordination between Gel, FastAPI, and Vite for a seamless development experience.
+
+### 🔄 Schema Development Workflow
+
+During development, Gel automatically watches for schema changes:
+
+1. **Start development**: `./scripts/dev`
+2. **Edit schema**: Modify `dbschema/default.gel`
+3. **Instant updates**: Changes applied automatically + models regenerated
+4. **Iterate freely**: Make as many changes as needed
+
+When your feature is complete:
+
+```bash
+# Commit your schema changes
+gel migration create        # Create migration from your changes
+gel migrate --dev-mode     # Fast-forward migration history
 ```
 
 ## 🏗️ Project Structure
@@ -105,12 +133,17 @@ cp .env.example .env
 │   ├── src/
 │   │   ├── components/     # React components
 │   │   ├── hooks/          # Custom hooks
-│   │   ├── pages/          # Page components
+│   │   ├── routes/         # Page components and routing
 │   │   └── client/         # Auto-generated API client
 │   └── package.json        # Node.js dependencies
 ├── dbschema/               # Gel database schema
 │   ├── default.gel         # Main schema file
 │   └── migrations/         # Database migrations
+├── scripts/                # Development and build scripts
+│   ├── dev                 # Start development environment
+│   ├── setup               # One-time project setup
+│   ├── test                # Run all tests
+│   └── generate-client.sh  # Generate API client
 └── gel.toml               # Gel configuration
 ```
 
@@ -123,15 +156,28 @@ This template uses Gel's built-in authentication system.
 
 ## 🧪 Testing
 
-### Backend Tests
+### Run All Tests
 
+```bash
+# Run all tests (backend + frontend)
+./scripts/test
+
+# For CI environments
+./scripts/test-ci
+```
+
+### Individual Test Suites
+
+**Backend Tests:**
 ```bash
 cd backend
 uv run pytest
+
+# With coverage
+uv run pytest --cov=app
 ```
 
-### Frontend Tests
-
+**Frontend Tests:**
 ```bash
 cd frontend
 
