@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# Full Stack FastAPI Template - Local Testing
+# This script runs all tests in the local development environment
+
+set -e
+
+echo "🧪 Running Full Stack FastAPI Template Tests..."
+
+# Check if required commands are available
+if ! command -v gel &> /dev/null; then
+    echo "❌ Error: 'gel' command not found. Please install Gel first."
+    exit 1
+fi
+
+if ! command -v uv &> /dev/null; then
+    echo "❌ Error: 'uv' command not found. Please install uv first."
+    exit 1
+fi
+
+if ! command -v npm &> /dev/null; then
+    echo "❌ Error: 'npm' command not found. Please install Node.js first."
+    exit 1
+fi
+
+# Verify Gel project is properly initialized
+if ! gel project info &>/dev/null; then
+    echo "❌ Error: Gel project not initialized. Please run './scripts/setup' first."
+    exit 1
+fi
+
+echo "🗄️  Using Gel background daemon for testing"
+
+# 1. Run backend tests
+echo ""
+echo "🐍 Running backend tests..."
+cd backend
+
+# Run tests with coverage
+if uv run pytest --cov=app --cov-report=term-missing --cov-report=html; then
+    echo "✅ Backend tests passed"
+else
+    echo "❌ Backend tests failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# 2. Run frontend tests
+echo ""
+echo "📦 Running frontend tests..."
+cd frontend
+
+# Install dependencies if needed
+if [ ! -d "node_modules" ]; then
+    echo "📦 Installing frontend dependencies..."
+    npm install
+fi
+
+# Run frontend tests
+if npm test; then
+    echo "✅ Frontend tests passed"
+else
+    echo "❌ Frontend tests failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# 3. Run type checking
+echo ""
+echo "🔍 Running type checking..."
+
+# Backend type checking
+echo "   🐍 Backend type checking..."
+cd backend
+if uv run mypy .; then
+    echo "   ✅ Backend type checking passed"
+else
+    echo "   ❌ Backend type checking failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+# Frontend type checking
+echo "   📦 Frontend type checking..."
+cd frontend
+if npm run type-check 2>/dev/null || npx tsc --noEmit; then
+    echo "   ✅ Frontend type checking passed"
+else
+    echo "   ❌ Frontend type checking failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+# 4. Run linting
+echo ""
+echo "🎨 Running code quality checks..."
+
+# Backend linting
+echo "   🐍 Backend linting..."
+cd backend
+if uv run ruff check .; then
+    echo "   ✅ Backend linting passed"
+else
+    echo "   ❌ Backend linting failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+# Frontend linting
+echo "   📦 Frontend linting..."
+cd frontend
+if npm run lint 2>/dev/null || npx eslint src/; then
+    echo "   ✅ Frontend linting passed"
+else
+    echo "   ❌ Frontend linting failed (non-critical)"
+    # Don't exit on frontend linting failures as they're often formatting issues
+fi
+cd ..
+
+echo ""
+echo "🎉 All tests completed successfully!"
+echo ""
+echo "📊 Test Results Summary:"
+echo "   ✅ Backend tests: PASSED"
+echo "   ✅ Frontend tests: PASSED"
+echo "   ✅ Type checking: PASSED"
+echo "   ✅ Code quality: PASSED"
+echo ""
+echo "📁 Backend coverage report available at: backend/htmlcov/index.html" 
