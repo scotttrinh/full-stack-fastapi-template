@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# Full Stack FastAPI Template - Development Server
+# This script starts the full development environment with hot reloading
+
+set -e
+
+echo "🚀 Starting Full Stack FastAPI Template Development Environment..."
+
+# Function to clean up background processes on exit
+cleanup() {
+    echo ""
+    echo "🛑 Shutting down development servers..."
+    
+    # Kill background processes
+    if [ ! -z "$BACKEND_PID" ]; then
+        kill $BACKEND_PID 2>/dev/null || true
+    fi
+    if [ ! -z "$FRONTEND_PID" ]; then
+        kill $FRONTEND_PID 2>/dev/null || true
+    fi
+    
+    # Kill any remaining processes on our ports
+    pkill -f "fastapi dev" 2>/dev/null || true
+    pkill -f "vite.*5173" 2>/dev/null || true
+    
+    echo "✅ Development servers stopped"
+    exit 0
+}
+
+# Check if all required commands are available
+check_dependencies() {
+    if ! command -v gel &> /dev/null; then
+        echo "❌ Error: 'gel' command not found. Please install Gel first."
+        exit 1
+    fi
+
+    if ! command -v uv &> /dev/null; then
+        echo "❌ Error: 'uv' command not found. Please install uv first."
+        exit 1
+    fi
+
+    if ! command -v npm &> /dev/null; then
+        echo "❌ Error: 'npm' command not found. Please install Node.js first."
+        exit 1
+    fi
+}
+
+# Verify Gel project is properly initialized
+verify_project() {
+    if ! gel project info &>/dev/null; then
+        echo "❌ Error: Gel project not initialized. Please run './scripts/setup' first."
+        exit 1
+    fi
+    
+    echo "🗄️  Gel is running as background daemon (schema watching enabled)"
+}
+
+# Start FastAPI backend with auto-reload
+start_backend() {
+    echo ""
+    echo "🐍 Starting FastAPI backend with auto-reload..."
+    
+    cd backend
+    uv run fastapi dev --port 8000 --reload &
+    BACKEND_PID=$!
+    cd ..
+
+    # Wait a moment for backend to start
+    sleep 3
+
+    # Check if backend started successfully
+    if ! kill -0 $BACKEND_PID 2>/dev/null; then
+        echo "❌ Error: Failed to start FastAPI backend"
+        cleanup
+        exit 1
+    fi
+    
+    echo "✅ FastAPI backend started (PID: $BACKEND_PID)"
+}
+
+# Start Vite frontend dev server
+start_frontend() {
+    echo ""
+    echo "📦 Starting Vite frontend with hot module reloading..."
+    
+    cd frontend
+    npm run dev &
+    FRONTEND_PID=$!
+    cd ..
+
+    # Wait a moment for frontend to start
+    sleep 3
+
+    # Check if frontend started successfully
+    if ! kill -0 $FRONTEND_PID 2>/dev/null; then
+        echo "❌ Error: Failed to start Vite frontend"
+        cleanup
+        exit 1
+    fi
+    
+    echo "✅ Vite frontend started (PID: $FRONTEND_PID)"
+}
+
+# Display status and instructions
+display_status() {
+    echo ""
+    echo "🎉 Full Stack Development Environment Running!"
+    echo ""
+    echo "📍 Access your application:"
+    echo "   • Application: http://localhost:8000"
+    echo "   • API root: http://localhost:8000/api/v1"
+    echo "   • API Documentation: http://localhost:8000/docs"
+    echo ""
+    echo "🔄 Hot Reloading Enabled:"
+    echo "   • Frontend: Edit files in frontend/src/ for instant updates"
+    echo "   • Backend: Edit files in backend/app/ for auto-reload"
+    echo "   • Schema: Edit dbschema/default.gel for automatic migrations"
+    echo ""
+    echo "🛑 Press Ctrl+C to stop all services"
+    echo ""
+}
+
+# Monitor processes and keep script running
+monitor_processes() {
+    while true; do
+        # Check if any process died
+        if ! kill -0 $BACKEND_PID 2>/dev/null; then
+            echo "❌ FastAPI backend stopped unexpectedly"
+            cleanup
+            exit 1
+        fi
+        
+        if ! kill -0 $FRONTEND_PID 2>/dev/null; then
+            echo "❌ Vite frontend stopped unexpectedly"
+            cleanup
+            exit 1
+        fi
+        
+        sleep 5
+    done
+}
+
+# Main execution flow
+main() {
+    # Set up signal handlers for cleanup
+    trap cleanup SIGINT SIGTERM
+
+    check_dependencies
+    verify_project
+    start_backend
+    start_frontend
+    display_status
+    monitor_processes
+}
+
+# Run the main function
+main 

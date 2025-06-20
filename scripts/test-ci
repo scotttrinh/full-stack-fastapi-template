@@ -1,0 +1,214 @@
+#!/bin/bash
+
+# Full Stack FastAPI Template - CI Testing
+# This script runs all tests in a CI environment with full setup
+
+set -e
+
+echo "🤖 Running Full Stack FastAPI Template Tests (CI Mode)..."
+
+# Check if required commands are available
+if ! command -v gel &> /dev/null; then
+    echo "❌ Error: 'gel' command not found. Please install Gel first."
+    exit 1
+fi
+
+if ! command -v uv &> /dev/null; then
+    echo "❌ Error: 'uv' command not found. Please install uv first."
+    exit 1
+fi
+
+if ! command -v npm &> /dev/null; then
+    echo "❌ Error: 'npm' command not found. Please install Node.js first."
+    exit 1
+fi
+
+# 1. Install all dependencies
+echo ""
+echo "📦 Installing all dependencies..."
+
+# Install backend dependencies
+echo "   🐍 Installing backend dependencies..."
+cd backend
+uv sync
+cd ..
+
+# Install frontend dependencies
+echo "   📦 Installing frontend dependencies..."
+cd frontend
+npm ci  # Use npm ci for faster, more reliable CI installs
+cd ..
+
+echo "✅ All dependencies installed"
+
+# 2. Initialize Gel project for CI
+echo ""
+echo "🗄️  Initializing Gel project for CI..."
+
+# Initialize project if not already initialized
+if ! gel project info &>/dev/null; then
+    gel project init
+    echo "✅ Gel project initialized"
+else
+    echo "ℹ️  Gel project already initialized"
+fi
+
+# Create minimal .env for CI if it doesn't exist
+if [ ! -f ".env" ]; then
+    cat > .env << EOF
+# CI environment settings
+ENVIRONMENT=local
+PROJECT_NAME="Full Stack FastAPI Template CI"
+GEL_AUTH_SIGNING_KEY=ci-test-key-not-secure
+BACKEND_CORS_ORIGINS=http://localhost:5173
+EOF
+    echo "✅ Created CI .env file"
+fi
+
+echo "🗄️  Gel daemon ready for CI testing"
+
+# 3. Generate API client
+echo ""
+echo "🔧 Generating API client..."
+./scripts/generate-client.sh
+echo "✅ API client generated"
+
+# 4. Run backend tests
+echo ""
+echo "🐍 Running backend tests..."
+cd backend
+
+# Run tests with coverage and JUnit XML output for CI
+if uv run pytest \
+    --cov=app \
+    --cov-report=term-missing \
+    --cov-report=html \
+    --cov-report=xml \
+    --junitxml=test-results.xml \
+    -v; then
+    echo "✅ Backend tests passed"
+else
+    echo "❌ Backend tests failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# 5. Run frontend tests
+echo ""
+echo "📦 Running frontend tests..."
+cd frontend
+
+# Run frontend tests with CI-specific settings
+if CI=true npm test -- --coverage --watchAll=false; then
+    echo "✅ Frontend tests passed"
+else
+    echo "❌ Frontend tests failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# 6. Run type checking
+echo ""
+echo "🔍 Running type checking..."
+
+# Backend type checking
+echo "   🐍 Backend type checking..."
+cd backend
+if uv run mypy . --junit-xml=mypy-results.xml; then
+    echo "   ✅ Backend type checking passed"
+else
+    echo "   ❌ Backend type checking failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+# Frontend type checking
+echo "   📦 Frontend type checking..."
+cd frontend
+if npm run type-check 2>/dev/null || npx tsc --noEmit; then
+    echo "   ✅ Frontend type checking passed"
+else
+    echo "   ❌ Frontend type checking failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+# 7. Run linting and formatting checks
+echo ""
+echo "🎨 Running code quality checks..."
+
+# Backend linting and formatting
+echo "   🐍 Backend code quality..."
+cd backend
+
+# Check formatting
+if uv run ruff format --check .; then
+    echo "   ✅ Backend formatting is correct"
+else
+    echo "   ❌ Backend formatting issues found"
+    echo "   💡 Run 'uv run ruff format .' to fix"
+    cd ..
+    exit 1
+fi
+
+# Check linting
+if uv run ruff check .; then
+    echo "   ✅ Backend linting passed"
+else
+    echo "   ❌ Backend linting failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# Frontend linting
+echo "   📦 Frontend code quality..."
+cd frontend
+
+if npm run lint 2>/dev/null || npx eslint src/ --format=junit --output-file=eslint-results.xml; then
+    echo "   ✅ Frontend linting passed"
+else
+    echo "   ❌ Frontend linting failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+
+# 8. Build frontend to ensure it compiles
+echo ""
+echo "🏗️  Testing frontend build..."
+cd frontend
+if npm run build; then
+    echo "✅ Frontend build successful"
+else
+    echo "❌ Frontend build failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+echo ""
+echo "🎉 All CI tests completed successfully!"
+echo ""
+echo "📊 CI Test Results Summary:"
+echo "   ✅ Dependencies: INSTALLED"
+echo "   ✅ Backend tests: PASSED"
+echo "   ✅ Frontend tests: PASSED"
+echo "   ✅ Type checking: PASSED"
+echo "   ✅ Code quality: PASSED"
+echo "   ✅ Frontend build: PASSED"
+echo ""
+echo "📁 Artifacts generated:"
+echo "   📊 Backend coverage: backend/htmlcov/index.html"
+echo "   📊 Backend coverage XML: backend/coverage.xml"
+echo "   📋 Backend test results: backend/test-results.xml"
+echo "   📋 Backend mypy results: backend/mypy-results.xml"
+echo "   📦 Frontend build: frontend/dist/" 

@@ -1,0 +1,167 @@
+#!/bin/bash
+
+# Full Stack FastAPI Template - Project Setup
+# This script sets up the development environment for the first time
+
+set -e
+
+echo "🚀 Setting up Full Stack FastAPI Template..."
+
+# Check if all required commands are available
+check_dependencies() {
+    if ! command -v uv &> /dev/null; then
+        echo "❌ Error: uv is not installed. Please install uv first:"
+        echo "   curl -LsSf https://astral.sh/uv/install.sh | sh"
+        exit 1
+    fi
+
+    if ! command -v npm &> /dev/null; then
+        echo "❌ Error: npm is not installed. Please install Node.js and npm first"
+        exit 1
+    fi
+
+    if ! command -v gel &> /dev/null; then
+        echo "❌ Error: gel is not installed. Please install Gel first:"
+        echo "   Visit: https://geldata.com/install"
+        exit 1
+    fi
+}
+
+# Detect and navigate to project root
+detect_project_root() {
+    # Check if running from project root
+    if [ ! -f "pyproject.toml" ] && [ ! -f "backend/pyproject.toml" ]; then
+        echo "❌ Error: Please run this script from the project root directory"
+        exit 1
+    fi
+
+    # Go to project root if we're in a subdirectory
+    if [ -f "backend/pyproject.toml" ] && [ ! -f "pyproject.toml" ]; then
+        cd ..
+    fi
+
+    echo "📁 Current directory: $(pwd)"
+}
+
+# Install backend dependencies
+install_backend_deps() {
+    echo ""
+    echo "🐍 Installing backend dependencies..."
+    
+    cd backend
+    uv sync
+    cd ..
+    
+    echo "✅ Backend dependencies installed"
+}
+
+# Install frontend dependencies
+install_frontend_deps() {
+    echo ""
+    echo "📦 Installing frontend dependencies..."
+    
+    cd frontend
+    npm install
+    cd ..
+    
+    echo "✅ Frontend dependencies installed"
+}
+
+# Initialize Gel project
+initialize_gel_project() {
+    echo ""
+    echo "🗄️  Initializing Gel project..."
+
+    # Initialize project if not already initialized
+    if ! gel project info &>/dev/null; then
+        gel project init
+        echo "✅ Gel project initialized"
+    else
+        echo "ℹ️  Gel project already initialized"
+    fi
+}
+
+# Configure authentication extension
+configure_auth() {
+    echo ""
+    echo "🔐 Configuring authentication extension..."
+    
+    cd backend
+    if uv run python app/configure_auth.py; then
+        echo "✅ Authentication configured"
+    else
+        echo "❌ Failed to configure authentication"
+        cd ..
+        exit 1
+    fi
+    cd ..
+}
+
+# Generate frontend API client
+generate_api_client() {
+    echo ""
+    echo "🔧 Generating frontend API client..."
+    
+    if ./scripts/generate-client.sh; then
+        echo "✅ Frontend API client generated"
+    else
+        echo "❌ Failed to generate API client"
+        exit 1
+    fi
+}
+
+# Set up environment configuration
+setup_environment() {
+    echo ""
+    echo "🔧 Setting up environment configuration..."
+    
+    if [ ! -f ".env" ]; then
+        cat > .env << EOF
+# Development settings
+ENVIRONMENT=local
+PROJECT_NAME="Full Stack FastAPI Template"
+
+# Gel configuration
+GEL_AUTH_SIGNING_KEY=dev-$(openssl rand -hex 32)
+
+# CORS settings (for frontend development)
+BACKEND_CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+
+# Optional: Sentry DSN for error tracking (leave empty for development)
+# SENTRY_DSN=
+EOF
+        echo "✅ Created .env file with development settings"
+    else
+        echo "ℹ️  .env file already exists"
+    fi
+}
+
+# Display completion message
+display_completion() {
+    echo ""
+    echo "🎉 Setup complete! You can now start development with:"
+    echo "   ./scripts/dev"
+    echo ""
+    echo "📚 Or run individual services:"
+    echo "   Backend:  cd backend && uv run fastapi dev"
+    echo "   Frontend: cd frontend && npm run dev"
+    echo ""
+    echo "🧪 Run tests with:"
+    echo "   ./scripts/test"
+}
+
+# Main execution flow
+main() {
+    check_dependencies
+    detect_project_root
+    install_backend_deps
+    install_frontend_deps
+    setup_environment  # Create .env before initializing Gel project
+    initialize_gel_project
+    configure_auth
+    generate_api_client
+    display_completion
+}
+
+# Run the main function
+main 

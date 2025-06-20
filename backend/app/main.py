@@ -1,17 +1,14 @@
-import contextlib
 import logging
-import os
 import uuid
 
 import fastapi
 import gel.auth
 import gel.fastapi
 import sentry_sdk
-from fastapi.responses import FileResponse
 from fastapi.routing import APIRoute
-from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
+from app.frontend import frontend_router
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("gel.auth").setLevel(logging.DEBUG)
@@ -66,33 +63,7 @@ if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
 
 
 from app.api.main import api_router  # noqa: E402, I001
+
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-# Serve the React frontend application directly from your FastAPI server
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-frontend_dist_path = os.path.join(current_dir, "..", "..", "frontend", "dist")
-static_files_path = os.path.normpath(frontend_dist_path)
-index_path = os.path.join(static_files_path, "index.html")
-
-
-@contextlib.asynccontextmanager
-async def lifespan(app: fastapi.FastAPI):
-    app.mount(
-        "/",
-        StaticFiles(
-            directory=static_files_path,
-            html=True,
-            check_dir=True,
-        ),
-        name="frontend",
-    )
-    yield
-
-
-app.include_router(fastapi.APIRouter(lifespan=lifespan))
-
-
-@app.get("/{full_path:path}", include_in_schema=False)
-async def frontend_router_redirect():
-    return FileResponse(index_path)
+app.include_router(frontend_router)
