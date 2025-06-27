@@ -37,6 +37,7 @@ def error_page(error: str):
     return error
 
 
+@g.auth.email_password.sign_up_body
 class CreateUser(ep.SignUpBody):
     full_name: str | None = None
 
@@ -45,9 +46,8 @@ class CreateUser(ep.SignUpBody):
 async def on_sign_up_complete(
     result: gel.auth.email_password.SignUpCompleteResponse,
     client: gel.fastapi.Client,
-    request: fastapi.Request,
+    user: CreateUser,
 ):
-    user = CreateUser.model_validate(await request.json())
     await client.query_required_single(
         """
         with
