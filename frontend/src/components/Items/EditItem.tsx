@@ -11,7 +11,12 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { FaExchangeAlt } from "react-icons/fa";
 
-import { type ApiError, type Item, type ItemUpdate, ItemsService } from "@/client";
+import {
+  type ApiError,
+  type Item,
+  type ItemUpdate,
+  ItemsService,
+} from "@/client";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
 import {

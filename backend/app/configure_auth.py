@@ -4,15 +4,15 @@ import gel.fastapi
 from app.core.config import settings
 
 
-def configure_branch_auth() -> str:
-    """Configure branch authentication and return the signing key.
+def configure_branch_auth() -> None:
+    """Configure branch authentication.
 
-When you run this script, it will reset all auth-related configuration to default,
-and cause existing auth tokens to be invalidated (new random signing key).
+    When you run this script, it will reset all auth-related configuration to default,
+    and cause existing auth tokens to be invalidated (new random signing key).
 
-You can set the GEL_AUTH_SIGNING_KEY environment variable to a specific value to
-use that signing key instead of generating a new one.
-"""
+    You can set the GEL_AUTH_SIGNING_KEY environment variable to a specific value to
+    use that signing key instead of generating a new one.
+    """
 
     db = gel.create_client()
 
@@ -20,7 +20,7 @@ use that signing key instead of generating a new one.
         f"""
 # Reset all auth configs to their defaults
 configure current branch reset cfg::cors_allow_origins;
-configure current branch reset cfg::EmailProvider;
+configure current branch reset cfg::SMTPProviderConfig;
 configure current branch reset cfg::current_email_provider_name;
 configure current branch reset ext::auth::EmailPasswordProviderConfig;
 configure current branch reset ext::auth::ProviderConfig;
@@ -46,21 +46,22 @@ configure current branch insert ext::auth::EmailPasswordProviderConfig {{
   require_verification := false
 }};
 
-# Configure email provider to use Mailpit
-configure current branch insert cfg::EmailProvider {{
-  name := "Mailpit",
-  sender := "noreply@example.com",
-  host := "localhost",
-  port := 1025,
+# Configure email provider to use Mailpit Sandbox
+configure current branch insert cfg::SMTPProviderConfig {{
+  name := "mailtrap_sandbox",
+  sender := "hello@example.com",
+  host := "sandbox.smtp.mailtrap.io",
+  port := <int32>2525,
+  username := "{{config.MAILTRAP_USER}}",
+  password := "{{config.MAILTRAP_PASSWORD}}",
+  timeout_per_email := <duration>"PT5M",
+  timeout_per_attempt := <duration>"PT1M",
   validate_certs := false,
 }};
-configure current branch set cfg::current_email_provider_name := "Mailpit";
+configure current branch set cfg::current_email_provider_name := "mailtrap_sandbox";
         """
     )
 
-    return signing_key
-
 
 if __name__ == "__main__":
-    signing_key = configure_branch_auth()
-    print(f"Branch authentication configured with signing key: {signing_key}")
+    configure_branch_auth()

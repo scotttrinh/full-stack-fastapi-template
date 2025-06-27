@@ -1,11 +1,14 @@
 import logging
+import typing
 import uuid
 
 import fastapi
 import gel.auth
 import gel.fastapi
+import gel.fastapi.auth.email_password as ep
 import sentry_sdk
 from fastapi.routing import APIRoute
+from pydantic import BaseModel
 
 from app.core.config import settings
 from app.frontend import frontend_router
@@ -16,7 +19,7 @@ logging.getLogger("gel.auth").setLevel(logging.DEBUG)
 
 def custom_generate_unique_id(route: APIRoute) -> str:
     if route.tags:
-        return f"{route.tags[0]}-{route.name}"
+        return f"{route.tags[0]}/{route.name}"
     return route.name
 
 
@@ -34,27 +37,29 @@ def error_page(error: str):
     return error
 
 
-@g.auth.on_new_identity
-async def on_new_identity(
-    result: tuple[uuid.UUID, gel.auth.TokenData | None],
+class CreateUser(ep.SignUpBody):
+    full_name: str | None = None
+
+
+@g.auth.email_password.on_sign_up_complete
+async def on_sign_up_complete(
+    result: gel.auth.email_password.SignUpCompleteResponse,
     client: gel.fastapi.Client,
     request: fastapi.Request,
-) -> fastapi.Response | None:
-    json = await request.json()
-    full_name = json.get("full_name")
-
+):
+    user = CreateUser.model_validate(await request.json())
     await client.query_required_single(
         """
         with
-          IDENTITY := <ext::auth::Identity><uuid>$identity_id
+          IDENTITY := <ext::auth::Identity><uuid>$identity_id,
         insert User {
           identity := IDENTITY,
           email := (select ext::auth::EmailPasswordFactor filter .identity = IDENTITY).email,
           full_name := <optional str>$full_name,
         }
         """,
-        identity_id=result[0],
-        full_name=full_name,
+        identity_id=result.identity_id,
+        full_name=user.full_name,
     )
 
 

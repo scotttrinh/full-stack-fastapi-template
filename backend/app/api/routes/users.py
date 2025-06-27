@@ -47,7 +47,7 @@ async def update_user_me(
     """
 
     current_user = current_user.model_copy(
-        update=user_in.model_dump(exclude_unset=True, exclude={"id"})
+        update=user_in.model_dump(exclude_none=True)
     )
     await user_service.update(current_user)
     return current_user

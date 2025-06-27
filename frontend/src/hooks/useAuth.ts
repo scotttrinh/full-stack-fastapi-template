@@ -38,10 +38,10 @@ export const useAuth = () => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      return await fetch('/auth/sign-out', {
-        method: 'POST',
+      return await fetch("/auth/sign-out", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
     },

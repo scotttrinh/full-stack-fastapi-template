@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # Full Stack FastAPI Template - Development Server
 # This script starts the full development environment with hot reloading
@@ -9,15 +9,18 @@ echo "🚀 Starting Full Stack FastAPI Template Development Environment..."
 
 # Function to clean up background processes on exit
 cleanup() {
+    # Allow callers to specify the desired exit status (default: success)
+    local exit_code="${1:-0}"
+
     echo ""
     echo "🛑 Shutting down development servers..."
     
     # Kill background processes
-    if [ ! -z "$BACKEND_PID" ]; then
-        kill $BACKEND_PID 2>/dev/null || true
+    if [ -n "$BACKEND_PID" ]; then
+        kill "$BACKEND_PID" 2>/dev/null || true
     fi
-    if [ ! -z "$FRONTEND_PID" ]; then
-        kill $FRONTEND_PID 2>/dev/null || true
+    if [ -n "$FRONTEND_PID" ]; then
+        kill "$FRONTEND_PID" 2>/dev/null || true
     fi
     
     # Kill any remaining processes on our ports
@@ -25,7 +28,7 @@ cleanup() {
     pkill -f "vite.*5173" 2>/dev/null || true
     
     echo "✅ Development servers stopped"
-    exit 0
+    exit "$exit_code"
 }
 
 # Check if all required commands are available
@@ -70,10 +73,9 @@ start_backend() {
     sleep 3
 
     # Check if backend started successfully
-    if ! kill -0 $BACKEND_PID 2>/dev/null; then
+    if ! kill -0 "$BACKEND_PID" 2>/dev/null; then
         echo "❌ Error: Failed to start FastAPI backend"
-        cleanup
-        exit 1
+        cleanup 1
     fi
     
     echo "✅ FastAPI backend started (PID: $BACKEND_PID)"
@@ -93,10 +95,9 @@ start_frontend() {
     sleep 3
 
     # Check if frontend started successfully
-    if ! kill -0 $FRONTEND_PID 2>/dev/null; then
+    if ! kill -0 "$FRONTEND_PID" 2>/dev/null; then
         echo "❌ Error: Failed to start Vite frontend"
-        cleanup
-        exit 1
+        cleanup 1
     fi
     
     echo "✅ Vite frontend started (PID: $FRONTEND_PID)"
@@ -125,16 +126,14 @@ display_status() {
 monitor_processes() {
     while true; do
         # Check if any process died
-        if ! kill -0 $BACKEND_PID 2>/dev/null; then
+        if ! kill -0 "$BACKEND_PID" 2>/dev/null; then
             echo "❌ FastAPI backend stopped unexpectedly"
-            cleanup
-            exit 1
+            cleanup 1
         fi
         
-        if ! kill -0 $FRONTEND_PID 2>/dev/null; then
+        if ! kill -0 "$FRONTEND_PID" 2>/dev/null; then
             echo "❌ Vite frontend stopped unexpectedly"
-            cleanup
-            exit 1
+            cleanup 1
         fi
         
         sleep 5

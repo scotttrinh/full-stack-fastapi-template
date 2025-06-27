@@ -59,11 +59,13 @@ The frontend will be available at `http://localhost:5173`
 This frontend is designed to work seamlessly with the FastAPI backend:
 
 **Development Mode:**
+
 - Backend proxies frontend requests to Vite dev server
 - Hot module reloading works perfectly
 - API calls go through the backend at `http://localhost:8000`
 
 **Quick Start:**
+
 ```bash
 # Start everything (from project root)
 ./scripts/dev
@@ -72,7 +74,7 @@ This frontend is designed to work seamlessly with the FastAPI backend:
 # Terminal 1: Backend
 cd backend && uv run fastapi dev app/main.py
 
-# Terminal 2: Frontend  
+# Terminal 2: Frontend
 cd frontend && npm run dev
 ```
 

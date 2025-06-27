@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # Full Stack FastAPI Template - Project Setup
 # This script sets up the development environment for the first time
@@ -33,11 +33,6 @@ detect_project_root() {
     if [ ! -f "pyproject.toml" ] && [ ! -f "backend/pyproject.toml" ]; then
         echo "❌ Error: Please run this script from the project root directory"
         exit 1
-    fi
-
-    # Go to project root if we're in a subdirectory
-    if [ -f "backend/pyproject.toml" ] && [ ! -f "pyproject.toml" ]; then
-        cd ..
     fi
 
     echo "📁 Current directory: $(pwd)"
@@ -102,7 +97,7 @@ generate_api_client() {
     echo ""
     echo "🔧 Generating frontend API client..."
     
-    if ./scripts/generate-client.sh; then
+    if ./scripts/generate-client; then
         echo "✅ Frontend API client generated"
     else
         echo "❌ Failed to generate API client"

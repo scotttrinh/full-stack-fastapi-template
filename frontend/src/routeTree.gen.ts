@@ -10,93 +10,93 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutSettingsImport } from './routes/_layout/settings'
-import { Route as LayoutItemsImport } from './routes/_layout/items'
-import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as LayoutImport } from "./routes/_layout";
+import { Route as LayoutIndexImport } from "./routes/_layout/index";
+import { Route as LayoutSettingsImport } from "./routes/_layout/settings";
+import { Route as LayoutItemsImport } from "./routes/_layout/items";
+import { Route as LayoutAdminImport } from "./routes/_layout/admin";
 
 // Create/Update Routes
 
 const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
+  id: "/_layout",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const LayoutIndexRoute = LayoutIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => LayoutRoute,
-} as any)
+} as any);
 
 const LayoutSettingsRoute = LayoutSettingsImport.update({
-  id: '/settings',
-  path: '/settings',
+  id: "/settings",
+  path: "/settings",
   getParentRoute: () => LayoutRoute,
-} as any)
+} as any);
 
 const LayoutItemsRoute = LayoutItemsImport.update({
-  id: '/items',
-  path: '/items',
+  id: "/items",
+  path: "/items",
   getParentRoute: () => LayoutRoute,
-} as any)
+} as any);
 
 const LayoutAdminRoute = LayoutAdminImport.update({
-  id: '/admin',
-  path: '/admin',
+  id: "/admin",
+  path: "/admin",
   getParentRoute: () => LayoutRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/_layout/admin': {
-      id: '/_layout/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof LayoutAdminImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/items': {
-      id: '/_layout/items'
-      path: '/items'
-      fullPath: '/items'
-      preLoaderRoute: typeof LayoutItemsImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/settings': {
-      id: '/_layout/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof LayoutSettingsImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/': {
-      id: '/_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
-    }
+    "/_layout": {
+      id: "/_layout";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof LayoutImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_layout/admin": {
+      id: "/_layout/admin";
+      path: "/admin";
+      fullPath: "/admin";
+      preLoaderRoute: typeof LayoutAdminImport;
+      parentRoute: typeof LayoutImport;
+    };
+    "/_layout/items": {
+      id: "/_layout/items";
+      path: "/items";
+      fullPath: "/items";
+      preLoaderRoute: typeof LayoutItemsImport;
+      parentRoute: typeof LayoutImport;
+    };
+    "/_layout/settings": {
+      id: "/_layout/settings";
+      path: "/settings";
+      fullPath: "/settings";
+      preLoaderRoute: typeof LayoutSettingsImport;
+      parentRoute: typeof LayoutImport;
+    };
+    "/_layout/": {
+      id: "/_layout/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof LayoutIndexImport;
+      parentRoute: typeof LayoutImport;
+    };
   }
 }
 
 // Create and export the route tree
 
 interface LayoutRouteChildren {
-  LayoutAdminRoute: typeof LayoutAdminRoute
-  LayoutItemsRoute: typeof LayoutItemsRoute
-  LayoutSettingsRoute: typeof LayoutSettingsRoute
-  LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutAdminRoute: typeof LayoutAdminRoute;
+  LayoutItemsRoute: typeof LayoutItemsRoute;
+  LayoutSettingsRoute: typeof LayoutSettingsRoute;
+  LayoutIndexRoute: typeof LayoutIndexRoute;
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
@@ -104,61 +104,61 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
-}
+};
 
 const LayoutRouteWithChildren =
-  LayoutRoute._addFileChildren(LayoutRouteChildren)
+  LayoutRoute._addFileChildren(LayoutRouteChildren);
 
 export interface FileRoutesByFullPath {
-  '': typeof LayoutRouteWithChildren
-  '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
-  '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  "": typeof LayoutRouteWithChildren;
+  "/admin": typeof LayoutAdminRoute;
+  "/items": typeof LayoutItemsRoute;
+  "/settings": typeof LayoutSettingsRoute;
+  "/": typeof LayoutIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
-  '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  "/admin": typeof LayoutAdminRoute;
+  "/items": typeof LayoutItemsRoute;
+  "/settings": typeof LayoutSettingsRoute;
+  "/": typeof LayoutIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_layout': typeof LayoutRouteWithChildren
-  '/_layout/admin': typeof LayoutAdminRoute
-  '/_layout/items': typeof LayoutItemsRoute
-  '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/': typeof LayoutIndexRoute
+  __root__: typeof rootRoute;
+  "/_layout": typeof LayoutRouteWithChildren;
+  "/_layout/admin": typeof LayoutAdminRoute;
+  "/_layout/items": typeof LayoutItemsRoute;
+  "/_layout/settings": typeof LayoutSettingsRoute;
+  "/_layout/": typeof LayoutIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/admin' | '/items' | '/settings' | '/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/admin' | '/items' | '/settings' | '/'
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "" | "/admin" | "/items" | "/settings" | "/";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/admin" | "/items" | "/settings" | "/";
   id:
-    | '__root__'
-    | '/_layout'
-    | '/_layout/admin'
-    | '/_layout/items'
-    | '/_layout/settings'
-    | '/_layout/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/_layout"
+    | "/_layout/admin"
+    | "/_layout/items"
+    | "/_layout/settings"
+    | "/_layout/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  LayoutRoute: typeof LayoutRouteWithChildren
+  LayoutRoute: typeof LayoutRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
