@@ -46,6 +46,11 @@ configure current branch insert ext::auth::EmailPasswordProviderConfig {{
   require_verification := false
 }};
 
+configure current branch insert ext::auth::UIConfig {{
+  redirect_to := "http://localhost:8000/auth/builtin/callback",
+  redirect_to_on_signup := "http://localhost:8000/auth/builtin/callback?isSignUp=true",
+}};
+
 # Configure email provider to use Mailpit Sandbox
 configure current branch insert cfg::SMTPProviderConfig {{
   name := "mailtrap_sandbox",
