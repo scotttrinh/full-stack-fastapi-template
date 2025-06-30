@@ -78,7 +78,7 @@ async def delete_user_me(
 @router.get("/{user_id}")
 async def read_user_by_id(
     user_service: UserServiceDep, user_id: uuid.UUID, current_user: CurrentUser
-) -> Any:
+) -> User:
     """
     Get a specific user by id.
     """

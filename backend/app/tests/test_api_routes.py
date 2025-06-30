@@ -1,5 +1,6 @@
 import uuid
 
+import gel.fastapi
 from fastapi.testclient import TestClient
 
 from app.tests.conftest import TestUsers
@@ -90,11 +91,33 @@ class TestUsersRoutes:
         assert response.status_code == 422, response.text
 
     def test_delete_current_user_regular_user(
-        self, client: TestClient, test_users: TestUsers
+        self, client: TestClient, test_users: TestUsers, db: gel.Client
     ):
         """Regular user can delete their own account."""
+        # Create a new user to delete
+        user_data = {
+            "email": "todelete@example.com",
+            "password": uuid.uuid4().hex,
+            "full_name": "To Delete",
+        }
         request = client.build_request(
-            "DELETE", "/api/v1/users/me", cookies=test_users.user2.cookies
+            "POST",
+            "/auth/register",
+            json=user_data,
+            cookies=test_users.superuser1.cookies,
+        )
+        response = client.send(request)
+        assert response.status_code == 303
+
+        auth_token = response.cookies.pop("gel_auth_token")
+        db = db.with_globals({"ext::auth::client_token": auth_token})
+
+        user = db.query_required_single("select (global current_user) {*}")
+        assert user.email == "todelete@example.com"
+        assert user.full_name == "To Delete"
+
+        request = client.build_request(
+            "DELETE", "/api/v1/users/me", cookies={"gel_auth_token": auth_token}
         )
         response = client.send(request)
         assert response.status_code == 204, response.text
@@ -123,7 +146,7 @@ class TestUsersRoutes:
         response = client.send(request)
         assert response.status_code == 200, response.text
         user_data = response.json()
-        assert user_data["email"] == "user1@example.com"
+        assert user_data.get("email", None) == "user1@example.com", user_data
 
     def test_get_user_by_id_other_user_forbidden(
         self, client: TestClient, test_users: TestUsers
@@ -252,7 +275,9 @@ class TestUsersRoutes:
             cookies=test_users.superuser1.cookies,
         )
         response = client.send(request)
-        assert response.status_code == 303, response.text
+        assert (
+            response.status_code == 303
+        ), f"Expected 303, got {response.status_code}: {response.text}"
 
         request = client.build_request(
             "GET",
@@ -260,18 +285,44 @@ class TestUsersRoutes:
             cookies=test_users.superuser1.cookies,
         )
         all_users = client.send(request)
-        assert all_users.status_code == 200, all_users.text
+        assert (
+            all_users.status_code == 200
+        ), f"Expected 200, got {all_users.status_code}: {all_users.text}"
         all_users_data = all_users.json()
-        assert "data" in all_users_data
-        assert "count" in all_users_data
-        assert all_users_data["count"] == 5, all_users.text
-        assert len(all_users_data["data"]) == 5, all_users.text
+        assert (
+            "data" in all_users_data
+        ), f"'data' key not found in response: {all_users_data}"
+        assert (
+            "count" in all_users_data
+        ), f"'count' key not found in response: {all_users_data}"
         created_user = next(
-            user
-            for user in all_users_data["data"]
-            if user["email"] == "todelete@example.com"
+            (
+                user
+                for user in all_users_data["data"]
+                if user["email"] == "todelete@example.com"
+            ),
+            None,
         )
-        assert created_user is not None
+        assert (
+            created_user is not None
+        ), "Created user with email 'todelete@example.com' not found in user list"
+        assert (
+            all_users_data["count"] == 5
+        ), f"Expected user count 5, got {all_users_data['count']}: {all_users.text!r}"
+        assert (
+            len(all_users_data["data"]) == 5
+        ), f"Expected 5 users in data, got {len(all_users_data['data'])}: {all_users.text!r}"
+        created_user = next(
+            (
+                user
+                for user in all_users_data["data"]
+                if user["email"] == "todelete@example.com"
+            ),
+            None,
+        )
+        assert (
+            created_user is not None
+        ), "Created user with email 'todelete@example.com' not found in user list"
 
         # Now delete the user
         request = client.build_request(
@@ -652,9 +703,13 @@ class TestCrossEndpointScenarios:
     """Test complex scenarios involving multiple endpoints."""
 
     def test_item_ownership_across_users(
-        self, client: TestClient, test_users: TestUsers
+        self, client: TestClient, test_users: TestUsers, db: gel.Client
     ):
         """Test item ownership and access control between users."""
+        users = db.query("select User { id, email, is_superuser }")
+        print(f"user1: id={test_users.user1.id} cookies={test_users.user1.cookies}")
+        print(f"user2: id={test_users.user2.id} cookies={test_users.user2.cookies}")
+        print(users)
         # User1 creates an item
         item_data = {"title": "User1's Item", "description": "Owned by user1"}
         request = client.build_request(
@@ -684,4 +739,8 @@ class TestCrossEndpointScenarios:
         )
         response = client.send(request)
         # We'll just verify it's a valid response
-        assert response.status_code in [200, 403, 404]
+        assert response.status_code in [
+            200,
+            403,
+            404,
+        ], f"Expected 200, 403, or 404, got {response.status_code}: {response.text!r}"

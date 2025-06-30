@@ -1,9 +1,9 @@
 import uuid
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
-from app.api.deps import CurrentUser
+from app.api.deps import CurrentUser, get_current_user
 from app.main import g
 from app.models.data import Item
 from app.models.utils import Collection, LimitOffsetPaginationDep
@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", dependencies=[Depends(get_current_user)])
 async def read_items(
     limit_offset_pagination: LimitOffsetPaginationDep,
     item_service: ItemServiceDep,
@@ -26,7 +26,7 @@ async def read_items(
     return await item_service.list_all(limit_offset_pagination)
 
 
-@router.get("/{id}")
+@router.get("/{id}", dependencies=[Depends(get_current_user)])
 async def read_item(
     item_service: ItemServiceDep,
     id: uuid.UUID,
@@ -68,7 +68,7 @@ class ItemUpdate(BaseModel):
     title: Item.__typeof__.description
 
 
-@router.put("/{id}")
+@router.put("/{id}", dependencies=[Depends(get_current_user)])
 async def update_item(
     *,
     id: uuid.UUID,
@@ -89,7 +89,11 @@ async def update_item(
     return existing_item
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{id}",
+    dependencies=[Depends(get_current_user)],
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def delete_item(
     item_service: ItemServiceDep,
     id: uuid.UUID,
