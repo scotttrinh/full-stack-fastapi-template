@@ -360,7 +360,7 @@ wheels = [
 [[package]]
 name = "gel"
 version = "3.1.0"
-source = { git = "https://github.com/geldata/gel-python.git?rev=fastapi-auth-customize#d11553b2179eca6c770278e6baa41a762182911b" }
+source = { git = "https://github.com/geldata/gel-python.git?rev=fastapi-auth-customize#c98f601bf1831c21fab4dfd2af0390adedda32ac" }
 dependencies = [
     { name = "certifi", marker = "sys_platform == 'win32'" },
     { name = "pydantic" },

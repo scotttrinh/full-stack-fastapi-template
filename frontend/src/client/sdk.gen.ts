@@ -255,7 +255,7 @@ export class UsersService {
    * Get a specific user by id.
    * @param data The data for the request.
    * @param data.userId
-   * @returns unknown Successful Response
+   * @returns User Successful Response
    * @throws ApiError
    */
   public static readUserById(

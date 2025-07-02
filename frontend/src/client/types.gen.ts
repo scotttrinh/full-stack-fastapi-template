@@ -124,7 +124,7 @@ export type UsersReadUserByIdData = {
   userId: string;
 };
 
-export type UsersReadUserByIdResponse = unknown;
+export type UsersReadUserByIdResponse = User;
 
 export type UsersUpdateUserData = {
   requestBody: UserUpdate;

@@ -28,7 +28,7 @@ class BaseService(Generic[T]):
 
     async def get_by_id(self, obj_id: uuid.UUID) -> T | None:
         return await self.client.query_single(
-            self.model_class.select("*").filter(id=obj_id)
+            self.model_class.filter(id=obj_id)
         )
 
 

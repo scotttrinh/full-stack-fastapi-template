@@ -37,16 +37,10 @@ def error_page(error: str):
     return error
 
 
-@g.auth.email_password.sign_up_body
-class CreateUser(ep.SignUpBody):
-    full_name: str | None = None
-
-
-@g.auth.email_password.on_sign_up_complete
-async def on_sign_up_complete(
-    result: gel.auth.email_password.SignUpCompleteResponse,
+@g.auth.on_new_identity
+async def handle_new_identity(
+    identity_id: uuid.UUID,
     client: gel.fastapi.Client,
-    user: CreateUser,
 ):
     await client.query_required_single(
         """
@@ -55,12 +49,35 @@ async def on_sign_up_complete(
         insert User {
           identity := IDENTITY,
           email := (select ext::auth::EmailPasswordFactor filter .identity = IDENTITY).email,
-          full_name := <optional str>$full_name,
         }
         """,
-        identity_id=result.identity_id,
-        full_name=user.full_name,
+        identity_id=identity_id,
     )
+
+
+@g.auth.email_password.sign_up_body
+class CreateUser(ep.SignUpBody):
+    full_name: str | None = None
+
+
+@g.auth.email_password.on_sign_up_complete
+async def handle_email_password_sign_up_complete(
+    user: CreateUser,
+    result: gel.auth.email_password.SignUpCompleteResponse,
+    client: gel.fastapi.Client,
+):
+    if user.full_name is not None:
+        await client.query_required_single(
+            """
+            with
+            USER := (select User filter .identity = <ext::auth::Identity><uuid>$identity_id),
+            update USER {
+                full_name := <str>$full_name,
+            }
+            """,
+            identity_id=result.identity_id,
+            full_name=user.full_name,
+        )
 
 
 if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
